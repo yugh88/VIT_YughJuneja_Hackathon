@@ -1,0 +1,37 @@
+{
+  "tag": "models-v1",
+  "base_url": "https://github.com/yugh88/VIT_YughJuneja_Hackathon/releases/download/models-v1",
+  "created": "2026-10-05T09:46:50Z",
+  "default_download_bytes": 814056161,
+  "total_bytes": 1115250850,
+  "files": [
+    {
+      "name": "sentiment-en",
+      "file": "sentiment-en.tar.gz",
+      "bytes": 173603395,
+      "sha256": "b03ca2679fd2e4793aa489afd752f66fdb6689e671d8e84f4d5d33fab9c04b7f",
+      "lazy": false
+    },
+    {
+      "name": "sentiment-multi",
+      "file": "sentiment-multi.tar.gz",
+      "bytes": 318604171,
+      "sha256": "6ca9d87ff183a51e3ea460c29462f2724181ba1a86b31afa7f5a2f5ac0e8a423",
+      "lazy": false
+    },
+    {
+      "name": "event-multi",
+      "file": "event-multi.tar.gz",
+      "bytes": 321848595,
+      "sha256": "5f4f84f4326f780152f8305ecdada9725f0873fa4b4236c90b33a93a765baf34",
+      "lazy": false
+    },
+    {
+      "name": "zeroshot-nli",
+      "file": "zeroshot-nli.tar.gz",
+      "bytes": 301194689,
+      "sha256": "8b381b138fca26f39b468fa6792ffd12bd1911e2c43ec8cc9a46f5c67793e81e",
+      "lazy": true
+    }
+  ]
+}

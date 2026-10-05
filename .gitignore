@@ -1,0 +1,41 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.env
+logs/
+data/raw/
+data/output/*
+!data/output/.gitkeep
+models/*
+!models/.gitkeep
+!models/impact/
+*.onnx
+src/web/node_modules/
+src/web/dist/
+.DS_Store
+*.part
+dist/
+scratch/*
+!scratch/.gitkeep
+
+# Claude Code local settings
+.claude/
+# weights and large binaries
+*.safetensors
+*.bin
+*.pt
+*.joblib.tmp
+# caches
+.cache/
+.env.*
+!.env.example
+
+# Private planning / Claude prompt
+Global Risk Signal Engine — Plan, Architecture & Build Prompt.md
+
+# Private planning document
+Global Risk Signal Engine*
