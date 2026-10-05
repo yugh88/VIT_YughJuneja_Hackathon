@@ -1,0 +1,95 @@
+# Keyless ingestion sources. Every entry has a recorded replay twin in data/replay/<name>/.
+# `kind` selects the connector class; other keys are passed to its constructor.
+# `live: false` keeps a source replay-only even in live mode (e.g. it needs auth or is a dataset).
+
+gdelt_gkg:
+  kind: gdelt_gkg
+  poll_interval_s: 300          # GDELT publishes every 15 min; polling faster just re-reads the manifest
+  translation: true             # also read the machine-translated stream (65 languages)
+  max_docs_per_file: 600
+
+gdelt_doc:
+  kind: gdelt_doc
+  replay_covered_by: gdelt_gkg  # the DOC API rate-limits (429) heavily; GKG/Events files carry the same articles
+  poll_interval_s: 900          # GDELT asks for <= 1 request / 5 s
+  timespan: 30min
+  queries:
+    - "theme:ECON_STOCKMARKET"
+    - "(downgrade OR default OR bankruptcy OR \"credit rating\")"
+    - "(sanctions OR tariff OR invasion) theme:ECON_TRADE"
+    - "theme:ECON_CENTRALBANK"
+
+rss:
+  kind: rss
+  poll_interval_s: 300
+  feeds:
+    # Yahoo Finance headlines for the Module A universe (one feed, many tickers)
+    - {id: yahoo-universe-1, url: "https://feeds.finance.yahoo.com/rss/2.0/headline?s=AAPL,MSFT,NVDA,GOOGL,META,AMZN,TSLA,JPM,BAC,GS&region=US&lang=en-US", outlet: finance.yahoo.com, language: en}
+    - {id: yahoo-universe-2, url: "https://feeds.finance.yahoo.com/rss/2.0/headline?s=XOM,CVX,JNJ,UNH,PFE,PG,KO,WMT,CAT,BA&region=US&lang=en-US", outlet: finance.yahoo.com, language: en}
+    # Google News per-ticker queries (English)
+    - {id: gn-AAPL, url: "https://news.google.com/rss/search?q=Apple+AAPL+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [AAPL]}
+    - {id: gn-MSFT, url: "https://news.google.com/rss/search?q=Microsoft+MSFT+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [MSFT]}
+    - {id: gn-NVDA, url: "https://news.google.com/rss/search?q=Nvidia+NVDA+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [NVDA]}
+    - {id: gn-GOOGL, url: "https://news.google.com/rss/search?q=Alphabet+Google+GOOGL+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [GOOGL]}
+    - {id: gn-META, url: "https://news.google.com/rss/search?q=Meta+Platforms+META+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [META]}
+    - {id: gn-AMZN, url: "https://news.google.com/rss/search?q=Amazon+AMZN+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [AMZN]}
+    - {id: gn-TSLA, url: "https://news.google.com/rss/search?q=Tesla+TSLA+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [TSLA]}
+    - {id: gn-JPM, url: "https://news.google.com/rss/search?q=JPMorgan+JPM+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [JPM]}
+    - {id: gn-BAC, url: "https://news.google.com/rss/search?q=%22Bank+of+America%22+BAC+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [BAC]}
+    - {id: gn-GS, url: "https://news.google.com/rss/search?q=%22Goldman+Sachs%22+GS+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [GS]}
+    - {id: gn-XOM, url: "https://news.google.com/rss/search?q=ExxonMobil+XOM+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [XOM]}
+    - {id: gn-CVX, url: "https://news.google.com/rss/search?q=Chevron+CVX+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [CVX]}
+    - {id: gn-JNJ, url: "https://news.google.com/rss/search?q=%22Johnson+%26+Johnson%22+JNJ+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [JNJ]}
+    - {id: gn-UNH, url: "https://news.google.com/rss/search?q=UnitedHealth+UNH+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [UNH]}
+    - {id: gn-PFE, url: "https://news.google.com/rss/search?q=Pfizer+PFE+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [PFE]}
+    - {id: gn-PG, url: "https://news.google.com/rss/search?q=%22Procter+%26+Gamble%22+PG+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [PG]}
+    - {id: gn-KO, url: "https://news.google.com/rss/search?q=Coca-Cola+KO+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [KO]}
+    - {id: gn-WMT, url: "https://news.google.com/rss/search?q=Walmart+WMT+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [WMT]}
+    - {id: gn-CAT, url: "https://news.google.com/rss/search?q=Caterpillar+CAT+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [CAT]}
+    - {id: gn-BA, url: "https://news.google.com/rss/search?q=Boeing+BA+stock+when:1d&hl=en-US&gl=US&ceid=US:en", language: en, tags: [BA]}
+    # Google News business section in other languages (multilingual coverage)
+    - {id: gn-business-ja, url: "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=ja&gl=JP&ceid=JP:ja", language: ja}
+    - {id: gn-business-de, url: "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=de&gl=DE&ceid=DE:de", language: de}
+    - {id: gn-business-fr, url: "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=fr&gl=FR&ceid=FR:fr", language: fr}
+    - {id: gn-business-es, url: "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=es-419&gl=MX&ceid=MX:es-419", language: es}
+    - {id: gn-business-pt, url: "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=pt-BR&gl=BR&ceid=BR:pt-419", language: pt}
+    - {id: gn-business-hi, url: "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=hi&gl=IN&ceid=IN:hi", language: hi}
+    - {id: gn-business-zh, url: "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=zh-TW&gl=TW&ceid=TW:zh-Hant", language: zh}
+    - {id: gn-business-ar, url: "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=ar&gl=AE&ceid=AE:ar", language: ar}
+    - {id: gn-business-en, url: "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-US&gl=US&ceid=US:en", language: en}
+    # India
+    - {id: et-markets, url: "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms", outlet: economictimes.indiatimes.com, language: en}
+    - {id: mint-markets, url: "https://www.livemint.com/rss/markets", outlet: livemint.com, language: en}
+
+central_banks:
+  kind: rss
+  poll_interval_s: 900
+  feeds:
+    - {id: fed-press, url: "https://www.federalreserve.gov/feeds/press_all.xml", outlet: federalreserve.gov, language: en, source_type: central_bank}
+    - {id: ecb-press, url: "https://www.ecb.europa.eu/rss/press.html", outlet: ecb.europa.eu, language: en, source_type: central_bank}
+    - {id: rbi-press, url: "https://www.rbi.org.in/pressreleases_rss.xml", outlet: rbi.org.in, language: en, source_type: central_bank}
+
+edgar_8k:
+  kind: edgar
+  poll_interval_s: 600
+
+mastodon:
+  kind: mastodon
+  poll_interval_s: 90
+  instance: mastodon.social
+  tags: [stocks, finance, markets, investing, economy, stockmarket, wallstreet, aktien, börse]
+
+reddit:
+  kind: reddit
+  poll_interval_s: 180
+  subreddits: [stocks, investing, IndianStockMarket, economics, wallstreetbets, finance]
+
+hackernews:
+  kind: hackernews
+  poll_interval_s: 300
+  queries: [stock, "interest rates", bank, inflation, layoffs, acquisition, outage, breach]
+
+tweets:
+  kind: replay_only           # X/Twitter has no free keyless API: historical tweets replayed as a stream
+  source_type: social
+  note: "Historical finance tweets (Hugging Face dataset) replayed as a live stream"
