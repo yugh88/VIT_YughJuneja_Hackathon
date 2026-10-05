@@ -1,0 +1,13 @@
+# Training/evaluation-only dependencies (pinned). Not needed to run the engine.
+# pip install -r requirements.txt -r requirements-train.txt
+torch==2.14.1
+transformers==5.18.0
+sentencepiece==0.2.2
+protobuf==7.36.2
+accelerate==1.15.0
+onnx==1.23.1
+onnxscript==0.7.2
+yfinance==1.7.0
+pysentiment2==0.1.1
+vaderSentiment==3.3.2
+nltk==3.10.3

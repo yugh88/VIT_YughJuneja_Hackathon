@@ -1,0 +1,20 @@
+.venv
+.git
+**/__pycache__
+**/node_modules
+src/web/dist
+data/raw
+logs
+.pytest_cache
+.mypy_cache
+.ruff_cache
+# models: ship only the runtime artefacts (ONNX + language ID), not training checkpoints
+models/*
+!models/.gitkeep
+!models/onnx
+!models/lid.176.ftz
+!models/impact
+data/output/*
+!data/output/.gitkeep
+dist
+scratch

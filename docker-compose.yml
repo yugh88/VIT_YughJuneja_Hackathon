@@ -1,0 +1,39 @@
+# Demo profile (default): one container, replayed sources, works offline.
+#   docker compose up
+# Live keyless sources (needs internet):
+#   SENTINEL_MODE=live docker compose up
+# Production profile: starts the infrastructure (Redpanda, TimescaleDB, Redis). The engine adapters
+# for it are roadmap item C1 and not built yet - see docs/DECISIONS.md:
+#   docker compose --profile prod up
+
+services:
+  sentinel:
+    build: .
+    image: sentinel:latest
+    ports: ["8000:8000"]
+    environment:
+      SENTINEL_MODE: ${SENTINEL_MODE:-replay}
+      SENTINEL_REPLAY_SPEED: ${SENTINEL_REPLAY_SPEED:-30}
+    volumes:
+      - ./data/output:/app/data/output
+    restart: unless-stopped
+
+  redpanda:
+    profiles: [prod]
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.7
+    command: [redpanda, start, --smp, "1", --overprovisioned, --node-id, "0",
+              --kafka-addr, "PLAINTEXT://0.0.0.0:9092", --advertise-kafka-addr, "PLAINTEXT://redpanda:9092"]
+    ports: ["9092:9092"]
+
+  timescaledb:
+    profiles: [prod]
+    image: timescale/timescaledb:2.17.2-pg16
+    environment:
+      POSTGRES_PASSWORD: sentinel-local-only   # local container only; not a credential for any service  # keyscan: ignore
+      POSTGRES_DB: sentinel
+    ports: ["5432:5432"]
+
+  redis:
+    profiles: [prod]
+    image: redis:7.4-alpine
+    ports: ["6379:6379"]
