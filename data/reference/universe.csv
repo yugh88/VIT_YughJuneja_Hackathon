@@ -1,0 +1,21 @@
+ticker,name,sector,float_shares,last_price,as_of
+AAPL,Apple,Information Technology,14569078010.0,333.69,2026-10-05
+MSFT,Microsoft,Information Technology,7414555684.0,517.53,2026-10-05
+NVDA,Nvidia,Information Technology,23132626000.0,233.95,2026-10-05
+GOOGL,Alphabet,Communication Services,10879441100.0,343.5,2026-10-05
+META,Meta Platforms,Communication Services,2201809630.0,728.08,2026-10-05
+AMZN,Amazon,Consumer Discretionary,9810799373.0,251.52,2026-10-05
+TSLA,Tesla,Consumer Discretionary,2819226425.0,370.59,2026-10-05
+JPM,JPMorgan Chase,Financials,2643991481.0,332.38,2026-10-05
+BAC,Bank of America,Financials,6965127009.0,53.75,2026-10-05
+GS,Goldman Sachs,Financials,301060743.0,902.56,2026-10-05
+XOM,ExxonMobil,Energy,4103811493.0,164.01,2026-10-05
+CVX,Chevron,Energy,1868505583.0,206.69,2026-10-05
+JNJ,Johnson & Johnson,Health Care,2405994561.0,256.03,2026-10-05
+UNH,UnitedHealth Group,Health Care,895018750.0,371.9,2026-10-05
+PFE,Pfizer,Health Care,5692036026.0,27.8,2026-10-05
+PG,Procter & Gamble,Consumer Staples,2320086370.0,144.91,2026-10-05
+KO,Coca-Cola,Consumer Staples,3874015338.0,85.65,2026-10-05
+WMT,Walmart,Consumer Staples,4850137090.0,104.26,2026-10-05
+CAT,Caterpillar,Industrials,458222316.0,845.42,2026-10-05
+BA,Boeing,Industrials,789160754.0,193.56,2026-10-05
