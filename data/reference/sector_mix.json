@@ -1,0 +1,19 @@
+{
+  "source": "Kaggle Financial Transactions Dataset (HF mirror thiru1711/Financial_Transactions), first parquet shard",
+  "rows_used": 13305915,
+  "unmapped_share": 0.0077,
+  "method": "share of absolute card spend by MCC mapped to GICS sector (modules/stress/sector_mix.py)",
+  "computed_at": "2026-10-05",
+  "sector_share": {
+    "Consumer Staples": 0.2508000135421753,
+    "Consumer Discretionary": 0.22769999504089355,
+    "Industrials": 0.14139999449253082,
+    "Communication Services": 0.12839999794960022,
+    "Energy": 0.10339999943971634,
+    "Health Care": 0.07639999687671661,
+    "Utilities": 0.03920000046491623,
+    "Financials": 0.016899999231100082,
+    "Materials": 0.013700000010430813,
+    "Information Technology": 0.002199999988079071
+  }
+}

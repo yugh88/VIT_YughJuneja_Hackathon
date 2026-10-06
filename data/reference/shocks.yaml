@@ -1,0 +1,95 @@
+units:
+  oil: fraction
+  usd: fraction
+  rates: bp
+  equity: fraction
+  financials: fraction
+  em_equity: fraction
+  vix: points
+  ig: bp
+  hy: bp
+  em_spread: bp
+sources:
+  oil: FRED DCOILWTICO
+  usd: FRED DTWEXBGS
+  rates: FRED DGS10
+  baa: FRED DBAA
+  equity: Yahoo SPY
+  financials: Yahoo XLF
+  em_equity: Yahoo EEM
+  vix: Yahoo ^VIX
+classes:
+  Geopolitical:
+    anchor: Russia-Ukraine invasion
+    window:
+    - '2022-02-15'
+    - '2022-03-08'
+    measured:
+      oil: 0.3429
+      usd: 0.0234
+      rates: -19.0
+      equity: -0.0669
+      financials: -0.1129
+      em_equity: -0.1283
+      vix: 9.43
+      ig: 36.0
+      hy: 47.46
+      em_spread: 139.1
+    extras:
+      affected_country_spread_bp: 300
+      em_fx_pct: -0.1
+  Macroeconomic:
+    anchor: 2022 Fed tightening cycle
+    window:
+    - '2022-01-03'
+    - '2022-06-16'
+    measured:
+      oil: 0.547
+      usd: 0.0456
+      rates: 165.0
+      equity: -0.2301
+      financials: -0.2168
+      em_equity: -0.1899
+      vix: 16.35
+      ig: 31.0
+      hy: 242.02
+      em_spread: 134.62
+    extras: {}
+  Credit Event:
+    anchor: SVB failure and US regional-bank stress
+    window:
+    - '2023-03-08'
+    - '2023-03-17'
+    measured:
+      oil: -0.13
+      usd: 0.0009
+      rates: -59.0
+      equity: -0.0187
+      financials: -0.1138
+      em_equity: -0.0332
+      vix: 6.4
+      ig: 42.0
+      hy: 103.82
+      em_spread: 60.81
+    extras:
+      named_notches: 3
+  Merger/Acquisition:
+    anchor: none (idiosyncratic; plan starting values)
+    measured: {}
+    extras:
+      equity: -0.0
+      named_equity: -0.03
+      named_spread_bp: 40
+      named_notches: 1
+  Cyber/Technology Risk:
+    anchor: none (idiosyncratic; plan starting values)
+    measured: {}
+    extras:
+      named_equity: -0.1
+      sector_spread_bp: 20
+  Operational/Supply Chain:
+    anchor: none (idiosyncratic; plan starting values)
+    measured: {}
+    extras:
+      named_equity: -0.1
+      sector_spread_bp: 20
