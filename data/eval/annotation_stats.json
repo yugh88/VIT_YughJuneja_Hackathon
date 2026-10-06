@@ -1,0 +1,22 @@
+{
+ "guidelines_sha256": "097bed396251e9054a77d40c576e61ef0d0be9a9182e377c8a954727c7139f25",
+ "annotator": "AI (the assistant that built this project); blind, two passes in different seeded orders, third-pass adjudication",
+ "kappa": {
+  "credit": {
+   "n": 150,
+   "event_kappa": 0.9764,
+   "event_agreement": 0.98,
+   "credit_binary_kappa": 1.0,
+   "disagreements": 3
+  },
+  "multi": {
+   "n": 300,
+   "event_kappa": 0.9952,
+   "event_agreement": 0.9967,
+   "credit_binary_kappa": 1.0,
+   "sentiment_kappa": 0.9939,
+   "sentiment_agreement": 0.9967,
+   "disagreements": 2
+  }
+ }
+}

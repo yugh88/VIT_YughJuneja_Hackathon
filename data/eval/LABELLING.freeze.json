@@ -1,0 +1,6 @@
+{
+ "file": "data/eval/LABELLING.md",
+ "sha256": "097bed396251e9054a77d40c576e61ef0d0be9a9182e377c8a954727c7139f25",
+ "frozen_at_utc": "2026-10-05T13:02:07Z",
+ "note": "Frozen before any row of credit_to_label.csv or multilingual_to_label.csv was read for labelling."
+}
