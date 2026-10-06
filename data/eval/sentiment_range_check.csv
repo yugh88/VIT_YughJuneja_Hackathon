@@ -1,0 +1,61 @@
+expect,text
+strong_pos,Nvidia smashes earnings estimates and raises guidance as data-centre revenue triples
+strong_pos,Apple posts record quarterly profit and announces a $110 billion buyback
+strong_pos,Shares of Eli Lilly soar 15% after its obesity drug wins full approval
+strong_pos,JPMorgan reports blowout results with net income up 40%
+strong_pos,Microsoft beats on every line and lifts its full-year outlook
+strong_pos,Tesla deliveries crush expectations and the stock jumps 12%
+strong_pos,Reliance Industries profit surges to an all-time high on strong retail growth
+strong_pos,Moody's upgrades the company to investment grade citing sharply lower debt
+strong_pos,Amazon shares rally after cloud growth accelerates and margins expand to a record
+strong_pos,Walmart raises annual forecast after a stellar holiday quarter
+strong_pos,Boeing wins its largest-ever order for 300 jets in a $50 billion deal
+strong_pos,Infosys signs a record $2 billion contract and upgrades revenue guidance
+strong_pos,HDFC Bank quarterly profit jumps 35% and asset quality improves sharply
+strong_pos,Pfizer's cancer drug succeeds in a landmark trial and shares surge
+strong_pos,Meta stock skyrockets 20% after blockbuster advertising revenue
+strong_pos,Exxon doubles its dividend after record cash flow
+strong_pos,Caterpillar beats forecasts by a wide margin and sees strong demand ahead
+strong_pos,Goldman Sachs posts its best trading quarter in a decade
+strong_pos,Coca-Cola sales jump well above estimates and the company raises its outlook
+strong_pos,Alphabet soars after profit beats estimates and it announces its first-ever dividend
+strong_neg,Evergrande defaults on its dollar bonds and files for bankruptcy protection
+strong_neg,Boeing shares plunge after a fatal crash grounds its entire fleet
+strong_neg,Silicon Valley Bank collapses as depositors flee and regulators seize the lender
+strong_neg,Tesla misses badly on earnings and slashes guidance as margins collapse
+strong_neg,Credit Suisse shares crash 30% as the bank faces a liquidity crisis
+strong_neg,Intel issues a dire profit warning and suspends its dividend
+strong_neg,Meta shares tumble 25% after revenue falls for the first time
+strong_neg,Fitch downgrades the company to junk on mounting losses and a debt default risk
+strong_neg,Pfizer drug trial fails and the stock plunges to a ten-year low
+strong_neg,Adani Group shares crash after fraud allegations wipe out $100 billion
+strong_neg,Yes Bank collapses as regulator imposes a moratorium on withdrawals
+strong_neg,Walmart slashes its forecast as profits plunge and inventory piles up
+strong_neg,JPMorgan reports a massive trading loss and its shares sink
+strong_neg,Nike shares sink to a five-year low after a shock sales collapse
+strong_neg,UnitedHealth plunges after it withdraws guidance amid a federal fraud probe
+strong_neg,Amazon stock slumps as profit misses badly and the outlook disappoints
+strong_neg,Toyota halts all production after a devastating cyberattack and shares fall
+strong_neg,Exxon swings to a huge loss and cuts thousands of jobs
+strong_neg,Microsoft hit with a record antitrust fine and shares slide sharply
+strong_neg,Infosys shares crash 15% after it cuts revenue guidance sharply
+neutral,Apple will hold its annual shareholder meeting on March 1
+neutral,Microsoft names a new head of its gaming division
+neutral,JPMorgan to report quarterly earnings on Friday
+neutral,Tesla opens a new showroom in Mumbai
+neutral,Boeing says its chief financial officer will speak at an industry conference
+neutral,The Federal Reserve publishes the minutes of its July meeting
+neutral,Walmart updates its store opening hours for the holiday season
+neutral,Amazon lists new job openings at its Seattle offices
+neutral,Reliance Industries schedules its board meeting for next week
+neutral,Goldman Sachs economists publish their weekly market outlook
+neutral,Nvidia will present at a technology conference in San Francisco
+neutral,Exxon files its annual report with the SEC
+neutral,HDFC Bank appoints an independent director to its board
+neutral,Coca-Cola releases its sustainability report for the year
+neutral,Meta updates the privacy settings page in its app
+neutral,Pfizer will webcast its investor day presentation
+neutral,Caterpillar to hold its quarterly conference call on Tuesday
+neutral,Infosys announces the record date for its interim dividend
+neutral,Intel moves its developer conference to October
+neutral,Alphabet confirms the date of its annual developer event
