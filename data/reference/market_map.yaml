@@ -1,0 +1,91 @@
+# Market data map for impact labels and price features (Yahoo Finance tickers, keyless via yfinance).
+# US equities use their ticker; Nifty 50 uses <ID>.NS. Entities listed here override that.
+# Delisted names (Credit Suisse, SVB, First Republic, Signature, Sberbank/VTB since 2022) are absent:
+# their events still score, but contribute no price labels.
+tickers:
+  BRK-B: BRK-B
+  BANK:HSBC: HSBA.L
+  BANK:BARC: BARC.L
+  BANK:LLOY: LLOY.L
+  BANK:NWG: NWG.L
+  BANK:STAN: STAN.L
+  BANK:BNP: BNP.PA
+  BANK:GLE: GLE.PA
+  BANK:ACA: ACA.PA
+  BANK:DBK: DBK.DE
+  BANK:CBK: CBK.DE
+  BANK:UBSG: UBSG.SW
+  BANK:INGA: INGA.AS
+  BANK:SAN: SAN.MC
+  BANK:BBVA: BBVA.MC
+  BANK:UCG: UCG.MI
+  BANK:ISP: ISP.MI
+  BANK:NDA: NDA-FI.HE
+  BANK:MUFG: 8306.T
+  BANK:MIZUHO: 8411.T
+  BANK:SMFG: 8316.T
+  BANK:NOMURA: 8604.T
+  BANK:ICBC: 1398.HK
+  BANK:CCB: 0939.HK
+  BANK:ABC: 1288.HK
+  BANK:BOC: 3988.HK
+  BANK:BOCOM: 3328.HK
+  BANK:CMB: 3968.HK
+  BANK:RY: RY.TO
+  BANK:TD: TD.TO
+  BANK:BNS: BNS.TO
+  BANK:BMO: BMO.TO
+  BANK:CM: CM.TO
+  BANK:CBA: CBA.AX
+  BANK:WBC: WBC.AX
+  BANK:ANZ: ANZ.AX
+  BANK:NAB: NAB.AX
+  BANK:DBS: D05.SI
+  BANK:OCBC: O39.SI
+  BANK:UOB: U11.SI
+  BANK:ITUB: ITUB4.SA
+  BANK:BBAS: BBAS3.SA
+  BANK:BBDC: BBDC4.SA
+  BANK:KB: 105560.KS
+  BANK:SHINHAN: 055550.KS
+  BANK:SNB: 1180.SR
+  BANK:SBK: SBK.JO
+  BANK:PNC: PNC
+  BANK:TFC: TFC
+  BANK:STT: STT
+  BANK:BANKBARODA: BANKBARODA.NS
+  BANK:PNB: PNB.NS
+  BANK:YESBANK: YESBANK.NS
+  CORP:TSMC: 2330.TW
+  CORP:SAMSUNG: 005930.KS
+  CORP:TOYOTA: 7203.T
+  CORP:SHELL: SHEL.L
+  CORP:ARAMCO: 2222.SR
+
+# Country -> (benchmark index for beta / sovereign moves, local market close in UTC hours)
+countries:
+  US: {index: SPY, close_utc: 20.0}
+  IN: {index: ^NSEI, close_utc: 10.0}
+  GB: {index: ^FTSE, close_utc: 15.5}
+  FR: {index: ^FCHI, close_utc: 15.5}
+  DE: {index: ^GDAXI, close_utc: 15.5}
+  CH: {index: ^SSMI, close_utc: 15.5}
+  NL: {index: ^AEX, close_utc: 15.5}
+  ES: {index: ^IBEX, close_utc: 15.5}
+  IT: {index: FTSEMIB.MI, close_utc: 15.5}
+  FI: {index: ^OMXH25, close_utc: 15.5}
+  JP: {index: ^N225, close_utc: 6.0}
+  CN: {index: 000001.SS, close_utc: 7.0}
+  HK: {index: ^HSI, close_utc: 8.0}
+  TW: {index: ^TWII, close_utc: 5.5}
+  KR: {index: ^KS11, close_utc: 6.5}
+  CA: {index: ^GSPTSE, close_utc: 20.0}
+  AU: {index: ^AXJO, close_utc: 6.0}
+  SG: {index: ^STI, close_utc: 9.0}
+  BR: {index: ^BVSP, close_utc: 20.0}
+  MX: {index: ^MXX, close_utc: 20.0}
+  SA: {index: ^TASI.SR, close_utc: 12.0}
+  ZA: {index: ^J203.JO, close_utc: 15.0}
+  default: {index: ACWI, close_utc: 20.0}
+
+volatility_index: ^VIX
