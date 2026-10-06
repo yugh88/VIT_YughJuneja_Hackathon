@@ -1,0 +1,64 @@
+## Live and recorded sources (all keyless)
+
+Replay twins in `data/replay/<source>/` were recorded from these endpoints with
+`python -m engine.ingest.record`; each file name is the UTC recording time.
+
+| Source | Endpoint | Terms |
+| --- | --- | --- |
+| GDELT 2.0 GKG + Events (15-min files, incl. translingual) | http://data.gdeltproject.org/gdeltv2/ | Free and open; cite "The GDELT Project" |
+| GDELT DOC 2.0 API | https://api.gdeltproject.org/api/v2/doc/doc | Free and open; <= 1 request / 5 s |
+| Google News RSS (per-ticker search, business section in 9 languages) | https://news.google.com/rss | Headlines + links only, for research use |
+| Yahoo Finance headline RSS | https://feeds.finance.yahoo.com/rss/2.0/headline | Headlines + links only |
+| Economic Times markets RSS, Mint markets RSS | economictimes.indiatimes.com, livemint.com | Headlines + summaries only |
+| Federal Reserve, ECB, RBI press-release feeds | federalreserve.gov, ecb.europa.eu, rbi.org.in | Public-sector press releases |
+| SEC EDGAR current 8-K Atom feed | https://www.sec.gov/cgi-bin/browse-edgar | Public filings; descriptive User-Agent per SEC fair-access policy |
+| Mastodon public hashtag timelines | https://mastodon.social/api/v1/timelines/tag/ | Public posts; per-instance terms |
+| Reddit public RSS listings | https://www.reddit.com/r/<sub>/new/.rss | Public listings (the `.json` API now needs OAuth, so RSS is used) |
+| Hacker News via Algolia | https://hn.algolia.com/api | Public API |
+
+Replay twins store only headline-level text, links and source metadata, never full articles.
+
+## Reference data
+
+| File | Source |
+| --- | --- |
+| `data/reference/sources.yaml` | Hand-written connector configuration |
+| `data/reference/entities_seed.csv` | Hand-written: S&P 100 (approximate 2025 membership), Nifty 50, 60 global banks, 6 key corporates, 66 sovereigns, with GICS-style sectors |
+| `data/reference/gazetteer.json.gz` | Built by `python -m training.build_gazetteer` from **Wikidata** (CC0): labels, aliases, demonyms in 20+ languages |
+| `data/reference/aliases_extra.yaml` | Hand-written headline aliases Wikidata lacks (e.g. "JPMorgan", "US", "Facebook") |
+
+## Derived training data (regenerable, not committed)
+
+| File | Built by | From |
+| --- | --- | --- |
+| `data/raw/translated/phrasebank.parquet` | `training.translate phrasebank` | PhraseBank x NLLB-200 into hi, zh, ja, de, fr, es, ar, pt |
+| `data/raw/translated/events.parquet` | `training.translate events` | Topic tweets + weak labels x NLLB-200 |
+| `data/raw/weak_events.parquet` | `training.weak_labels` | 700 random GDELT 15-min windows (2023-2026) + SEC 8-K item codes |
+
+## Market data and impact labels
+
+| Data | Source | Use |
+| --- | --- | --- |
+| Daily close/volume for 231 tickers + indices + VIX, 2018-06 to 2026 | Yahoo Finance via `yfinance` (keyless) | Impact labels (abnormal returns) and price features; `data/reference/price_snapshot.parquet` keeps the last 90 days for the offline demo |
+| 2,000 GDELT GKG/Events 15-minute windows, one per weekday 2019-2026 | GDELT 2.0 (free and open) | Historical headlines for the impact model (111,769 entity-linked; 74,529 labelled signals) |
+
+## Evaluation sets written for this project
+
+| File | Content |
+| --- | --- |
+| `data/eval/sentiment_range_check.csv` | 60 English headlines written for the sentiment range check (20 strong positive, 20 strong negative, 20 neutral). It is a constraint when choosing the published score map (D38), not a reported accuracy metric |
+| `data/eval/multilingual_to_label.csv` | 300 real GDELT headlines (10 languages x 30) awaiting human labels; NLLB English translations as a reading aid |
+| `data/train_extra/hindi_finance_idioms.csv` | 31 Hindi finance sentences written for training only (not reviewed by a native speaker) |
+
+## Phase 4 data (modules and credit work)
+
+| Data | Source | Use |
+| --- | --- | --- |
+| Kaggle *Financial Transactions Dataset* (13.3 M card transactions with MCC), HF mirror `thiru1711/Financial_Transactions` | https://huggingface.co/datasets/thiru1711/Financial_Transactions | Sector mix of the synthetic book (`data/reference/sector_mix.json`); raw file not kept |
+| FRED: DGS10, DBAA, DCOILWTICO, DTWEXBGS (keyless `fredgraph.csv`) | Federal Reserve Bank of St. Louis | Shock library anchors and Monte Carlo factor history |
+| Yahoo Finance via yfinance: SPY, XLF, EEM, ^VIX, HYG, IEI, EMB, IEF, universe prices and float shares, earnings dates | Yahoo Finance | Shocks, spread proxies, Module A base weights and backtest, impact `earnings_window` |
+| SEC EDGAR full-text search (8-K, 2019-2026) | https://efts.sec.gov/LATEST/search-index | Credit distant supervision (item codes); filings >= 2025-01-01 are the independent test `data/eval/edgar_credit_test.csv.gz` |
+| GDELT 2.0, 24 Feb 2022 00:00-12:00 UTC (English + translingual) | GDELT | `data/replay/scenario_2022-02-24/` historical replay |
+| Synthetic book `data/portfolio/book.csv`, `counterparties.csv` | Generated by `modules/stress/portfolio.py`, seed 42 | Module B; 40 counterparties carry public company/bank names (synthetic exposures), no real client data |
+
+Rating -> PD/spread tables in `modules/stress/portfolio.py` are rounded long-run averages in the spirit of S&P Global Ratings' and Moody's annual default studies; Basel IRB formulas follow BCBS (2017) "Basel III: Finalising post-crisis reforms".
