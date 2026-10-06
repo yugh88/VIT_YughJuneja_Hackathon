@@ -1,0 +1,285 @@
+id,kind,ticker,exchange,name,country,sector,ambiguous
+AAPL,equity,AAPL,US,Apple,US,Information Technology,1
+ABBV,equity,ABBV,US,AbbVie,US,Health Care,0
+ABT,equity,ABT,US,Abbott Laboratories,US,Health Care,0
+ACN,equity,ACN,US,Accenture,US,Information Technology,0
+ADBE,equity,ADBE,US,Adobe,US,Information Technology,0
+AIG,equity,AIG,US,American International Group,US,Financials,0
+AMD,equity,AMD,US,Advanced Micro Devices,US,Information Technology,0
+AMGN,equity,AMGN,US,Amgen,US,Health Care,0
+AMT,equity,AMT,US,American Tower,US,Real Estate,0
+AMZN,equity,AMZN,US,Amazon,US,Consumer Discretionary,1
+AVGO,equity,AVGO,US,Broadcom,US,Information Technology,0
+AXP,equity,AXP,US,American Express,US,Financials,0
+BA,equity,BA,US,Boeing,US,Industrials,0
+BAC,equity,BAC,US,Bank of America,US,Financials,0
+BK,equity,BK,US,Bank of New York Mellon,US,Financials,0
+BKNG,equity,BKNG,US,Booking Holdings,US,Consumer Discretionary,0
+BLK,equity,BLK,US,BlackRock,US,Financials,0
+BMY,equity,BMY,US,Bristol-Myers Squibb,US,Health Care,0
+BRK-B,equity,BRK.B,US,Berkshire Hathaway,US,Financials,0
+C,equity,C,US,Citigroup,US,Financials,0
+CAT,equity,CAT,US,Caterpillar,US,Industrials,0
+CHTR,equity,CHTR,US,Charter Communications,US,Communication Services,0
+CL,equity,CL,US,Colgate-Palmolive,US,Consumer Staples,0
+CMCSA,equity,CMCSA,US,Comcast,US,Communication Services,0
+COF,equity,COF,US,Capital One,US,Financials,0
+COP,equity,COP,US,ConocoPhillips,US,Energy,0
+COST,equity,COST,US,Costco,US,Consumer Staples,0
+CRM,equity,CRM,US,Salesforce,US,Information Technology,0
+CSCO,equity,CSCO,US,Cisco,US,Information Technology,0
+CVS,equity,CVS,US,CVS Health,US,Health Care,0
+CVX,equity,CVX,US,Chevron,US,Energy,0
+DE,equity,DE,US,Deere & Company,US,Industrials,0
+DHR,equity,DHR,US,Danaher,US,Health Care,0
+DIS,equity,DIS,US,Walt Disney,US,Communication Services,0
+DUK,equity,DUK,US,Duke Energy,US,Utilities,0
+EMR,equity,EMR,US,Emerson Electric,US,Industrials,0
+F,equity,F,US,Ford Motor,US,Consumer Discretionary,1
+FDX,equity,FDX,US,FedEx,US,Industrials,0
+GD,equity,GD,US,General Dynamics,US,Industrials,0
+GE,equity,GE,US,General Electric,US,Industrials,0
+GILD,equity,GILD,US,Gilead Sciences,US,Health Care,0
+GM,equity,GM,US,General Motors,US,Consumer Discretionary,0
+GOOGL,equity,GOOGL,US,Alphabet,US,Communication Services,0
+GS,equity,GS,US,Goldman Sachs,US,Financials,0
+HD,equity,HD,US,Home Depot,US,Consumer Discretionary,0
+HON,equity,HON,US,Honeywell,US,Industrials,0
+IBM,equity,IBM,US,IBM,US,Information Technology,0
+INTC,equity,INTC,US,Intel,US,Information Technology,0
+INTU,equity,INTU,US,Intuit,US,Information Technology,0
+ISRG,equity,ISRG,US,Intuitive Surgical,US,Health Care,0
+JNJ,equity,JNJ,US,Johnson & Johnson,US,Health Care,0
+JPM,equity,JPM,US,JPMorgan Chase,US,Financials,0
+KO,equity,KO,US,Coca-Cola,US,Consumer Staples,0
+LIN,equity,LIN,US,Linde,US,Materials,0
+LLY,equity,LLY,US,Eli Lilly,US,Health Care,0
+LMT,equity,LMT,US,Lockheed Martin,US,Industrials,0
+LOW,equity,LOW,US,Lowe's,US,Consumer Discretionary,0
+MA,equity,MA,US,Mastercard,US,Financials,0
+MCD,equity,MCD,US,McDonald's,US,Consumer Discretionary,0
+MDLZ,equity,MDLZ,US,Mondelez International,US,Consumer Staples,0
+MDT,equity,MDT,US,Medtronic,US,Health Care,0
+MET,equity,MET,US,MetLife,US,Financials,0
+META,equity,META,US,Meta Platforms,US,Communication Services,1
+MMM,equity,MMM,US,3M,US,Industrials,0
+MO,equity,MO,US,Altria,US,Consumer Staples,0
+MRK,equity,MRK,US,Merck & Co.,US,Health Care,0
+MS,equity,MS,US,Morgan Stanley,US,Financials,0
+MSFT,equity,MSFT,US,Microsoft,US,Information Technology,0
+NEE,equity,NEE,US,NextEra Energy,US,Utilities,0
+NFLX,equity,NFLX,US,Netflix,US,Communication Services,0
+NKE,equity,NKE,US,Nike,US,Consumer Discretionary,0
+NOW,equity,NOW,US,ServiceNow,US,Information Technology,0
+NVDA,equity,NVDA,US,Nvidia,US,Information Technology,0
+ORCL,equity,ORCL,US,Oracle,US,Information Technology,1
+PEP,equity,PEP,US,PepsiCo,US,Consumer Staples,0
+PFE,equity,PFE,US,Pfizer,US,Health Care,0
+PG,equity,PG,US,Procter & Gamble,US,Consumer Staples,0
+PLTR,equity,PLTR,US,Palantir,US,Information Technology,0
+PM,equity,PM,US,Philip Morris International,US,Consumer Staples,0
+PYPL,equity,PYPL,US,PayPal,US,Financials,0
+QCOM,equity,QCOM,US,Qualcomm,US,Information Technology,0
+RTX,equity,RTX,US,RTX Corporation,US,Industrials,0
+SBUX,equity,SBUX,US,Starbucks,US,Consumer Discretionary,0
+SCHW,equity,SCHW,US,Charles Schwab,US,Financials,0
+SO,equity,SO,US,Southern Company,US,Utilities,0
+SPG,equity,SPG,US,Simon Property Group,US,Real Estate,0
+T,equity,T,US,AT&T,US,Communication Services,0
+TGT,equity,TGT,US,Target Corporation,US,Consumer Staples,1
+TMO,equity,TMO,US,Thermo Fisher Scientific,US,Health Care,0
+TMUS,equity,TMUS,US,T-Mobile US,US,Communication Services,0
+TSLA,equity,TSLA,US,Tesla,US,Consumer Discretionary,0
+TXN,equity,TXN,US,Texas Instruments,US,Information Technology,0
+UBER,equity,UBER,US,Uber,US,Industrials,0
+UNH,equity,UNH,US,UnitedHealth Group,US,Health Care,0
+UNP,equity,UNP,US,Union Pacific,US,Industrials,0
+UPS,equity,UPS,US,United Parcel Service,US,Industrials,0
+USB,equity,USB,US,U.S. Bancorp,US,Financials,0
+V,equity,V,US,Visa,US,Financials,1
+VZ,equity,VZ,US,Verizon,US,Communication Services,0
+WFC,equity,WFC,US,Wells Fargo,US,Financials,0
+WMT,equity,WMT,US,Walmart,US,Consumer Staples,0
+XOM,equity,XOM,US,ExxonMobil,US,Energy,0
+ADANIENT.NS,equity,ADANIENT,IN,Adani Enterprises,IN,Industrials,0
+ADANIPORTS.NS,equity,ADANIPORTS,IN,Adani Ports and SEZ,IN,Industrials,0
+APOLLOHOSP.NS,equity,APOLLOHOSP,IN,Apollo Hospitals,IN,Health Care,0
+ASIANPAINT.NS,equity,ASIANPAINT,IN,Asian Paints,IN,Materials,0
+AXISBANK.NS,equity,AXISBANK,IN,Axis Bank,IN,Financials,0
+BAJAJ-AUTO.NS,equity,BAJAJ-AUTO,IN,Bajaj Auto,IN,Consumer Discretionary,0
+BAJFINANCE.NS,equity,BAJFINANCE,IN,Bajaj Finance,IN,Financials,0
+BAJAJFINSV.NS,equity,BAJAJFINSV,IN,Bajaj Finserv,IN,Financials,0
+BEL.NS,equity,BEL,IN,Bharat Electronics,IN,Industrials,0
+BHARTIARTL.NS,equity,BHARTIARTL,IN,Bharti Airtel,IN,Communication Services,0
+CIPLA.NS,equity,CIPLA,IN,Cipla,IN,Health Care,0
+COALINDIA.NS,equity,COALINDIA,IN,Coal India,IN,Energy,0
+DRREDDY.NS,equity,DRREDDY,IN,Dr. Reddy's Laboratories,IN,Health Care,0
+EICHERMOT.NS,equity,EICHERMOT,IN,Eicher Motors,IN,Consumer Discretionary,0
+ETERNAL.NS,equity,ETERNAL,IN,Zomato,IN,Consumer Discretionary,0
+GRASIM.NS,equity,GRASIM,IN,Grasim Industries,IN,Materials,0
+HCLTECH.NS,equity,HCLTECH,IN,HCLTech,IN,Information Technology,0
+HDFCBANK.NS,equity,HDFCBANK,IN,HDFC Bank,IN,Financials,0
+HDFCLIFE.NS,equity,HDFCLIFE,IN,HDFC Life,IN,Financials,0
+HEROMOTOCO.NS,equity,HEROMOTOCO,IN,Hero MotoCorp,IN,Consumer Discretionary,0
+HINDALCO.NS,equity,HINDALCO,IN,Hindalco Industries,IN,Materials,0
+HINDUNILVR.NS,equity,HINDUNILVR,IN,Hindustan Unilever,IN,Consumer Staples,0
+ICICIBANK.NS,equity,ICICIBANK,IN,ICICI Bank,IN,Financials,0
+INDUSINDBK.NS,equity,INDUSINDBK,IN,IndusInd Bank,IN,Financials,0
+INFY.NS,equity,INFY,IN,Infosys,IN,Information Technology,0
+ITC.NS,equity,ITC,IN,ITC Limited,IN,Consumer Staples,0
+JIOFIN.NS,equity,JIOFIN,IN,Jio Financial Services,IN,Financials,0
+JSWSTEEL.NS,equity,JSWSTEEL,IN,JSW Steel,IN,Materials,0
+KOTAKBANK.NS,equity,KOTAKBANK,IN,Kotak Mahindra Bank,IN,Financials,0
+LT.NS,equity,LT,IN,Larsen & Toubro,IN,Industrials,0
+M&M.NS,equity,M&M,IN,Mahindra & Mahindra,IN,Consumer Discretionary,0
+MARUTI.NS,equity,MARUTI,IN,Maruti Suzuki,IN,Consumer Discretionary,0
+NESTLEIND.NS,equity,NESTLEIND,IN,Nestle India,IN,Consumer Staples,0
+NTPC.NS,equity,NTPC,IN,NTPC,IN,Utilities,0
+ONGC.NS,equity,ONGC,IN,Oil and Natural Gas Corporation,IN,Energy,0
+POWERGRID.NS,equity,POWERGRID,IN,Power Grid Corporation of India,IN,Utilities,0
+RELIANCE.NS,equity,RELIANCE,IN,Reliance Industries,IN,Energy,0
+SBILIFE.NS,equity,SBILIFE,IN,SBI Life Insurance,IN,Financials,0
+SBIN.NS,equity,SBIN,IN,State Bank of India,IN,Financials,0
+SHRIRAMFIN.NS,equity,SHRIRAMFIN,IN,Shriram Finance,IN,Financials,0
+SUNPHARMA.NS,equity,SUNPHARMA,IN,Sun Pharmaceutical,IN,Health Care,0
+TATACONSUM.NS,equity,TATACONSUM,IN,Tata Consumer Products,IN,Consumer Staples,0
+TATAMOTORS.NS,equity,TATAMOTORS,IN,Tata Motors,IN,Consumer Discretionary,0
+TATASTEEL.NS,equity,TATASTEEL,IN,Tata Steel,IN,Materials,0
+TCS.NS,equity,TCS,IN,Tata Consultancy Services,IN,Information Technology,0
+TECHM.NS,equity,TECHM,IN,Tech Mahindra,IN,Information Technology,0
+TITAN.NS,equity,TITAN,IN,Titan Company,IN,Consumer Discretionary,1
+TRENT.NS,equity,TRENT,IN,Trent Limited,IN,Consumer Discretionary,0
+ULTRACEMCO.NS,equity,ULTRACEMCO,IN,UltraTech Cement,IN,Materials,0
+WIPRO.NS,equity,WIPRO,IN,Wipro,IN,Information Technology,0
+BANK:HSBC,bank,,,HSBC,GB,Financials,0
+BANK:BARC,bank,,,Barclays,GB,Financials,0
+BANK:LLOY,bank,,,Lloyds Banking Group,GB,Financials,0
+BANK:NWG,bank,,,NatWest Group,GB,Financials,0
+BANK:STAN,bank,,,Standard Chartered,GB,Financials,0
+BANK:BNP,bank,,,BNP Paribas,FR,Financials,0
+BANK:GLE,bank,,,Société Générale,FR,Financials,0
+BANK:ACA,bank,,,Crédit Agricole,FR,Financials,0
+BANK:DBK,bank,,,Deutsche Bank,DE,Financials,0
+BANK:CBK,bank,,,Commerzbank,DE,Financials,0
+BANK:UBSG,bank,,,UBS,CH,Financials,0
+BANK:CSGN,bank,,,Credit Suisse,CH,Financials,0
+BANK:INGA,bank,,,ING Group,NL,Financials,0
+BANK:SAN,bank,,,Banco Santander,ES,Financials,0
+BANK:BBVA,bank,,,BBVA,ES,Financials,0
+BANK:UCG,bank,,,UniCredit,IT,Financials,0
+BANK:ISP,bank,,,Intesa Sanpaolo,IT,Financials,0
+BANK:NDA,bank,,,Nordea,FI,Financials,0
+BANK:MUFG,bank,,,Mitsubishi UFJ Financial Group,JP,Financials,0
+BANK:MIZUHO,bank,,,Mizuho Financial Group,JP,Financials,0
+BANK:SMFG,bank,,,Sumitomo Mitsui Financial Group,JP,Financials,0
+BANK:NOMURA,bank,,,Nomura Holdings,JP,Financials,0
+BANK:ICBC,bank,,,Industrial and Commercial Bank of China,CN,Financials,0
+BANK:CCB,bank,,,China Construction Bank,CN,Financials,0
+BANK:ABC,bank,,,Agricultural Bank of China,CN,Financials,0
+BANK:BOC,bank,,,Bank of China,CN,Financials,0
+BANK:BOCOM,bank,,,Bank of Communications,CN,Financials,0
+BANK:CMB,bank,,,China Merchants Bank,CN,Financials,0
+BANK:RY,bank,,,Royal Bank of Canada,CA,Financials,0
+BANK:TD,bank,,,Toronto-Dominion Bank,CA,Financials,0
+BANK:BNS,bank,,,Scotiabank,CA,Financials,0
+BANK:BMO,bank,,,Bank of Montreal,CA,Financials,0
+BANK:CM,bank,,,Canadian Imperial Bank of Commerce,CA,Financials,0
+BANK:CBA,bank,,,Commonwealth Bank of Australia,AU,Financials,0
+BANK:WBC,bank,,,Westpac,AU,Financials,0
+BANK:ANZ,bank,,,ANZ Group,AU,Financials,0
+BANK:NAB,bank,,,National Australia Bank,AU,Financials,0
+BANK:DBS,bank,,,DBS Bank,SG,Financials,0
+BANK:OCBC,bank,,,OCBC Bank,SG,Financials,0
+BANK:UOB,bank,,,United Overseas Bank,SG,Financials,0
+BANK:ITUB,bank,,,Itaú Unibanco,BR,Financials,0
+BANK:BBAS,bank,,,Banco do Brasil,BR,Financials,0
+BANK:BBDC,bank,,,Banco Bradesco,BR,Financials,0
+BANK:SBER,bank,,,Sberbank,RU,Financials,0
+BANK:VTBR,bank,,,VTB Bank,RU,Financials,0
+BANK:KB,bank,,,KB Financial Group,KR,Financials,0
+BANK:SHINHAN,bank,,,Shinhan Financial Group,KR,Financials,0
+BANK:QNB,bank,,,Qatar National Bank,QA,Financials,0
+BANK:FAB,bank,,,First Abu Dhabi Bank,AE,Financials,0
+BANK:SNB,bank,,,Saudi National Bank,SA,Financials,0
+BANK:SBK,bank,,,Standard Bank Group,ZA,Financials,0
+BANK:PNC,bank,,,PNC Financial Services,US,Financials,0
+BANK:TFC,bank,,,Truist Financial,US,Financials,0
+BANK:STT,bank,,,State Street Corporation,US,Financials,0
+BANK:SIVB,bank,,,Silicon Valley Bank,US,Financials,0
+BANK:FRC,bank,,,First Republic Bank,US,Financials,0
+BANK:SBNY,bank,,,Signature Bank,US,Financials,0
+BANK:BANKBARODA,bank,,,Bank of Baroda,IN,Financials,0
+BANK:PNB,bank,,,Punjab National Bank,IN,Financials,0
+BANK:YESBANK,bank,,,Yes Bank,IN,Financials,0
+CORP:EVERGRANDE,corporate,,,China Evergrande Group,CN,Real Estate,0
+CORP:TSMC,corporate,,,TSMC,TW,Information Technology,0
+CORP:SAMSUNG,corporate,,,Samsung Electronics,KR,Information Technology,0
+CORP:TOYOTA,corporate,,,Toyota,JP,Consumer Discretionary,0
+CORP:SHELL,corporate,,,Shell plc,GB,Energy,1
+CORP:ARAMCO,corporate,,,Saudi Aramco,SA,Energy,0
+SOV:US,sovereign,,,United States,US,Sovereign|North America,0
+SOV:CA,sovereign,,,Canada,CA,Sovereign|North America,0
+SOV:MX,sovereign,,,Mexico,MX,Sovereign|Latin America,0
+SOV:BR,sovereign,,,Brazil,BR,Sovereign|Latin America,0
+SOV:AR,sovereign,,,Argentina,AR,Sovereign|Latin America,0
+SOV:CL,sovereign,,,Chile,CL,Sovereign|Latin America,0
+SOV:CO,sovereign,,,Colombia,CO,Sovereign|Latin America,0
+SOV:PE,sovereign,,,Peru,PE,Sovereign|Latin America,0
+SOV:VE,sovereign,,,Venezuela,VE,Sovereign|Latin America,0
+SOV:GB,sovereign,,,United Kingdom,GB,Sovereign|Europe,0
+SOV:DE,sovereign,,,Germany,DE,Sovereign|Europe,0
+SOV:FR,sovereign,,,France,FR,Sovereign|Europe,0
+SOV:IT,sovereign,,,Italy,IT,Sovereign|Europe,0
+SOV:ES,sovereign,,,Spain,ES,Sovereign|Europe,0
+SOV:NL,sovereign,,,Netherlands,NL,Sovereign|Europe,0
+SOV:CH,sovereign,,,Switzerland,CH,Sovereign|Europe,0
+SOV:SE,sovereign,,,Sweden,SE,Sovereign|Europe,0
+SOV:NO,sovereign,,,Norway,NO,Sovereign|Europe,0
+SOV:PL,sovereign,,,Poland,PL,Sovereign|Europe,0
+SOV:GR,sovereign,,,Greece,GR,Sovereign|Europe,0
+SOV:PT,sovereign,,,Portugal,PT,Sovereign|Europe,0
+SOV:IE,sovereign,,,Ireland,IE,Sovereign|Europe,0
+SOV:BE,sovereign,,,Belgium,BE,Sovereign|Europe,0
+SOV:AT,sovereign,,,Austria,AT,Sovereign|Europe,0
+SOV:FI,sovereign,,,Finland,FI,Sovereign|Europe,0
+SOV:HU,sovereign,,,Hungary,HU,Sovereign|Europe,0
+SOV:RO,sovereign,,,Romania,RO,Sovereign|Europe,0
+SOV:UA,sovereign,,,Ukraine,UA,Sovereign|Europe,0
+SOV:RU,sovereign,,,Russia,RU,Sovereign|Europe,0
+SOV:BY,sovereign,,,Belarus,BY,Sovereign|Europe,0
+SOV:TR,sovereign,,,Turkey,TR,Sovereign|Middle East,0
+SOV:IL,sovereign,,,Israel,IL,Sovereign|Middle East,0
+SOV:IR,sovereign,,,Iran,IR,Sovereign|Middle East,0
+SOV:IQ,sovereign,,,Iraq,IQ,Sovereign|Middle East,0
+SOV:SA,sovereign,,,Saudi Arabia,SA,Sovereign|Middle East,0
+SOV:AE,sovereign,,,United Arab Emirates,AE,Sovereign|Middle East,0
+SOV:QA,sovereign,,,Qatar,QA,Sovereign|Middle East,0
+SOV:EG,sovereign,,,Egypt,EG,Sovereign|Middle East,0
+SOV:LB,sovereign,,,Lebanon,LB,Sovereign|Middle East,0
+SOV:SY,sovereign,,,Syria,SY,Sovereign|Middle East,0
+SOV:YE,sovereign,,,Yemen,YE,Sovereign|Middle East,0
+SOV:PS,sovereign,,,State of Palestine,PS,Sovereign|Middle East,0
+SOV:CN,sovereign,,,China,CN,Sovereign|Asia Pacific,0
+SOV:TW,sovereign,,,Taiwan,TW,Sovereign|Asia Pacific,0
+SOV:HK,sovereign,,,Hong Kong,HK,Sovereign|Asia Pacific,0
+SOV:JP,sovereign,,,Japan,JP,Sovereign|Asia Pacific,0
+SOV:KR,sovereign,,,South Korea,KR,Sovereign|Asia Pacific,0
+SOV:KP,sovereign,,,North Korea,KP,Sovereign|Asia Pacific,0
+SOV:IN,sovereign,,,India,IN,Sovereign|Asia Pacific,0
+SOV:PK,sovereign,,,Pakistan,PK,Sovereign|Asia Pacific,0
+SOV:BD,sovereign,,,Bangladesh,BD,Sovereign|Asia Pacific,0
+SOV:LK,sovereign,,,Sri Lanka,LK,Sovereign|Asia Pacific,0
+SOV:ID,sovereign,,,Indonesia,ID,Sovereign|Asia Pacific,0
+SOV:MY,sovereign,,,Malaysia,MY,Sovereign|Asia Pacific,0
+SOV:SG,sovereign,,,Singapore,SG,Sovereign|Asia Pacific,0
+SOV:TH,sovereign,,,Thailand,TH,Sovereign|Asia Pacific,0
+SOV:VN,sovereign,,,Vietnam,VN,Sovereign|Asia Pacific,0
+SOV:PH,sovereign,,,Philippines,PH,Sovereign|Asia Pacific,0
+SOV:AU,sovereign,,,Australia,AU,Sovereign|Asia Pacific,0
+SOV:NZ,sovereign,,,New Zealand,NZ,Sovereign|Asia Pacific,0
+SOV:ZA,sovereign,,,South Africa,ZA,Sovereign|Africa,0
+SOV:NG,sovereign,,,Nigeria,NG,Sovereign|Africa,0
+SOV:KE,sovereign,,,Kenya,KE,Sovereign|Africa,0
+SOV:ET,sovereign,,,Ethiopia,ET,Sovereign|Africa,0
+SOV:GH,sovereign,,,Ghana,GH,Sovereign|Africa,0
+SOV:SD,sovereign,,,Sudan,SD,Sovereign|Africa,0
