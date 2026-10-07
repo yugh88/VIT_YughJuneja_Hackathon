@@ -53,16 +53,17 @@ and says so in `/v1/health`.
 | Sentiment, SEntFiN held-out (entity-level) | macro-F1 **0.899** | - |
 | Sentiment, FiQA-2018 continuous scores | MSE **0.070** (FiQA-faithful map) / 0.152 (published full-range map) | <= 0.10 |
 | Sentiment, 8 languages: **proxy** (machine-translated PhraseBank test) | mean macro-F1 0.828 | >= 0.75 |
-| Sentiment, 10 languages, native human labels | pending: 300 headlines prepared for labelling | >= 0.75 |
+| Sentiment, 10 languages, 300 native GDELT headlines (AI-annotated, blind, two-pass, κ 0.99 self-consistency; human spot-check pending) | macro-F1 **0.53** (95% CI 0.46-0.60); event macro-F1 0.37 (0.25-0.44), accuracy 0.52. The translated proxy above overstates multilingual quality | >= 0.75 (missed) |
 | Gain over Loughran-McDonald + VADER lexicons | +0.40 macro-F1 (Twitter), +0.39 (SEntFiN) | report |
 | Event class, topic test (9 of 12 classes have test data; train/test near-duplicates removed) | macro-F1 **0.818** | >= 0.80 |
 | Credit Event, frozen topic test (only 11 examples, ~1/3 mislabelled) | F1 0.37 (95% CI 0.11-0.58), precision 0.31 | F1 >= 0.65, P >= 0.80 (missed) |
+| Credit Event, 150 English headlines 2024+ chosen to be hard (AI-annotated, blind, two-pass, κ 0.98; human spot-check pending) | F1 **0.80** (95% CI 0.68-0.90), precision 0.67, recall 1.00; Module B credit gate precision 0.74 | F1 >= 0.65 (met), P >= 0.80 (missed) |
 | Credit Event, SEC 8-K filings from 2025 (independent, 2,347 credit) | F1 0.9996 text-only; 8-K text is templated, so this only validates the filing path | - |
-| Impact vs realised abnormal return, 2024+ out of sample (kind-adjusted z) | Spearman rho **0.074** (95% CI 0.062-0.086); heuristic baseline 0.010 | >= 0.25 (missed) |
-| Impact >= 8: share in top decile of realised moves | **0.138** vs base rate 0.104 (lift 1.32x) | >= 2x (missed) |
-| Impact monotonicity: mean realised z, score 1 -> 10 | 1.19 -> 1.88; flat from 1 to 9, clear jump at 10 | rising (partly) |
-| Single-document latency, 4 threads | p95 253 ms | <= 150 ms (missed) |
-| Throughput, mixed news + social, CPU | **14.2 docs/s** best (8 threads); 10-11 docs/s at 4 threads | >= 150 docs/s (missed) |
+| Impact vs realised abnormal return, 2024+ out of sample (kind-adjusted z) | Spearman rho **0.115** (95% CI 0.104-0.127); 0.083 without the earnings-calendar feature, 0.030 outside earnings windows; heuristic baseline 0.043 | >= 0.25 (missed) |
+| Impact >= 8: share in top decile of realised moves | **0.168** vs base rate 0.104 (lift 1.61x) | >= 2x (missed) |
+| Impact monotonicity: mean realised z, score 1 -> 10 | 1.13 -> 2.61; nearly flat from 1 to 8, rising at 9 and sharply at 10 | rising (partly) |
+| Single-document latency, 4 threads | p95 254 ms | <= 150 ms (missed) |
+| Throughput, mixed news + social, CPU | **10-13 docs/s** measured (13.4 best at 8 threads; 10.0-10.6 at 4 threads) | >= 150 docs/s (missed) |
 
 Financial PhraseBank scores (all-agree accuracy 0.991) are left out of the table on purpose:
 the English model's base, ProsusAI/finbert, was itself trained on PhraseBank, so those
@@ -81,10 +82,21 @@ sector. Rebalancing happens on an impact >= 5 signal or every 15 minutes, with h
 (only |dS| > 0.10 counts) and a 10% turnover cap. `GET /v1/modules/index` returns current weights,
 weights over time and a rebalance log naming the signal behind each move.
 
-**Backtest, 2020-2026** (`make backtest`; 10 bp per side, no look-ahead): the tilt does **not**
-add value on our historical signals. Information ratio is -1.48 versus the cap-weighted index on
-0.4% tracking error, about what costs explain. It beats only 76% of 100 date-shuffled placebos;
-a real effect needs 95%. We report this as it is.
+**Backtest** (`make backtest`; 10 bp per side, no look-ahead). Two versions were written down
+before running (DECISIONS D67):
+- **v1** tilts on sentiment.
+- **v2** tilts on the sentiment *surprise* (S minus the name's own 30-day mean), uses only
+  signals with impact >= 6, and has hysteresis 0.15.
+
+v2 won on 2020-2023 validation and is the live default. On the 2024+ test, run once:
+
+| | Net IR | Gross IR | Turnover per day | Beats placebos |
+| --- | --- | --- | --- | --- |
+| v1 | -1.31 | -0.14 | 2.9% | 74% |
+| v2 | -1.43 | -0.64 | 2.2% | 33% |
+
+**Neither version adds value.** A real effect needs a positive net IR that beats 95% of placebos.
+The dashboard says this plainly.
 
 ## Module B: event-driven stress testing
 
@@ -92,18 +104,27 @@ A seeded synthetic book: $10 bn, 300 positions (loans, revolvers, IG/HY/sovereig
 forwards, CDS, options), 120 counterparties, 25 countries, sector mix from the provided
 transactions dataset. A qualifying signal re-prices it as follows:
 - **Trigger:** Geopolitical, Macroeconomic or Credit Event, *and* impact > 7, *and*
-  corroboration (>= 3 outlets or a mention burst within 6 h); one test per story cluster
-  per 6 h.
+  corroboration (>= 3 outlets or a mention burst within 6 h, with at least one tier-1 outlet).
+  A credit event also needs confidence >= 0.7 and a distress term. There is one test per
+  (country or obligor, event) cluster per 6 h; later signals merge into that alert.
 - **Shocks:** the event class's shock is measured from a real anchor episode (Ukraine 2022,
   the 2022 tightening cycle, SVB 2023), then scaled by impact and targeted by country, region
   and sector.
 - **Repricing:** bonds by duration and convexity, loans by Vasicek-stressed PD, derivatives by
   DV01, delta, gamma and vega.
 - **Capital:** Basel IRB risk weights give dRWA and dCET1.
-- **Monte Carlo:** 10,000 correlated draws (0.27 s) give 99% VaR and 97.5% ES.
+- **Monte Carlo:** 10,000 correlated draws (0.21 s) give 99% VaR and 97.5% ES.
 
 Try `POST /v1/modules/stress/run` with `{"event": "Geopolitical", "impact": 9, "country": "RU"}`, or
 `GET /v1/modules/stress/replay/2022-02-24` to watch 24 Feb 2022 flow through the whole system.
+On that day (11,520 recorded articles, 00:00-12:00 UTC) the trigger fires 23 tests. It merges
+stories by (country or obligor, event) within 6 h, needs a tier-1 outlet, and gates credit events
+on confidence >= 0.7 plus a distress term. The alerts form a queue ranked by impact x
+corroboration:
+- The top 9 alerts are 8 war clusters (Ukraine and Russia, oil above $100, ruble) and one real
+  but unrelated story.
+- By our reading, 15 of the 23 alerts relate to the war.
+- The remaining noise sits at the bottom of the queue (DECISIONS E10).
 
 ## Sources (all keyless)
 
@@ -177,14 +198,14 @@ Query either file with DuckDB:
 
 ## Scale
 
-Measured single-worker throughput **T = 14.2 docs/s** (mixed news + social, CPU, 8 ONNX
-threads; `make bench`). Peak load is taken as 10x the daily average.
+Measured single-worker throughput **T = 10-13 docs/s** (mixed news + social, CPU; 13.4 at 8 ONNX
+threads, 10.0-10.6 at 4; `make bench`). Peak load is taken as 10x the daily average.
 
-| Daily volume | Average | Peak | CPU workers at T = 14.2 |
-| --- | --- | --- | --- |
-| 1 M docs/day | 11.6 docs/s | 116 docs/s | 9 |
-| 10 M docs/day | 116 docs/s | 1,157 docs/s | 82 |
-| 50 M docs/day | 579 docs/s | 5,787 docs/s | 408 |
+| Daily volume | Average | Peak | CPU workers at T = 13 | CPU workers at T = 10 |
+| --- | --- | --- | --- | --- |
+| 1 M docs/day | 11.6 docs/s | 116 docs/s | 9 | 12 |
+| 10 M docs/day | 115.7 docs/s | 1,157 docs/s | 90 | 116 |
+| 50 M docs/day | 578.7 docs/s | 5,787 docs/s | 446 | 579 |
 
 T is low because the models run in FP32. Full INT8 would be about 3.5x faster on CPU, but cost
 2-3 accuracy points on our data (D30), so accuracy won. Levers for scale, all measured or

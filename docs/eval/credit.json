@@ -1,0 +1,184 @@
+{
+  "rule": {
+    "threshold": 0.55,
+    "specialist_weight": 0.5,
+    "backstop": true
+  },
+  "frozen_test": {
+    "system": {
+      "macro_f1": 0.8128,
+      "credit": {
+        "n_credit": 11,
+        "predicted_credit": 20,
+        "precision": 0.25,
+        "recall": 0.4545,
+        "f1": 0.3226,
+        "f1_ci95": [
+          0.0909,
+          0.5185
+        ]
+      }
+    },
+    "model_only_argmax": {
+      "macro_f1": 0.8183,
+      "credit": {
+        "n_credit": 11,
+        "predicted_credit": 16,
+        "precision": 0.3125,
+        "recall": 0.4545,
+        "f1": 0.3704,
+        "f1_ci95": [
+          0.1111,
+          0.5833
+        ]
+      }
+    },
+    "precision_at_trigger_confidence_0.8": {
+      "n": 11,
+      "precision": 0.3636
+    }
+  },
+  "edgar_2025_test": {
+    "n": 4767,
+    "system_with_item_override": {
+      "n_credit": 2347,
+      "predicted_credit": 2346,
+      "precision": 1.0,
+      "recall": 0.9996,
+      "f1": 0.9998,
+      "f1_ci95": [
+        0.9994,
+        1.0
+      ]
+    },
+    "text_model_only": {
+      "n_credit": 2347,
+      "predicted_credit": 2345,
+      "precision": 1.0,
+      "recall": 0.9991,
+      "f1": 0.9996,
+      "f1_ci95": [
+        0.9989,
+        1.0
+      ]
+    }
+  },
+  "annotated_credit_test": {
+    "set": "credit_labelled.csv (AI-annotated, blind, two-pass)",
+    "n": 150,
+    "rule": {
+      "threshold": 0.55,
+      "specialist_weight": 0.5,
+      "backstop": true,
+      "hard_negatives": true
+    },
+    "system": {
+      "macro_f1": 0.4883,
+      "credit": {
+        "n_credit": 24,
+        "predicted_credit": 36,
+        "precision": 0.6667,
+        "recall": 1.0,
+        "f1": 0.8,
+        "f1_ci95": [
+          0.6792,
+          0.898
+        ]
+      }
+    },
+    "model_only_argmax": {
+      "macro_f1": 0.4806,
+      "credit": {
+        "n_credit": 24,
+        "predicted_credit": 35,
+        "precision": 0.6571,
+        "recall": 0.9583,
+        "f1": 0.7797,
+        "f1_ci95": [
+          0.6538,
+          0.8852
+        ]
+      }
+    },
+    "module_b_credit_gate": {
+      "rule": "Credit, confidence >= 0.7, distress term",
+      "n": 31,
+      "precision": 0.7419,
+      "recall": 0.9583
+    },
+    "errors": [
+      {
+        "id": "C007",
+        "text": "Stock Market Today: Dow Jones Futures Rise; Tesla Stock Slides On Downgrade To Sell",
+        "gold": "Macroeconomic",
+        "pred": "Credit Event"
+      },
+      {
+        "id": "C014",
+        "text": "Walmart to Cut Around 1,500 Corporate Jobs in Restructuring Drive",
+        "gold": "Operational/Supply Chain",
+        "pred": "Credit Event"
+      },
+      {
+        "id": "C026",
+        "text": "NCLT can adjudicate fraud, debt disputes under IBC: Delhi High Court",
+        "gold": "Regulatory/Legal",
+        "pred": "Credit Event"
+      },
+      {
+        "id": "C044",
+        "text": "Nigerian Aviation Debt Crisis Looms as Handlers Threaten Hal",
+        "gold": "Operational/Supply Chain",
+        "pred": "Credit Event"
+      },
+      {
+        "id": "C046",
+        "text": "German corporate insolvencies surge to 20-year high",
+        "gold": "Macroeconomic",
+        "pred": "Credit Event"
+      },
+      {
+        "id": "C059",
+        "text": "A Comparative Critique Of 2025 IBC Amendment",
+        "gold": "Regulatory/Legal",
+        "pred": "Credit Event"
+      },
+      {
+        "id": "C080",
+        "text": "China Credit Growth Weakens",
+        "gold": "Macroeconomic",
+        "pred": "Credit Event"
+      },
+      {
+        "id": "C086",
+        "text": "Intel Corp. (INTC) Surges 7.23% as Investors Cheer Restructuring Plan",
+        "gold": "Operational/Supply Chain",
+        "pred": "Credit Event"
+      },
+      {
+        "id": "C098",
+        "text": "Exxon Mobil to cut 2,000 jobs amid global restructuring",
+        "gold": "Operational/Supply Chain",
+        "pred": "Credit Event"
+      },
+      {
+        "id": "C108",
+        "text": "Salesforce Laying Off 1,000 Employees in AI-Driven Restructuring",
+        "gold": "Operational/Supply Chain",
+        "pred": "Credit Event"
+      },
+      {
+        "id": "C144",
+        "text": "iPhones with iOS 18 Share Photo Data with Apple by Default: Here's How to Turn It Off",
+        "gold": "Cyber/Technology Risk",
+        "pred": "Credit Event"
+      },
+      {
+        "id": "C146",
+        "text": "10 Years of IBC: India Recovers Rs 4.32 Lakh Crore in Debt",
+        "gold": "Macroeconomic",
+        "pred": "Credit Event"
+      }
+    ]
+  }
+}
