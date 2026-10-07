@@ -1,0 +1,121 @@
+cp_id,name,entity_id,country,region,currency,emerging,sector,rating
+CP000,UniCredit,BANK:UCG,IT,Europe,EUR,False,Financials,BBB-
+CP001,Bristol-Myers Squibb,BMY,US,North America,USD,False,Health Care,B
+CP002,National Australia Bank,BANK:NAB,AU,Asia Pacific,AUD,False,Financials,BBB-
+CP003,FedEx,FDX,US,North America,USD,False,Industrials,B
+CP004,Bank of America,BAC,US,North America,USD,False,Financials,BBB-
+CP005,Westpac,BANK:WBC,AU,Asia Pacific,AUD,False,Financials,A+
+CP006,Canadian Imperial Bank of Commerce,BANK:CM,CA,North America,CAD,False,Financials,A-
+CP007,Citigroup,C,US,North America,USD,False,Financials,A-
+CP008,UnitedHealth Group,UNH,US,North America,USD,False,Health Care,BB+
+CP009,Jio Financial Services,JIOFIN.NS,IN,Asia Pacific,INR,True,Financials,BB
+CP010,Bharti Airtel,BHARTIARTL.NS,IN,Asia Pacific,INR,True,Communication Services,BB-
+CP011,Booking Holdings,BKNG,US,North America,USD,False,Consumer Discretionary,BBB
+CP012,Thermo Fisher Scientific,TMO,US,North America,USD,False,Health Care,A
+CP013,Kotak Mahindra Bank,KOTAKBANK.NS,IN,Asia Pacific,INR,True,Financials,A
+CP014,Toronto-Dominion Bank,BANK:TD,CA,North America,CAD,False,Financials,BBB-
+CP015,Capital One,COF,US,North America,USD,False,Financials,BBB+
+CP016,Intel,INTC,US,North America,USD,False,Information Technology,BB-
+CP017,Oil and Natural Gas Corporation,ONGC.NS,IN,Asia Pacific,INR,True,Energy,BBB+
+CP018,KB Financial Group,BANK:KB,KR,Asia Pacific,KRW,False,Financials,A
+CP019,Credit Suisse,BANK:CSGN,CH,Europe,CHF,False,Financials,AA
+CP020,United Overseas Bank,BANK:UOB,SG,Asia Pacific,SGD,False,Financials,A
+CP021,Wells Fargo,WFC,US,North America,USD,False,Financials,BBB-
+CP022,Philip Morris International,PM,US,North America,USD,False,Consumer Staples,A-
+CP023,Samsung Electronics,CORP:SAMSUNG,KR,Asia Pacific,KRW,False,Information Technology,AA-
+CP024,Power Grid Corporation of India,POWERGRID.NS,IN,Asia Pacific,INR,True,Utilities,A+
+CP025,Bank of Communications,BANK:BOCOM,CN,Asia Pacific,CNY,True,Financials,BB+
+CP026,SBI Life Insurance,SBILIFE.NS,IN,Asia Pacific,INR,True,Financials,BB
+CP027,Verizon,VZ,US,North America,USD,False,Communication Services,BB
+CP028,Standard Chartered,BANK:STAN,GB,Europe,GBP,False,Financials,BB
+CP029,Ford Motor,F,US,North America,USD,False,Consumer Discretionary,A
+CP030,BNP Paribas,BANK:BNP,FR,Europe,EUR,False,Financials,AA+
+CP031,Oracle,ORCL,US,North America,USD,False,Information Technology,BB-
+CP032,Mondelez International,MDLZ,US,North America,USD,False,Consumer Staples,A
+CP033,UltraTech Cement,ULTRACEMCO.NS,IN,Asia Pacific,INR,True,Materials,BBB-
+CP034,Zomato,ETERNAL.NS,IN,Asia Pacific,INR,True,Consumer Discretionary,BB+
+CP035,Grasim Industries,GRASIM.NS,IN,Asia Pacific,INR,True,Materials,BBB+
+CP036,Tata Motors,TATAMOTORS.NS,IN,Asia Pacific,INR,True,Consumer Discretionary,A
+CP037,RTX Corporation,RTX,US,North America,USD,False,Industrials,BB
+CP038,Texas Instruments,TXN,US,North America,USD,False,Information Technology,AA
+CP039,Bank of Montreal,BANK:BMO,CA,North America,CAD,False,Financials,A
+CP040,CP-040 Information (US),,US,North America,USD,False,Information Technology,BB-
+CP041,CP-041 Consumer (GB),,GB,Europe,GBP,False,Consumer Discretionary,CCC
+CP042,CP-042 Industrials (DE),,DE,Europe,EUR,False,Industrials,BB-
+CP043,CP-043 Consumer (FR),,FR,Europe,EUR,False,Consumer Discretionary,CCC
+CP044,CP-044 Industrials (IT),,IT,Europe,EUR,False,Industrials,BBB-
+CP045,CP-045 Consumer (ES),,ES,Europe,EUR,False,Consumer Discretionary,BBB+
+CP046,CP-046 Consumer (NL),,NL,Europe,EUR,False,Consumer Discretionary,B+
+CP047,CP-047 Health (CH),,CH,Europe,CHF,False,Health Care,BBB-
+CP048,CP-048 Energy (PL),,PL,Europe,PLN,True,Energy,BBB+
+CP049,CP-049 Communication (RU),,RU,Europe,RUB,True,Communication Services,BBB
+CP050,CP-050 Communication (TR),,TR,Middle East,TRY,True,Communication Services,BBB+
+CP051,CP-051 Consumer (SA),,SA,Middle East,SAR,True,Consumer Discretionary,AA+
+CP052,CP-052 Energy (AE),,AE,Middle East,AED,True,Energy,A+
+CP053,CP-053 Energy (JP),,JP,Asia Pacific,JPY,False,Energy,BBB-
+CP054,CP-054 Energy (CN),,CN,Asia Pacific,CNY,True,Energy,AAA
+CP055,CP-055 Real (KR),,KR,Asia Pacific,KRW,False,Real Estate,BBB
+CP056,CP-056 Communication (TW),,TW,Asia Pacific,TWD,False,Communication Services,BBB-
+CP057,CP-057 Consumer (IN),,IN,Asia Pacific,INR,True,Consumer Staples,B+
+CP058,CP-058 Consumer (SG),,SG,Asia Pacific,SGD,False,Consumer Staples,A
+CP059,CP-059 Consumer (ID),,ID,Asia Pacific,IDR,True,Consumer Discretionary,BBB-
+CP060,CP-060 Communication (AU),,AU,Asia Pacific,AUD,False,Communication Services,BB
+CP061,CP-061 Industrials (CA),,CA,North America,CAD,False,Industrials,A+
+CP062,CP-062 Communication (BR),,BR,Latin America,BRL,True,Communication Services,BB
+CP063,CP-063 Consumer (MX),,MX,Latin America,MXN,True,Consumer Discretionary,BB-
+CP064,CP-064 Health (ZA),,ZA,Africa,ZAR,True,Health Care,AA-
+CP065,CP-065 Consumer (CA),,CA,North America,CAD,False,Consumer Discretionary,AA+
+CP066,CP-066 Industrials (GB),,GB,Europe,GBP,False,Industrials,BB
+CP067,CP-067 Real (GB),,GB,Europe,GBP,False,Real Estate,A
+CP068,CP-068 Materials (US),,US,North America,USD,False,Materials,A
+CP069,CP-069 Consumer (US),,US,North America,USD,False,Consumer Staples,CCC
+CP070,CP-070 Health (ID),,ID,Asia Pacific,IDR,True,Health Care,B+
+CP071,CP-071 Consumer (ES),,ES,Europe,EUR,False,Consumer Discretionary,BB-
+CP072,CP-072 Consumer (AE),,AE,Middle East,AED,True,Consumer Staples,AA-
+CP073,CP-073 Materials (US),,US,North America,USD,False,Materials,A-
+CP074,CP-074 Industrials (US),,US,North America,USD,False,Industrials,A-
+CP075,CP-075 Industrials (RU),,RU,Europe,RUB,True,Industrials,A+
+CP076,CP-076 Industrials (GB),,GB,Europe,GBP,False,Industrials,CCC
+CP077,CP-077 Consumer (IT),,IT,Europe,EUR,False,Consumer Discretionary,CCC
+CP078,CP-078 Consumer (US),,US,North America,USD,False,Consumer Discretionary,BB-
+CP079,CP-079 Financials (IT),,IT,Europe,EUR,False,Financials,BBB+
+CP080,CP-080 Industrials (US),,US,North America,USD,False,Industrials,BB+
+CP081,CP-081 Consumer (US),,US,North America,USD,False,Consumer Discretionary,B-
+CP082,CP-082 Consumer (DE),,DE,Europe,EUR,False,Consumer Discretionary,BBB
+CP083,CP-083 Consumer (BR),,BR,Latin America,BRL,True,Consumer Discretionary,B
+CP084,CP-084 Consumer (US),,US,North America,USD,False,Consumer Staples,BB-
+CP085,CP-085 Consumer (US),,US,North America,USD,False,Consumer Staples,CCC
+CP086,CP-086 Materials (PL),,PL,Europe,PLN,True,Materials,BB+
+CP087,CP-087 Industrials (FR),,FR,Europe,EUR,False,Industrials,AAA
+CP088,CP-088 Industrials (US),,US,North America,USD,False,Industrials,BB
+CP089,CP-089 Energy (ES),,ES,Europe,EUR,False,Energy,B+
+CP090,CP-090 Consumer (RU),,RU,Europe,RUB,True,Consumer Staples,BBB-
+CP091,CP-091 Industrials (AE),,AE,Middle East,AED,True,Industrials,BBB
+CP092,CP-092 Consumer (US),,US,North America,USD,False,Consumer Discretionary,BB-
+CP093,CP-093 Communication (US),,US,North America,USD,False,Communication Services,BBB-
+CP094,CP-094 Industrials (US),,US,North America,USD,False,Industrials,BBB-
+CP095,CP-095 Consumer (CA),,CA,North America,CAD,False,Consumer Discretionary,A+
+CP096,CP-096 Communication (US),,US,North America,USD,False,Communication Services,AAA
+CP097,CP-097 Consumer (US),,US,North America,USD,False,Consumer Discretionary,AA
+CP098,CP-098 Consumer (JP),,JP,Asia Pacific,JPY,False,Consumer Staples,BBB
+CP099,CP-099 Industrials (IT),,IT,Europe,EUR,False,Industrials,B
+CP100,CP-100 Consumer (US),,US,North America,USD,False,Consumer Discretionary,A+
+CP101,CP-101 Consumer (CH),,CH,Europe,CHF,False,Consumer Staples,CCC
+CP102,CP-102 Communication (ES),,ES,Europe,EUR,False,Communication Services,B
+CP103,CP-103 Materials (US),,US,North America,USD,False,Materials,AA-
+CP104,CP-104 Utilities (AU),,AU,Asia Pacific,AUD,False,Utilities,BB-
+CP105,CP-105 Energy (KR),,KR,Asia Pacific,KRW,False,Energy,BB-
+CP106,CP-106 Consumer (ES),,ES,Europe,EUR,False,Consumer Staples,B+
+CP107,CP-107 Consumer (FR),,FR,Europe,EUR,False,Consumer Staples,BB+
+CP108,CP-108 Consumer (US),,US,North America,USD,False,Consumer Staples,BBB+
+CP109,CP-109 Consumer (US),,US,North America,USD,False,Consumer Staples,BBB-
+CP110,CP-110 Financials (DE),,DE,Europe,EUR,False,Financials,A+
+CP111,CP-111 Information (BR),,BR,Latin America,BRL,True,Information Technology,BBB-
+CP112,CP-112 Industrials (ES),,ES,Europe,EUR,False,Industrials,BB+
+CP113,CP-113 Consumer (TW),,TW,Asia Pacific,TWD,False,Consumer Staples,BB+
+CP114,CP-114 Consumer (CN),,CN,Asia Pacific,CNY,True,Consumer Discretionary,BB+
+CP115,CP-115 Consumer (SG),,SG,Asia Pacific,SGD,False,Consumer Discretionary,BBB
+CP116,CP-116 Communication (CN),,CN,Asia Pacific,CNY,True,Communication Services,B+
+CP117,CP-117 Real (US),,US,North America,USD,False,Real Estate,BB
+CP118,CP-118 Industrials (KR),,KR,Asia Pacific,KRW,False,Industrials,B
+CP119,CP-119 Energy (US),,US,North America,USD,False,Energy,AA
