@@ -1,0 +1,30 @@
+{
+  "event-multi": {
+    "macro_f1": 0.932,
+    "credit": {
+      "n_credit": 34,
+      "predicted_credit": 33,
+      "precision": 0.8788,
+      "recall": 0.8529,
+      "f1": 0.8657,
+      "f1_ci95": [
+        0.7622,
+        0.946
+      ]
+    }
+  },
+  "event-multi-credit": {
+    "macro_f1": 0.9352,
+    "credit": {
+      "n_credit": 34,
+      "predicted_credit": 33,
+      "precision": 0.9394,
+      "recall": 0.9118,
+      "f1": 0.9254,
+      "f1_ci95": [
+        0.8393,
+        0.9828
+      ]
+    }
+  }
+}

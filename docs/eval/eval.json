@@ -1,0 +1,625 @@
+{
+  "sentiment": {
+    "en": {
+      "twitter_test": {
+        "n": 2388,
+        "macro_f1": 0.8513,
+        "accuracy": 0.8844,
+        "ece": 0.0302
+      },
+      "sentfin_test": {
+        "n": 784,
+        "macro_f1": 0.8986,
+        "accuracy": 0.898,
+        "ece": 0.014
+      },
+      "fiqa_test": {
+        "n": 234,
+        "mse_range": 0.1522,
+        "mse_human": 0.0704
+      },
+      "calibration": {
+        "published": "range",
+        "range": {
+          "type": "intensity",
+          "scale": 0.8,
+          "power": 2.5,
+          "beta": 0.0,
+          "check_passes": true,
+          "within_budget": false,
+          "fiqa_val_mse": 0.1593,
+          "fiqa_test_mse": 0.1522,
+          "check_strong_min_abs": 0.711,
+          "check_strong_median_abs": 0.778,
+          "check_neutral_max_abs": 0.126
+        },
+        "human": {
+          "type": "linear",
+          "scale": 0.3606,
+          "fiqa_val_mse": 0.0458,
+          "fiqa_test_mse": 0.0704,
+          "check_strong_min_abs": 0.344,
+          "check_strong_median_abs": 0.357,
+          "check_neutral_max_abs": 0.172
+        },
+        "best_within_budget": {
+          "scale": 0.5,
+          "power": 3.0,
+          "beta": 0.0,
+          "fiqa_val_mse": 0.0556,
+          "check_strong_min_abs": 0.434,
+          "check_strong_median_abs": 0.483,
+          "check_neutral_max_abs": 0.054,
+          "check_items_ok": 20,
+          "check_passes": false,
+          "within_budget": true
+        },
+        "check_sign_errors": 0,
+        "check_items_ok": 60,
+        "check_failures": [],
+        "candidates": {
+          "tried": 3465,
+          "pass_check": 609,
+          "pass_check_and_budget": 0
+        }
+      },
+      "quantization": {
+        "quantization": "int8-embeddings",
+        "fidelity_vs_fp32": {
+          "int8-full": {
+            "argmax_agreement": 0.8906,
+            "mean_abs_prob_diff": 0.1495
+          },
+          "int8-embeddings": {
+            "argmax_agreement": 1.0,
+            "mean_abs_prob_diff": 0.0024
+          }
+        },
+        "fp16_storage_agreement": 1.0
+      }
+    },
+    "multi": {
+      "twitter_test": {
+        "n": 2388,
+        "macro_f1": 0.8401,
+        "accuracy": 0.874,
+        "ece": 0.0532
+      },
+      "sentfin_test": {
+        "n": 784,
+        "macro_f1": 0.8918,
+        "accuracy": 0.8916,
+        "ece": 0.0519
+      },
+      "fiqa_test": {
+        "n": 234,
+        "mse_range": 0.1843,
+        "mse_human": 0.0685
+      },
+      "calibration": {
+        "published": "range",
+        "range": {
+          "type": "intensity",
+          "scale": 0.8,
+          "power": 1.5,
+          "beta": 0.75,
+          "check_passes": false,
+          "within_budget": false,
+          "fiqa_val_mse": 0.1929,
+          "fiqa_test_mse": 0.1843,
+          "check_strong_min_abs": 0.71,
+          "check_strong_median_abs": 1.0,
+          "check_neutral_max_abs": 0.315
+        },
+        "human": {
+          "type": "linear",
+          "scale": 0.3564,
+          "fiqa_val_mse": 0.0545,
+          "fiqa_test_mse": 0.0685,
+          "check_strong_min_abs": 0.213,
+          "check_strong_median_abs": 0.356,
+          "check_neutral_max_abs": 0.192
+        },
+        "best_within_budget": {
+          "scale": 0.45,
+          "power": 1.5,
+          "beta": 0.45,
+          "fiqa_val_mse": 0.063,
+          "check_strong_min_abs": 0.4,
+          "check_strong_median_abs": 0.879,
+          "check_neutral_max_abs": 0.177,
+          "check_items_ok": 41,
+          "check_passes": false,
+          "within_budget": true
+        },
+        "check_sign_errors": 0,
+        "check_items_ok": 59,
+        "check_failures": [
+          {
+            "expect": "neutral",
+            "text": "Infosys announces the record date for its interim dividend",
+            "score": 0.315
+          }
+        ],
+        "candidates": {
+          "tried": 3465,
+          "pass_check": 0,
+          "pass_check_and_budget": 0
+        }
+      },
+      "quantization": {
+        "quantization": "int8-embeddings",
+        "fidelity_vs_fp32": {
+          "int8-full": {
+            "argmax_agreement": 0.9336,
+            "mean_abs_prob_diff": 0.0493
+          },
+          "int8-embeddings": {
+            "argmax_agreement": 0.9961,
+            "mean_abs_prob_diff": 0.0012
+          }
+        },
+        "fp16_storage_agreement": 1.0
+      }
+    },
+    "multilingual_proxy": {
+      "what": "PhraseBank test split machine-translated (NLLB-200) into 8 languages; a proxy, not native text",
+      "english_reference_same_model": {
+        "n": 483,
+        "macro_f1": 0.8628,
+        "accuracy": 0.8716,
+        "ece": 0.0173
+      },
+      "per_language": {
+        "ar": {
+          "n": 483,
+          "macro_f1": 0.8118,
+          "accuracy": 0.8447,
+          "ece": 0.0371
+        },
+        "de": {
+          "n": 483,
+          "macro_f1": 0.8375,
+          "accuracy": 0.8592,
+          "ece": 0.0341
+        },
+        "es": {
+          "n": 483,
+          "macro_f1": 0.8205,
+          "accuracy": 0.8447,
+          "ece": 0.0394
+        },
+        "fr": {
+          "n": 483,
+          "macro_f1": 0.8209,
+          "accuracy": 0.853,
+          "ece": 0.0499
+        },
+        "hi": {
+          "n": 483,
+          "macro_f1": 0.8601,
+          "accuracy": 0.8675,
+          "ece": 0.0363
+        },
+        "ja": {
+          "n": 483,
+          "macro_f1": 0.8298,
+          "accuracy": 0.8468,
+          "ece": 0.0317
+        },
+        "pt": {
+          "n": 483,
+          "macro_f1": 0.8286,
+          "accuracy": 0.8489,
+          "ece": 0.0435
+        },
+        "zh": {
+          "n": 483,
+          "macro_f1": 0.8161,
+          "accuracy": 0.8323,
+          "ece": 0.0391
+        }
+      },
+      "mean_macro_f1": 0.8282
+    },
+    "multilingual_native": {
+      "status": "labelled",
+      "annotation": "AI-annotated, blind, two-pass",
+      "kappa": {
+        "n": 300,
+        "event_kappa": 0.9952,
+        "event_agreement": 0.9967,
+        "credit_binary_kappa": 1.0,
+        "sentiment_kappa": 0.9939,
+        "sentiment_agreement": 0.9967,
+        "disagreements": 2
+      },
+      "human_spot_check": null,
+      "sentiment_macro_f1": 0.531,
+      "sentiment_macro_f1_ci95": [
+        0.4611,
+        0.5969
+      ],
+      "event_macro_f1": 0.3681,
+      "event_macro_f1_ci95": [
+        0.2533,
+        0.4387
+      ],
+      "event_accuracy": 0.52,
+      "n": 300,
+      "per_language": {
+        "ar": {
+          "n": 30,
+          "sentiment_macro_f1": 0.5849,
+          "event_macro_f1": 0.248
+        },
+        "de": {
+          "n": 30,
+          "sentiment_macro_f1": 0.5017,
+          "event_macro_f1": 0.1106
+        },
+        "es": {
+          "n": 30,
+          "sentiment_macro_f1": 0.4519,
+          "event_macro_f1": 0.2583
+        },
+        "fr": {
+          "n": 30,
+          "sentiment_macro_f1": 0.685,
+          "event_macro_f1": 0.3555
+        },
+        "hi": {
+          "n": 30,
+          "sentiment_macro_f1": 0.3784,
+          "event_macro_f1": 0.1159
+        },
+        "it": {
+          "n": 30,
+          "sentiment_macro_f1": 0.4683,
+          "event_macro_f1": 0.1205
+        },
+        "ja": {
+          "n": 30,
+          "sentiment_macro_f1": 0.5764,
+          "event_macro_f1": 0.1869
+        },
+        "pt": {
+          "n": 30,
+          "sentiment_macro_f1": 0.4364,
+          "event_macro_f1": 0.1732
+        },
+        "ru": {
+          "n": 30,
+          "sentiment_macro_f1": 0.3557,
+          "event_macro_f1": 0.1926
+        },
+        "zh": {
+          "n": 30,
+          "sentiment_macro_f1": 0.6854,
+          "event_macro_f1": 0.243
+        }
+      },
+      "mean_sentiment_macro_f1": 0.5124,
+      "gap_vs_english_twitter": 0.3389
+    },
+    "phrasebank_contaminated": {
+      "caveat": "ProsusAI/finbert, the base of sentiment-en, was itself fine-tuned on Financial PhraseBank; these scores are likely optimistic.",
+      "full_test": {
+        "n": 483,
+        "macro_f1": 0.8642,
+        "accuracy": 0.8778,
+        "ece": 0.0175
+      },
+      "all_agree_test": {
+        "n": 223,
+        "macro_f1": 0.9879,
+        "accuracy": 0.991,
+        "ece": 0.0472
+      }
+    },
+    "baselines": {
+      "twitter_test": {
+        "loughran_mcdonald": {
+          "n": 2388,
+          "macro_f1": 0.4467,
+          "accuracy": 0.5879
+        },
+        "vader": {
+          "n": 2388,
+          "macro_f1": 0.447,
+          "accuracy": 0.4941
+        },
+        "lm_plus_vader": {
+          "n": 2388,
+          "macro_f1": 0.4522,
+          "accuracy": 0.482
+        },
+        "engine_lexicon_fallback": {
+          "n": 2388,
+          "macro_f1": 0.552,
+          "accuracy": 0.7073
+        }
+      },
+      "sentfin_test": {
+        "loughran_mcdonald": {
+          "n": 784,
+          "macro_f1": 0.4598,
+          "accuracy": 0.486
+        },
+        "vader": {
+          "n": 784,
+          "macro_f1": 0.5033,
+          "accuracy": 0.5089
+        },
+        "lm_plus_vader": {
+          "n": 784,
+          "macro_f1": 0.512,
+          "accuracy": 0.5128
+        },
+        "engine_lexicon_fallback": {
+          "n": 784,
+          "macro_f1": 0.5116,
+          "accuracy": 0.537
+        }
+      },
+      "phrasebank_test": {
+        "loughran_mcdonald": {
+          "n": 483,
+          "macro_f1": 0.4581,
+          "accuracy": 0.5631
+        },
+        "vader": {
+          "n": 483,
+          "macro_f1": 0.4547,
+          "accuracy": 0.5114
+        },
+        "lm_plus_vader": {
+          "n": 483,
+          "macro_f1": 0.4457,
+          "accuracy": 0.4803
+        },
+        "engine_lexicon_fallback": {
+          "n": 483,
+          "macro_f1": 0.4572,
+          "accuracy": 0.6377
+        }
+      }
+    },
+    "delta_vs_lm_plus_vader_macro_f1": {
+      "twitter_test": 0.3991,
+      "sentfin_test": 0.3866
+    }
+  },
+  "event": {
+    "test": "twitter-financial-news-topic validation split, topics mapped to our classes",
+    "classes_present": [
+      "Geopolitical",
+      "Macroeconomic",
+      "Credit Event",
+      "Merger/Acquisition",
+      "Product Launch",
+      "Earnings/Guidance",
+      "Regulatory/Legal",
+      "Management Change",
+      "Other/Non-event"
+    ],
+    "classes_without_clean_test_data": [
+      "Operational/Supply Chain",
+      "ESG/Climate",
+      "Cyber/Technology Risk"
+    ],
+    "macro_f1_present_classes": 0.8183,
+    "accuracy": 0.8873,
+    "n": 4117,
+    "ece": 0.041,
+    "per_class_f1": {
+      "Geopolitical": 0.8819,
+      "Macroeconomic": 0.8844,
+      "Credit Event": 0.3704,
+      "Merger/Acquisition": 0.8069,
+      "Product Launch": 0.8826,
+      "Earnings/Guidance": 0.9318,
+      "Regulatory/Legal": 0.7699,
+      "Management Change": 0.9375,
+      "Other/Non-event": 0.8992
+    },
+    "confusion_matrix": {
+      "labels": [
+        "Geopolitical",
+        "Macroeconomic",
+        "Credit Event",
+        "Merger/Acquisition",
+        "Product Launch",
+        "Earnings/Guidance",
+        "Regulatory/Legal",
+        "Management Change",
+        "Operational/Supply Chain",
+        "ESG/Climate",
+        "Cyber/Technology Risk",
+        "Other/Non-event"
+      ],
+      "matrix": [
+        [
+          224,
+          10,
+          0,
+          0,
+          0,
+          0,
+          6,
+          1,
+          0,
+          4,
+          0,
+          4
+        ],
+        [
+          13,
+          788,
+          6,
+          2,
+          0,
+          8,
+          5,
+          0,
+          2,
+          6,
+          1,
+          55
+        ],
+        [
+          0,
+          4,
+          5,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0,
+          94,
+          2,
+          0,
+          2,
+          0,
+          0,
+          0,
+          1,
+          16
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          94,
+          1,
+          1,
+          0,
+          0,
+          2,
+          1,
+          3
+        ],
+        [
+          0,
+          3,
+          0,
+          0,
+          0,
+          628,
+          0,
+          1,
+          0,
+          0,
+          0,
+          37
+        ],
+        [
+          4,
+          1,
+          2,
+          2,
+          1,
+          0,
+          92,
+          0,
+          0,
+          0,
+          2,
+          15
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          105,
+          0,
+          3,
+          0,
+          4
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          18,
+          89,
+          2,
+          19,
+          13,
+          42,
+          13,
+          5,
+          9,
+          17,
+          2,
+          1623
+        ]
+      ]
+    }
+  },
+  "leakage_check": {
+    "hindi_idioms_in_eval": 0,
+    "weak_labels_in_eval": 0
+  },
+  "provenance": {
+    "generated_at": "2026-10-05T13:37:24Z",
+    "git_commit": "6cf9e26",
+    "git_dirty": true,
+    "source_sha256": "02c34ed0c3790413",
+    "python": "3.11.13",
+    "machine": "Darwin arm64"
+  }
+}

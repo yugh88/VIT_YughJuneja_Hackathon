@@ -1,0 +1,134 @@
+{
+  "provenance": {
+    "generated_at": "2026-10-05T11:13:19Z",
+    "git_commit": "070e956",
+    "git_dirty": true,
+    "source_sha256": "a957f99e1892e1d8",
+    "python": "3.11.13",
+    "machine": "Darwin arm64"
+  },
+  "machine": "Apple M3 Pro, 11 logical cores, Darwin",
+  "summary": {
+    "single-doc latency p50 / p95, 4 threads (target p95 <= 150 ms)": "1.1 / 254.0 ms",
+    "throughput, 4 threads, batch 32 (target >= 150 docs/s)": "10.0 docs/s",
+    "best throughput (T used in the README scale tables)": "13.4 docs/s (threads=8, batch=64)",
+    "best at 4 threads": "10.6 docs/s (batch=1)",
+    "cold start (all sessions created), 4 threads": "3.51 s",
+    "corpus": "360 replayed docs (GDELT, RSS, tweets, Mastodon, EDGAR, HN, Reddit, central banks)",
+    "Module B Monte Carlo (10,000 draws x 300 positions, full stress run)": "0.207 s median"
+  },
+  "grid": [
+    {
+      "threads": 1,
+      "batch": 1,
+      "docs_per_s": 3.3,
+      "signals_per_s": 2.8
+    },
+    {
+      "threads": 1,
+      "batch": 8,
+      "docs_per_s": 2.9,
+      "signals_per_s": 2.3
+    },
+    {
+      "threads": 1,
+      "batch": 32,
+      "docs_per_s": 2.6,
+      "signals_per_s": 2.1
+    },
+    {
+      "threads": 1,
+      "batch": 64,
+      "docs_per_s": 2.5,
+      "signals_per_s": 2.0
+    },
+    {
+      "threads": 2,
+      "batch": 1,
+      "docs_per_s": 6.1,
+      "signals_per_s": 5.3
+    },
+    {
+      "threads": 2,
+      "batch": 8,
+      "docs_per_s": 5.6,
+      "signals_per_s": 4.5
+    },
+    {
+      "threads": 2,
+      "batch": 32,
+      "docs_per_s": 5.1,
+      "signals_per_s": 4.1
+    },
+    {
+      "threads": 2,
+      "batch": 64,
+      "docs_per_s": 5.0,
+      "signals_per_s": 4.0
+    },
+    {
+      "threads": 4,
+      "batch": 1,
+      "docs_per_s": 10.6,
+      "signals_per_s": 9.2
+    },
+    {
+      "threads": 4,
+      "batch": 8,
+      "docs_per_s": 10.4,
+      "signals_per_s": 8.4
+    },
+    {
+      "threads": 4,
+      "batch": 32,
+      "docs_per_s": 10.0,
+      "signals_per_s": 8.1
+    },
+    {
+      "threads": 4,
+      "batch": 64,
+      "docs_per_s": 9.8,
+      "signals_per_s": 7.9
+    },
+    {
+      "threads": 8,
+      "batch": 1,
+      "docs_per_s": 12.1,
+      "signals_per_s": 10.4
+    },
+    {
+      "threads": 8,
+      "batch": 8,
+      "docs_per_s": 13.2,
+      "signals_per_s": 10.6
+    },
+    {
+      "threads": 8,
+      "batch": 32,
+      "docs_per_s": 13.3,
+      "signals_per_s": 10.8
+    },
+    {
+      "threads": 8,
+      "batch": 64,
+      "docs_per_s": 13.4,
+      "signals_per_s": 10.9
+    }
+  ],
+  "single_doc": {
+    "p50_ms": 1.1,
+    "p95_ms": 254.0,
+    "cold_start_s": 3.51
+  },
+  "best_docs_per_s": 13.4,
+  "best_config": {
+    "threads": 8,
+    "batch": 64
+  },
+  "monte_carlo": {
+    "draws": 10000,
+    "positions": 300,
+    "median_s": 0.207,
+    "max_s": 0.209
+  }
+}
