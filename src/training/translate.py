@@ -78,7 +78,8 @@ def translate_frame(df: pd.DataFrame, tr: Translator, langs: list[str]) -> pd.Da
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("what", choices=["phrasebank", "events", "credit"])
+    ap.add_argument("what", choices=["phrasebank", "events", "credit", "twitter"])
+    ap.add_argument("--topic-per-lang", type=int, default=4000, help="twitter: topic train rows per language")
     ap.add_argument("--langs", default=",".join(NLLB_CODES))
     ap.add_argument("--per-lang", type=int, default=1200, help="topic rows per language (train split)")
     ap.add_argument("--weak-per-class", type=int, default=120, help="weak-label rows per class per language")
@@ -115,6 +116,25 @@ def main() -> None:
             parts.append(translate_frame(both, tr, [lang]))
         res = pd.concat(parts, ignore_index=True)
         res["split"] = "train"
+    elif args.what == "twitter":
+        # DECISIONS D73(d): all twitter-financial-news sentiment train rows + topic train rows, into 8 languages.
+        from training.data import load_twitter_sentiment
+
+        sent = load_twitter_sentiment()
+        sent = sent[sent["split"] == "train"][["text", "label"]].assign(source="twitter_sentiment_mt")
+        topic = load_twitter_topic()
+        topic = topic[topic["split"] == "train"]
+        res_s = translate_frame(sent, tr, langs)
+        res_s["split"] = "train"
+        res_s.to_parquet(out_dir / "twitter_sentiment.parquet")
+        log.info("wrote twitter_sentiment.parquet (%d rows)", len(res_s))
+        parts = []
+        for i, lang in enumerate(langs):  # seeds differ from the earlier `events` sample (0..7)
+            t = topic.sample(min(len(topic), args.topic_per_lang), random_state=100 + i)
+            parts.append(translate_frame(t[["text", "event"]].assign(source="twitter_topic_mt2"), tr, [lang]))
+        res = pd.concat(parts, ignore_index=True)
+        res["split"] = "train"
+        args.what = "twitter_topic"
     else:
         topic = load_twitter_topic()
         topic = topic[topic["split"] != "test"]

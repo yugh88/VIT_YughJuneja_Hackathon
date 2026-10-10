@@ -231,6 +231,26 @@ def load_translated_events() -> pd.DataFrame:
     return df
 
 
+def load_translated_twitter() -> tuple[pd.DataFrame, pd.DataFrame]:
+    """D73(d) translate-train extension: (sentiment rows, topic rows); empty frames until translated."""
+    d = raw_dir() / "translated"
+    ps, pt = d / "twitter_sentiment.parquet", d / "twitter_topic.parquet"
+    sent = (
+        pd.read_parquet(ps)
+        if ps.exists()
+        else pd.DataFrame(columns=["text", "label", "split", "lang", "source"])
+    )
+    top = (
+        pd.read_parquet(pt)
+        if pt.exists()
+        else pd.DataFrame(columns=["text", "event", "split", "lang", "source"])
+    )
+    if len(top):
+        current = dict(zip(load_twitter_topic()["text"], load_twitter_topic()["event"], strict=False))
+        top["event"] = top["text_en"].map(current).fillna(top["event"])
+    return sent, top
+
+
 def load_credit_events() -> pd.DataFrame:
     """Credit distant supervision (training.credit_labels): EDGAR item codes, multi-rule GDELT, hard negatives."""
     p = raw_dir() / "credit_events.parquet"

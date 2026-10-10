@@ -159,6 +159,38 @@ class Native:
         return np.stack(ps), np.stack(pe), ev, conf
 
 
+NLI_HYPS = ["This is bad news.", "This is neither good nor bad news.", "This is good news."]  # SENT order
+
+
+def nli_sentiment(texts: list[str]) -> np.ndarray:
+    """D78: zero-shot sentiment from the shipped multilingual NLI model (softmax of entailment logits)."""
+    from engine.nlp.onnx_model import OnnxClassifier, softmax
+    from engine.nlp.pipeline import ONNX_DIR
+
+    zs = OnnxClassifier(ONNX_DIR / "zeroshot-nli")
+    ent = [lbl.lower() for lbl in zs.labels].index("entailment")
+    prem = [t for t in texts for _ in NLI_HYPS]
+    hyp = [h for _ in texts for h in NLI_HYPS]
+    lg = zs.logits(prem, hyp, batch_size=48).reshape(len(texts), len(NLI_HYPS), -1)[:, :, ent]
+    return softmax(lg, axis=-1)
+
+
+def run_nli(split: str, w_event: float = 0.25, v: float | None = None) -> dict[str, Any]:
+    d = load("native", split)
+    nat = Native()
+    ps_n, pe_n, _, _ = nat.probs(d["headline"].tolist())
+    mt = translations(split).set_index("id").loc[d["id"], "en_mt"].tolist()
+    _, pe_t, _, _ = nat.probs(mt, lang="en")
+    pe = w_event * pe_t + (1 - w_event) * pe_n
+    ev = [CLASSES[i] for i in pe.argmax(1)]
+    pn = nli_sentiment(d["headline"].tolist())
+    res: dict[str, Any] = {"split": split, "w_event": w_event, "grid": {}}
+    for vv in [v] if v is not None else [0.0, 0.25, 0.5, 0.75, 1.0]:
+        ps = vv * pn + (1 - vv) * ps_n
+        res["grid"][str(vv)] = native_metrics(d, [SENT[i] for i in ps.argmax(1)], ev)
+    return res
+
+
 def to_english(texts: list[str], langs: list[str]) -> list[str]:
     import torch
 
@@ -259,7 +291,8 @@ def run_credit(split: str, cfg: dict[str, Any] | None = None, grid: bool = False
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s: %(message)s")
     ap = argparse.ArgumentParser()
-    ap.add_argument("what", choices=["translate", "native", "credit"])
+    ap.add_argument("what", choices=["translate", "native", "credit", "nli"])
+    ap.add_argument("--v", type=float)
     ap.add_argument("--split", default="dev", choices=["dev", "test"])
     ap.add_argument("--w-sent", type=float)
     ap.add_argument("--w-event", type=float)
@@ -270,6 +303,13 @@ def main() -> None:
     a = ap.parse_args()
     if a.what == "translate":
         translations(a.split)
+        return
+    if a.what == "nli":
+        res = run_nli(a.split, a.w_event if a.w_event is not None else 0.25, a.v)
+        OUT.mkdir(parents=True, exist_ok=True)
+        (OUT / f"nli_{a.split}{'_' + a.tag if a.tag else ''}.json").write_text(json.dumps(res, indent=1))
+        for k, m in res["grid"].items():
+            print(k, {x: m[x] for x in ("sentiment_macro_f1", "sentiment_macro_f1_ci95", "event_macro_f1")})
         return
     res = (
         run_native(a.split, a.w_sent, a.w_event)

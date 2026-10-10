@@ -30,7 +30,7 @@ from training.data import (
 BASES = {"en": "ProsusAI/finbert", "multi": "FacebookAI/xlm-roberta-base"}
 
 
-def build_frames(which: str) -> tuple[pd.DataFrame, pd.DataFrame]:
+def build_frames(which: str, extra_mt: bool = False) -> tuple[pd.DataFrame, pd.DataFrame]:
     frames = [load_phrasebank(), load_twitter_sentiment(), load_sentfin(), load_fiqa()]
     if which == "multi":
         tr = load_translated_sentiment()
@@ -40,6 +40,10 @@ def build_frames(which: str) -> tuple[pd.DataFrame, pd.DataFrame]:
         frames.append(tr)
         # Oversampled x4 so 31 sentences are not drowned out by 50k others.
         frames += [load_hindi_idioms()] * 4
+        if extra_mt:  # D73(d): twitter-financial-news sentiment translated into 8 languages
+            from training.data import load_translated_twitter
+
+            frames.append(load_translated_twitter()[0].assign(entity=""))
     df = pd.concat([f[["text", "entity", "label", "split", "source"]] for f in frames], ignore_index=True)
     df["entity"] = df["entity"].fillna("").astype(str)
     df["y"] = df["label"].astype(int)
@@ -54,15 +58,17 @@ def main() -> None:
     ap.add_argument("which", choices=list(BASES))
     ap.add_argument("--epochs", type=int, default=3)
     ap.add_argument("--batch-size", type=int, default=32)
+    ap.add_argument("--extra-mt", action="store_true", help="D73(d) translate-train extension")
+    ap.add_argument("--out", default=None)
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s: %(message)s")
-    train, val = build_frames(args.which)
+    train, val = build_frames(args.which, args.extra_mt)
     logging.info(
         "train %d rows by source %s; val %d", len(train), train["source"].value_counts().to_dict(), len(val)
     )
     cfg = TrainConfig(
         base_model=BASES[args.which],
-        out_name=f"sentiment-{args.which}",
+        out_name=args.out or f"sentiment-{args.which}",
         labels=SENT_LABELS,
         epochs=args.epochs,
         lr=2e-5,

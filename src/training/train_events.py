@@ -36,7 +36,7 @@ from training.data import (
 BASE = "FacebookAI/xlm-roberta-base"
 
 
-def build_frames(credit_data: bool = True) -> tuple[pd.DataFrame, pd.DataFrame]:
+def build_frames(credit_data: bool = True, extra_mt: bool = False) -> tuple[pd.DataFrame, pd.DataFrame]:
     topic = load_twitter_topic()
     weak = load_weak_events()
     mt = load_translated_events()
@@ -54,6 +54,10 @@ def build_frames(credit_data: bool = True) -> tuple[pd.DataFrame, pd.DataFrame]:
             ]
         )
         parts += [edgar[cols], ce[ce["source"] != "edgar_8k"][cols], load_credit_translations()[cols]]
+    if extra_mt:  # D73(d): twitter-financial-news topic rows translated into 8 languages
+        from training.data import load_translated_twitter
+
+        parts.append(load_translated_twitter()[1][cols])
     df = pd.concat([p for p in parts if p is not None and len(p)], ignore_index=True)
     df = df.dropna(subset=["text"])
     df = df[df["split"] != "test"]
@@ -74,9 +78,10 @@ def main() -> None:
     ap.add_argument("--base", default=BASE)
     ap.add_argument("--out", default="event-multi")
     ap.add_argument("--no-credit-data", action="store_true")
+    ap.add_argument("--extra-mt", action="store_true", help="D73(d) translate-train extension")
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s: %(message)s")
-    train, val = build_frames(credit_data=not args.no_credit_data)
+    train, val = build_frames(credit_data=not args.no_credit_data, extra_mt=args.extra_mt)
     logging.info("train %d by source %s", len(train), train["source"].value_counts().to_dict())
     logging.info("train by class %s", train["event"].value_counts().to_dict())
     cfg = TrainConfig(
