@@ -16,6 +16,8 @@ jobs:
         run: |
           pip install -r requirements.txt -r requirements-dev.txt
           pip install -e . --no-deps
+      - name: Language-ID model (public fastText file, < 1 MB)
+        run: curl -fL -o models/lid.176.ftz https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.ftz
       - name: API-key scan (the project is keyless by design)
         run: python scripts/check_no_keys.py
       - name: Lint

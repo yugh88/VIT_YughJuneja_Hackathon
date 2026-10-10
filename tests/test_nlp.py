@@ -9,7 +9,7 @@ import pytest
 from conftest import make_doc
 from engine.nlp.dedupe import Deduplicator
 from engine.nlp.entities import get_linker
-from engine.nlp.langid import LanguageIdentifier
+from engine.nlp.langid import MODEL_PATH, LanguageIdentifier
 from engine.nlp.normalise import normalise
 from engine.schema import EventClass
 
@@ -30,7 +30,12 @@ def test_normalise_strips_urls_handles_and_publisher_suffix() -> None:
         ("Apple shares rise after strong iPhone sales", "en"),
         ("トヨタ株が急落、リコール拡大で", "ja"),
         ("रिलायंस इंडस्ट्रीज़ के शेयर गिरे", "hi"),
-        ("Die Aktie von Siemens fällt deutlich", "de"),
+        pytest.param(
+            "Die Aktie von Siemens fällt deutlich",
+            "de",
+            # the script heuristic cannot separate Latin-script languages without the fastText model
+            marks=pytest.mark.skipif(not MODEL_PATH.exists(), reason="models/lid.176.ftz not downloaded"),
+        ),
     ],
 )
 def test_language_id(text: str, lang: str) -> None:
