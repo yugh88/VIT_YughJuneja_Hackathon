@@ -1,0 +1,31 @@
+id,text,sentiment_label
+H01,Tata Motors ka munafa doguna hua,positive
+H02,Reliance ke shares mein bhari girawat,negative
+H03,Infosys ne naya CEO niyukt kiya,neutral
+H04,HDFC Bank ka quarterly profit badha,positive
+H05,Adani group par naye aarop lage,negative
+H06,SBI ne loan dar mein koi badlav nahi kiya,neutral
+H07,Wipro ki kamai ummeed se kam rahi,negative
+H08,Maruti Suzuki ki bikri record star par pahunchi,positive
+H09,ICICI Bank ki board meeting kal hogi,neutral
+H10,Paytm ko RBI se jhatka laga,negative
+H11,TCS ke share mein tezi aayi,positive
+H12,Bajaj Finance ne dividend ka elan kiya,positive
+H13,Zomato ka ghata badh gaya,negative
+H14,ONGC ki salana aam baithak aaj,neutral
+H15,Kotak Mahindra Bank ko nayi license mili,positive
+H16,Vedanta par karz ka bojh badha,negative
+H17,Larsen and Toubro ko bada order mila,positive
+H18,Hindustan Unilever ke daam badhe,neutral
+H19,Yes Bank ke grahakon mein chinta,negative
+H20,Asian Paints ki maang kamzor rahi,negative
+H21,Bharti Airtel ne naye plan launch kiye,neutral
+H22,Tata Steel ka utpadan badha,positive
+H23,IndiGo ki udaanein radd hui,negative
+H24,Sun Pharma ko FDA se manzoori mili,positive
+H25,ITC ka demerger agle mahine,neutral
+H26,Axis Bank par jurmana laga,negative
+H27,Coal India ka utpadan lakshya poora hua,positive
+H28,NTPC ke chairman ka karyakal badha,neutral
+H29,Hero MotoCorp ki bikri mein girawat,negative
+H30,Titan ka naya store khula,neutral

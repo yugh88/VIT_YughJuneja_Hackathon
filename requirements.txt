@@ -21,3 +21,4 @@ fasttext-numpy2-wheel==0.9.2
 scikit-learn==1.9.1
 scipy==1.17.1
 joblib==1.6.0
+indic-transliteration==2.3.69

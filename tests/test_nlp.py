@@ -208,3 +208,14 @@ def test_nli_handles_long_premise() -> None:
     zs = OnnxClassifier(d)
     long_text = "The central bank raised rates again. " * 200
     assert zs.logits([long_text], ["This is bad news."]).shape == (1, len(zs.labels))
+
+
+def test_hinglish_detection_and_transliteration() -> None:
+    from engine.nlp.hinglish import is_hinglish, to_devanagari
+
+    assert is_hinglish("Acme Motors ka munafa badha")  # invented examples
+    assert not is_hinglish("Le gouvernement se prépare par avance")  # French "se", "par"
+    assert not is_hinglish("Acme shares rise after strong results")
+    assert not is_hinglish("एक्मे का मुनाफा बढ़ा")  # already Devanagari
+    out = to_devanagari("Acme ka munafa badha")
+    assert out.startswith("Acme ") and any("ऀ" <= ch <= "ॿ" for ch in out)

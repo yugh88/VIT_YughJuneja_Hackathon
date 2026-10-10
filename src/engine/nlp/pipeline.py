@@ -36,6 +36,7 @@ from engine.impact.model import ImpactOutput, ImpactScorer
 from engine.nlp.dedupe import Deduplicator
 from engine.nlp.entities import EntityInfo, EntityLinker, LinkResult, Mention, get_linker
 from engine.nlp.events import EventModel, EventResult
+from engine.nlp.hinglish import is_hinglish, to_devanagari
 from engine.nlp.langid import LangResult, LanguageIdentifier
 from engine.nlp.normalise import CleanText, normalise
 from engine.nlp.quality import (
@@ -255,6 +256,8 @@ class Pipeline:
 
     def _language(self, doc: RawDoc, text: str) -> LangResult:
         """Do not guess the language of very short texts: use the source's default instead (D71)."""
+        if is_hinglish(text):  # romanised Hindi (D73c)
+            return LangResult("hi", 0.9, "hinglish")
         if real_word_count(text) < MIN_REAL_WORDS:
             default = doc.language or SOURCE_DEFAULT_LANG.get(doc.source)
             return (
@@ -347,7 +350,15 @@ class Pipeline:
                 tr.sentences[e.id] = sentence
                 sent_items.append((tr, e, sentence))
         results = self.sentiment.score_batch(
-            [(e.name, s, tr.lang.lang, tr.lang.confidence) for tr, e, s in sent_items]
+            [
+                (
+                    e.name,
+                    to_devanagari(s) if tr.lang.method == "hinglish" else s,
+                    tr.lang.lang,
+                    tr.lang.confidence,
+                )
+                for tr, e, s in sent_items
+            ]
         )
         now = utcnow()
         feats, fallbacks, acts = [], [], []
