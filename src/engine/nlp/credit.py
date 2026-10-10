@@ -112,3 +112,78 @@ def hard_negative(text: str) -> str | None:
     if _NOT_CREDIT.search(text):
         return "not_credit"
     return None
+
+
+# ---------------------------------------------------------------- v2 credit rules (DECISIONS D74)
+# Selected on credit_v2_dev only. Each returns the class a Credit prediction should become, or forces
+# Credit for an explicit event the classifier missed. English only (the credit sets are English).
+_AGENCY = re.compile(
+    r"\bs&p\b|standard (&|and) poor|moody'?s|\bfitch\b|\bcrisil\b|\bicra\b|\bcare ratings\b|\bcare\b.{0,3}rating|"
+    r"india ratings|\bdbrs\b|\bkbra\b|scope ratings|ram ratings|am best|acuit[eé]|\br&i\b|\bjcr\b",
+    re.I,
+)
+_CREDIT_WORDS = re.compile(
+    r"credit rating|\bratings?\b|\boutlook\b|\bnotch\w*|\bbonds?\b|\bdebt\b|\bdefault\w*|\bjunk\b|investment.grade|\bidr\b",
+    re.I,
+)
+_DEBT_WORDS = re.compile(
+    r"\bdebts?\b|\bcreditors?\b|\bbonds?\b|\bbondholders?\b|\blenders?\b|\bloans?\b|\bnotes\b|\bcoupons?\b|\bdefault\w*|"
+    r"insolven\w*|bankrupt\w*|chapter 11|liquidat\w*|\badministration\b|receivership|winding.up",
+    re.I,
+)
+_ANALYST = re.compile(
+    r"price target|\bpt\b|\bto (sell|neutral|hold|underperform|underweight|equal.weight|market perform|reduce|in.line)\b|"
+    r"(stock|shares?) (rating|price)|analyst",
+    re.I,
+)
+_JOBS = re.compile(r"\blayoffs?\b|\bjob cuts?\b|\bjobs\b|\bworkforce\b|\bheadcount\b|\bemployees\b|\bstaff\b|\bpositions\b|\bworkers\b", re.I)
+_PROCEDURAL = re.compile(
+    r"\b(nclt|nclat|tribunal|court|bench|judge)\b.{0,80}\b(dismiss\w*|reject\w*|stays?|stayed|defers?|deferred|set(s)? aside|"
+    r"quash\w*|clarif\w*|relief|questions?|seeks responses)\b|laws? and regulations|\bclarification\b",
+    re.I,
+)
+_AGGREGATE = re.compile(
+    r"\b(filings|petitions|insolvencies|defaults|bankruptcies|applications)\b.{0,40}\b(rise|rises|rising|hit|high|surg\w*|"
+    r"record|fall|fell|drop\w*|settled)\b|\b(rise|surge|jump|wave) (in|of) (corporate )?(insolvencies|bankruptcies|defaults)\b",
+    re.I,
+)
+_RECOVERY = re.compile(r"\b(removes?|lifts?|exits?|emerges? from|cured?) .{0,25}default|debt crisis recovery", re.I)
+_TALK = re.compile(
+    r"\b(could|may|might|risk of|at risk|fears? of|warns? of|drifting|signals?|threat of)\b.{0,40}\b(default|downgrad\w*|junk|bankrupt\w*)|"
+    r"\?\s*$",
+    re.I,
+)
+_OUTLOOK_UP = re.compile(
+    r"\boutlook\b.{0,45}\bto\s*'?(stable|positive)\b|\b(stable|positive) outlook\b(?!.{0,15}\b(cut|downgrad\w*|lower\w*)\b)",
+    re.I,
+)
+_RATING_CUT = re.compile(r"(downgrad\w*|cuts?|lower\w*|slash\w*) .{0,40}\bto\s*'?[a-c]{1,3}[+-]?\d?\b|downgraded to|cut to junk", re.I)
+_FORCE_CREDIT = re.compile(
+    r"appoints? liquidators?|winding.up (order|notice|petition) against|\boutlook\b.{0,45}\bto\s*'?negative\b|"
+    r"negative (outlook|watch)|creditwatch negative|(placed|put) on (review|watch) for (a )?downgrade",
+    re.I,
+)
+
+
+def credit_rule_v2(text: str, primary: str) -> str | None:
+    """Class to use instead of ``primary`` (None = keep it). Applied after the classifier."""
+    credit = "Credit Event"
+    if primary == credit:
+        if _AGGREGATE.search(text):
+            return "Macroeconomic"
+        if _PROCEDURAL.search(text):
+            return "Regulatory/Legal"
+        if _RECOVERY.search(text) or _TALK.search(text):
+            return "Other/Non-event"
+        if _ANALYST.search(text) and not _AGENCY.search(text):
+            return "Other/Non-event"
+        if re.search(r"restructur\w*", text, re.I) and _JOBS.search(text) and not _DEBT_WORDS.search(text):
+            return "Operational/Supply Chain"
+        if _OUTLOOK_UP.search(text) and not _RATING_CUT.search(text) and not _FORCE_CREDIT.search(text):
+            return "Other/Non-event"
+        if re.search(r"downgrad\w*", text, re.I) and not (_AGENCY.search(text) or _CREDIT_WORDS.search(text)):
+            return "Other/Non-event"
+        return None
+    if _FORCE_CREDIT.search(text) and not (_AGGREGATE.search(text) or _TALK.search(text)):
+        return credit
+    return None

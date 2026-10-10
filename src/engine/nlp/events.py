@@ -17,7 +17,7 @@ from typing import Any
 
 import numpy as np
 
-from engine.nlp.credit import credit_phrase, hard_negative
+from engine.nlp.credit import credit_phrase, credit_rule_v2, hard_negative
 from engine.nlp.onnx_model import OnnxClassifier, softmax
 from engine.schema import EventClass
 
@@ -28,6 +28,7 @@ REGULATORY = EventClass.REGULATORY_LEGAL.value
 EDGAR_CREDIT_ITEMS = {"1.03", "2.04", "3.01"}  # bankruptcy; acceleration of obligations; delisting notice
 FALLBACK_THRESHOLD = 0.55
 SECONDARY_THRESHOLD = 0.2
+CREDIT_RULE_V2 = {"rules_v2": True, "threshold": 0.7}
 
 # Natural-language descriptions used as NLI hypotheses ("This text is about {}.").
 DESCRIPTIONS = {
@@ -116,6 +117,8 @@ class EventModel:
         self.clf = OnnxClassifier(clf) if (clf / "model.int8.onnx").exists() else None
         # Credit decision rule tuned on validation (training.credit_tune); empty = plain argmax.
         self.credit_cfg: dict[str, Any] = dict(self.clf.cfg.get("credit_rule") or {}) if self.clf else {}
+        if self.credit_cfg:  # v2 credit rules and threshold, selected on credit_v2_dev (DECISIONS D74)
+            self.credit_cfg.update(CREDIT_RULE_V2)
         self._spec = None
         spec_path = clf / "credit_specialist.joblib"
         if self.credit_cfg.get("specialist_weight") and spec_path.exists():
@@ -240,6 +243,11 @@ class EventModel:
                     primary, conf, method = CREDIT, max(pc, 0.6), method + "+credit"
             if self.credit_cfg.get("hard_negatives") and not credit_items:
                 primary, conf, method = apply_hard_negative(texts[i], p, primary, conf, method)
+            if self.credit_cfg.get("rules_v2") and not credit_items and method != "structured":
+                to = credit_rule_v2(texts[i], primary)
+                if to:
+                    conf = max(float(p[CLASSES.index(to)]), 0.6) if to != CREDIT else max(conf, 0.7)
+                    primary, method = to, method + "+rules_v2"
             secondary = [
                 CLASSES[int(k)]
                 for k in order[1:4]
