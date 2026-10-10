@@ -13,7 +13,7 @@ function rating(v: number, target: number): [string, string] {
 export default function TrackRecord({ go }: { go: (h: string) => void }) {
   const [d, setD] = useState<Record<string, any> | null>(null);
   useEffect(() => {
-    Promise.all(["eval", "impact", "credit", "bench", "backtest"].map((n) => get(`/v1/eval/${n}`).catch(() => null))).then(([ev, imp, cr, bench, bt]) => setD({ ev, imp, cr, bench, bt }));
+    Promise.all(["eval", "impact", "credit", "bench", "backtest", "v2_summary"].map((n) => get(`/v1/eval/${n}`).catch(() => null))).then(([ev, imp, cr, bench, bt, v2]) => setD({ ev, imp, cr, bench, bt, v2 }));
   }, []);
 
   const chart = useMemo(() => {
@@ -34,20 +34,22 @@ export default function TrackRecord({ go }: { go: (h: string) => void }) {
   }, [d]);
 
   if (!d) return <main><Skeleton h={600} /></main>;
-  const ac = d.cr?.annotated_credit_test?.system?.credit;
+  // The v2 round (new, frozen test sets scored once) supersedes the first-round numbers when present.
+  const v2 = d.v2;
+  const ac = v2?.credit_v2_test?.new ?? d.cr?.annotated_credit_test?.system?.credit;
   const m = d.imp?.model;
   const b = m?.buckets;
   const ratio = b ? b[b.length - 1].mean_z / b[0].mean_z - 1 : null;
   const s = d.ev?.sentiment;
-  const nat = s?.multilingual_native;
+  const nat = v2?.native_v2_test?.new ?? s?.multilingual_native;
   const tiles: [string, number | undefined, number, string][] = [
     ["Sentiment Score · English financial news", s?.en?.twitter_test?.macro_f1, 0.85, "Twitter financial news test"],
     ["Sentiment Score · Indian headlines", s?.en?.sentfin_test?.macro_f1, 0.85, "SEntFiN entity-level test"],
     ["Event Classification · 12 classes", d.ev?.event?.macro_f1_present_classes, 0.8, "9 of 12 classes have test data"],
-    ["Sentiment Score · other languages", nat?.sentiment_macro_f1, 0.75, "300 headlines in 10 languages (AI-annotated)"],
+    ["Sentiment Score · other languages", nat?.sentiment_macro_f1, 0.75, v2 ? "300 new headlines in 10 languages, scored once (AI-annotated)" : "300 headlines in 10 languages (AI-annotated)"],
   ];
   const v = d.bt?.versions?.[d.bt?.chosen_on_validation];
-  const thr = d.bench?.summary ? Object.entries<string>(d.bench.summary).find(([k]) => k.startsWith("best throughput"))?.[1] : null;
+  const thr = v2?.speed ? `${v2.speed.docs_per_s_unique} docs/s (${v2.speed.threads} threads)` : d.bench?.summary ? Object.entries<string>(d.bench.summary).find(([k]) => k.startsWith("best throughput"))?.[1] : null;
 
   return (
     <main>
@@ -57,7 +59,7 @@ export default function TrackRecord({ go }: { go: (h: string) => void }) {
         <section className="card dark">
           <div className="lbl" style={{ fontWeight: 600 }}>Credit Event detection</div>
           <div className="big" style={{ fontSize: 56, margin: "10px 0" }}>{ac ? `${Math.round(ac.recall * 100)}%` : "–"}</div>
-          <div style={{ fontSize: 18 }}>of the {ac?.n_credit ?? "?"} defaults, downgrades and insolvencies in our 150-headline test (2024 onward) were flagged.</div>
+          <div style={{ fontSize: 18 }}>of the {ac?.n_credit ?? "?"} defaults, downgrades and insolvencies in our 150-headline test ({v2 ? "2025 onward, new sources, scored once" : "2024 onward"}) were flagged.</div>
           <div className="sub small" style={{ marginTop: 10 }}>
             {ac ? `About 1 in ${Math.round(1 / Math.max(1 - ac.precision, 0.01))} flags was a false alarm (precision ${Math.round(ac.precision * 100)}%). ` : ""}
             Before any stress test, the alert must also be confirmed by several news outlets.

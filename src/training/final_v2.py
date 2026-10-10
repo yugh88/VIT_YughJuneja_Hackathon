@@ -26,6 +26,8 @@ from training.eval_v2 import SENT, Native, credit_metrics, load, native_metrics
 
 log = logging.getLogger("final_v2")
 OUT = REPO_ROOT / "docs" / "eval" / "v2" / "final.json"
+SUMMARY = REPO_ROOT / "docs" / "eval" / "v2_summary.json"  # read by the dashboard's Track record screen
+SPEED = REPO_ROOT / "docs" / "eval" / "v2" / "speed.json"
 EVAL = REPO_ROOT / "data" / "eval"
 
 
@@ -72,6 +74,33 @@ def _topic(nat: Native) -> dict[str, Any]:
             "credit_f1": round(float(f1_score(y == CREDIT, p == CREDIT)), 4)}  # fmt: skip
 
 
+def summary(res: dict[str, Any]) -> dict[str, Any]:
+    """Compact old-vs-new view of final.json (+ the speed benchmark) for the dashboard."""
+    keep = ("n", "n_credit", "sentiment_macro_f1", "sentiment_macro_f1_ci95", "event_macro_f1", "event_macro_f1_ci95",
+            "precision", "precision_ci95", "recall", "recall_ci95", "f1", "f1_ci95", "macro_f1_present", "credit_f1")  # fmt: skip
+    out: dict[str, Any] = {"run_at": res["run_at"], "source": "docs/eval/v2/final.json"}
+    for k in (
+        "native_v2_test",
+        "credit_v2_test",
+        "native_300_seen",
+        "credit_150_seen",
+        "event_topic_test_seen",
+    ):
+        out[k] = {
+            w: {x: res["systems"][w][k][x] for x in keep if x in res["systems"][w][k]} for w in ("old", "new")
+        }
+    if SPEED.exists():
+        runs = json.loads(SPEED.read_text())["runs"]
+        now = [r for r in runs if r["config"].startswith("now (") and r["provider"] == "cpu"]
+        best = max(now, key=lambda r: r["docs_per_s_unique"])
+        out["speed"] = {
+            x: best[x]
+            for x in ("threads", "docs_per_s_unique", "docs_per_s_with_repeats", "p50_ms", "p95_ms")
+        }
+    SUMMARY.write_text(json.dumps(out, indent=1))
+    return out
+
+
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s: %(message)s")
     native_v2, credit_v2 = load("native", "test"), load("credit", "test")  # frozen hash check
@@ -91,6 +120,7 @@ def main() -> None:
         log.info("%s done", which)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(res, indent=1, ensure_ascii=False))
+    summary(res)
     for k in (
         "native_v2_test",
         "credit_v2_test",

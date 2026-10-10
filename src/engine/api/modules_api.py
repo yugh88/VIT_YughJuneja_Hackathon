@@ -156,6 +156,7 @@ EVAL_FILES = {
     "replay_2022-02-24",
     "replay_2022-02-24_signals",
     "credit_experiments",
+    "v2_summary",
 }
 
 
