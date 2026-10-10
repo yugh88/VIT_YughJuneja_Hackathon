@@ -1,0 +1,197 @@
+{
+ "split": "dev",
+ "native": {
+  "n": 300,
+  "sentiment_macro_f1": 0.542,
+  "sentiment_macro_f1_ci95": [
+   0.4542,
+   0.621
+  ],
+  "sentiment_accuracy": 0.7333,
+  "event_macro_f1": 0.4707,
+  "event_macro_f1_ci95": [
+   0.3499,
+   0.5371
+  ],
+  "event_accuracy": 0.5933,
+  "per_language": {
+   "ar": {
+    "n": 30,
+    "sentiment_macro_f1": 0.3294,
+    "event_macro_f1": 0.5933
+   },
+   "de": {
+    "n": 30,
+    "sentiment_macro_f1": 0.4965,
+    "event_macro_f1": 0.603
+   },
+   "es": {
+    "n": 30,
+    "sentiment_macro_f1": 0.3554,
+    "event_macro_f1": 0.5825
+   },
+   "fr": {
+    "n": 30,
+    "sentiment_macro_f1": 0.5333,
+    "event_macro_f1": 0.546
+   },
+   "hi": {
+    "n": 30,
+    "sentiment_macro_f1": 0.5173,
+    "event_macro_f1": 0.6042
+   },
+   "it": {
+    "n": 30,
+    "sentiment_macro_f1": 0.6565,
+    "event_macro_f1": 0.3907
+   },
+   "ja": {
+    "n": 30,
+    "sentiment_macro_f1": 0.4524,
+    "event_macro_f1": 0.9156
+   },
+   "pt": {
+    "n": 30,
+    "sentiment_macro_f1": 0.5673,
+    "event_macro_f1": 0.3444
+   },
+   "ru": {
+    "n": 30,
+    "sentiment_macro_f1": 0.4837,
+    "event_macro_f1": 0.4389
+   },
+   "zh": {
+    "n": 30,
+    "sentiment_macro_f1": 0.6265,
+    "event_macro_f1": 0.6643
+   }
+  }
+ },
+ "grid": {
+  "0.0|0.0": {
+   "sentiment_macro_f1": 0.542,
+   "event_macro_f1": 0.4707,
+   "event_accuracy": 0.5933
+  },
+  "0.0|0.25": {
+   "sentiment_macro_f1": 0.542,
+   "event_macro_f1": 0.4981,
+   "event_accuracy": 0.6167
+  },
+  "0.0|0.5": {
+   "sentiment_macro_f1": 0.542,
+   "event_macro_f1": 0.4521,
+   "event_accuracy": 0.6433
+  },
+  "0.0|0.75": {
+   "sentiment_macro_f1": 0.542,
+   "event_macro_f1": 0.423,
+   "event_accuracy": 0.62
+  },
+  "0.0|1.0": {
+   "sentiment_macro_f1": 0.542,
+   "event_macro_f1": 0.4153,
+   "event_accuracy": 0.6033
+  },
+  "0.25|0.0": {
+   "sentiment_macro_f1": 0.5123,
+   "event_macro_f1": 0.4707,
+   "event_accuracy": 0.5933
+  },
+  "0.25|0.25": {
+   "sentiment_macro_f1": 0.5123,
+   "event_macro_f1": 0.4981,
+   "event_accuracy": 0.6167
+  },
+  "0.25|0.5": {
+   "sentiment_macro_f1": 0.5123,
+   "event_macro_f1": 0.4521,
+   "event_accuracy": 0.6433
+  },
+  "0.25|0.75": {
+   "sentiment_macro_f1": 0.5123,
+   "event_macro_f1": 0.423,
+   "event_accuracy": 0.62
+  },
+  "0.25|1.0": {
+   "sentiment_macro_f1": 0.5123,
+   "event_macro_f1": 0.4153,
+   "event_accuracy": 0.6033
+  },
+  "0.5|0.0": {
+   "sentiment_macro_f1": 0.4968,
+   "event_macro_f1": 0.4707,
+   "event_accuracy": 0.5933
+  },
+  "0.5|0.25": {
+   "sentiment_macro_f1": 0.4968,
+   "event_macro_f1": 0.4981,
+   "event_accuracy": 0.6167
+  },
+  "0.5|0.5": {
+   "sentiment_macro_f1": 0.4968,
+   "event_macro_f1": 0.4521,
+   "event_accuracy": 0.6433
+  },
+  "0.5|0.75": {
+   "sentiment_macro_f1": 0.4968,
+   "event_macro_f1": 0.423,
+   "event_accuracy": 0.62
+  },
+  "0.5|1.0": {
+   "sentiment_macro_f1": 0.4968,
+   "event_macro_f1": 0.4153,
+   "event_accuracy": 0.6033
+  },
+  "0.75|0.0": {
+   "sentiment_macro_f1": 0.493,
+   "event_macro_f1": 0.4707,
+   "event_accuracy": 0.5933
+  },
+  "0.75|0.25": {
+   "sentiment_macro_f1": 0.493,
+   "event_macro_f1": 0.4981,
+   "event_accuracy": 0.6167
+  },
+  "0.75|0.5": {
+   "sentiment_macro_f1": 0.493,
+   "event_macro_f1": 0.4521,
+   "event_accuracy": 0.6433
+  },
+  "0.75|0.75": {
+   "sentiment_macro_f1": 0.493,
+   "event_macro_f1": 0.423,
+   "event_accuracy": 0.62
+  },
+  "0.75|1.0": {
+   "sentiment_macro_f1": 0.493,
+   "event_macro_f1": 0.4153,
+   "event_accuracy": 0.6033
+  },
+  "1.0|0.0": {
+   "sentiment_macro_f1": 0.5295,
+   "event_macro_f1": 0.4707,
+   "event_accuracy": 0.5933
+  },
+  "1.0|0.25": {
+   "sentiment_macro_f1": 0.5295,
+   "event_macro_f1": 0.4981,
+   "event_accuracy": 0.6167
+  },
+  "1.0|0.5": {
+   "sentiment_macro_f1": 0.5295,
+   "event_macro_f1": 0.4521,
+   "event_accuracy": 0.6433
+  },
+  "1.0|0.75": {
+   "sentiment_macro_f1": 0.5295,
+   "event_macro_f1": 0.423,
+   "event_accuracy": 0.62
+  },
+  "1.0|1.0": {
+   "sentiment_macro_f1": 0.5295,
+   "event_macro_f1": 0.4153,
+   "event_accuracy": 0.6033
+  }
+ }
+}

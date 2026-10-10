@@ -1,0 +1,73 @@
+{
+ "split": "dev",
+ "w_event": 0.25,
+ "grid": {
+  "0.6": {
+   "n": 300,
+   "sentiment_macro_f1": 0.6004,
+   "sentiment_macro_f1_ci95": [
+    0.5402,
+    0.6541
+   ],
+   "sentiment_accuracy": 0.6333,
+   "event_macro_f1": 0.4981,
+   "event_macro_f1_ci95": [
+    0.3531,
+    0.5499
+   ],
+   "event_accuracy": 0.6167,
+   "per_language": {
+    "ar": {
+     "n": 30,
+     "sentiment_macro_f1": 0.8546,
+     "event_macro_f1": 0.5905
+    },
+    "de": {
+     "n": 30,
+     "sentiment_macro_f1": 0.5245,
+     "event_macro_f1": 0.603
+    },
+    "es": {
+     "n": 30,
+     "sentiment_macro_f1": 0.5501,
+     "event_macro_f1": 0.5808
+    },
+    "fr": {
+     "n": 30,
+     "sentiment_macro_f1": 0.6191,
+     "event_macro_f1": 0.4565
+    },
+    "hi": {
+     "n": 30,
+     "sentiment_macro_f1": 0.5125,
+     "event_macro_f1": 0.6042
+    },
+    "it": {
+     "n": 30,
+     "sentiment_macro_f1": 0.5333,
+     "event_macro_f1": 0.3907
+    },
+    "ja": {
+     "n": 30,
+     "sentiment_macro_f1": 0.453,
+     "event_macro_f1": 0.9377
+    },
+    "pt": {
+     "n": 30,
+     "sentiment_macro_f1": 0.668,
+     "event_macro_f1": 0.3444
+    },
+    "ru": {
+     "n": 30,
+     "sentiment_macro_f1": 0.6157,
+     "event_macro_f1": 0.5513
+    },
+    "zh": {
+     "n": 30,
+     "sentiment_macro_f1": 0.4735,
+     "event_macro_f1": 0.6939
+    }
+   }
+  }
+ }
+}
