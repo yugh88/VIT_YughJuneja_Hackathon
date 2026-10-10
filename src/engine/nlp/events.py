@@ -101,11 +101,11 @@ def apply_hard_negative(
 
 
 class EventModel:
-    """Fine-tuned classifier, plus the zero-shot NLI fallback loaded lazily.
+    """Fine-tuned classifier, plus the zero-shot NLI fallback loaded on first need.
 
-    The NLI model (~366 MB) is not part of the default download: on first need it is
-    loaded if present, otherwise fetched in the background from the release while the
-    classifier's answer is used as-is.
+    The NLI model (~366 MB) is part of the default download (it also drives the non-English
+    sentiment blend, D78); if it is missing it is fetched in the background from the release
+    while the classifier's answer is used as-is.
     """
 
     def __init__(self, onnx_dir: Path, zero_shot: bool = True, auto_download: bool = True) -> None:
