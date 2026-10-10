@@ -1,0 +1,10 @@
+{
+  "name": "sentinel-diagrams",
+  "private": true,
+  "type": "module",
+  "description": "Renders the hand-drawn architecture diagrams in docs/diagrams (rough.js + Kalam font).",
+  "dependencies": {
+    "@fontsource/kalam": "5.1.0",
+    "roughjs": "4.6.6"
+  }
+}

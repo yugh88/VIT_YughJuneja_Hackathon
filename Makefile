@@ -11,7 +11,7 @@ SPEED   ?= 30
 export PYTHONPATH := $(CURDIR)/src
 
 .DEFAULT_GOAL := help
-.PHONY: help setup setup-py models models-all web demo live record download train export calibrate impact gazetteer package-models test test-all lint typecheck keyscan eval bench docker clean
+.PHONY: help setup setup-py models models-all web demo live record download train export calibrate impact gazetteer package-models test test-all lint typecheck keyscan eval bench docker clean deck diagrams
 
 help:  ## List targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
@@ -24,12 +24,12 @@ setup-py: $(BIN)/python  ## Install pinned Python deps into .venv
 	$(BIN)/pip install -r requirements.txt -r requirements-dev.txt
 	$(BIN)/pip install -e . --no-deps
 
-models:  ## Download fine-tuned models (checksummed, resumable) + language ID; zero-shot fallback stays lazy
+models:  ## Download fine-tuned models (checksummed, resumable) + language ID (all four models)
 	@mkdir -p models
 	@[ -f models/lid.176.ftz ] || curl -fL -o models/lid.176.ftz https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.ftz
 	$(BIN)/python -m engine.models_download
 
-models-all:  ## Same, plus the lazy zero-shot fallback model
+models-all:  ## Same as models (kept for compatibility)
 	$(BIN)/python -m engine.models_download --all
 
 setup: setup-py models  ## Install Python deps, download models, build the web UI (if Node is present)
@@ -125,6 +125,12 @@ bench:  ## Measure latency, throughput and Monte Carlo runtime
 
 docker:  ## Build and run the demo container
 	docker compose up --build
+
+deck:  ## Rebuild docs/presentation.pdf + .pptx from docs/deck/deck.html (needs Chrome, python-pptx)
+	PYTHON="$(CURDIR)/$(BIN)/python" docs/deck/build.sh
+
+diagrams:  ## Re-render the hand-drawn diagrams in docs/diagrams (needs Node 20, Chrome)
+	docs/diagrams/source/build.sh
 
 clean-scratch:  ## Empty scratch/ (all experiment artefacts live there)
 	find scratch -mindepth 1 ! -name .gitkeep -exec rm -rf {} +

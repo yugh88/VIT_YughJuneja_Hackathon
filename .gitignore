@@ -39,3 +39,6 @@ Global Risk Signal Engine — Plan, Architecture & Build Prompt.md
 
 # Private planning document
 Global Risk Signal Engine*
+
+# rendered deck slide images (rebuilt by make deck)
+docs/deck/png/
