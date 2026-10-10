@@ -196,3 +196,15 @@ def test_credit_rules_v2(text: str, primary: str, expected: str | None) -> None:
     from engine.nlp.credit import credit_rule_v2
 
     assert credit_rule_v2(text, primary) == expected
+
+
+def test_nli_handles_long_premise() -> None:
+    from engine.nlp.onnx_model import OnnxClassifier
+    from engine.nlp.pipeline import ONNX_DIR
+
+    d = ONNX_DIR / "zeroshot-nli"
+    if not (d / "model.int8.onnx").exists():
+        pytest.skip("NLI model not downloaded")
+    zs = OnnxClassifier(d)
+    long_text = "The central bank raised rates again. " * 200
+    assert zs.logits([long_text], ["This is bad news."]).shape == (1, len(zs.labels))

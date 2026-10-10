@@ -108,7 +108,13 @@ def test_stream_signals_aggregates_and_websocket(client: TestClient) -> None:
         "/v1/modules/stress/run", json={"event": "Macroeconomic", "impact": 8, "country": "US"}
     ).json()
     assert run["loss"] > 0 and run["monte_carlo"]["var_99"] >= run["monte_carlo"]["mean_loss"]
-    with client.websocket_connect("/v1/stream") as ws:  # replay keeps producing; one push arrives
+    with client.websocket_connect("/v1/stream") as ws:
+        # Publish one fresh document once the socket is open, so a push arrives whatever the replay's state.
+        from conftest import make_doc
+        from engine.bus import TOPIC_RAW
+
+        doc = make_doc(9999, "rss", title="Microsoft shares jump after record quarterly profit")
+        client.portal.call(client.app.state.sentinel.bus.publish, TOPIC_RAW, doc)  # type: ignore[union-attr,attr-defined]
         Signal.model_validate_json(ws.receive_text())
 
 

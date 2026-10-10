@@ -7,9 +7,11 @@ written by ``training.export_onnx``. Inputs are (entity, text) pairs encoded as
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import os
+from collections import OrderedDict
 from pathlib import Path
 from typing import Any
 
@@ -38,21 +40,45 @@ class OnnxClassifier:
         opts = ort.SessionOptions()
         opts.intra_op_num_threads = threads or get_settings().onnx_threads or min(4, os.cpu_count() or 4)
         opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
-        self.session = ort.InferenceSession(
-            str(model_dir / "model.int8.onnx"), opts, providers=["CPUExecutionProvider"]
-        )
+        # CPU is the default everywhere; SENTINEL_ONNX_PROVIDER=coreml tries Apple's CoreML first (D75).
+        providers = ["CPUExecutionProvider"]
+        if os.environ.get("SENTINEL_ONNX_PROVIDER", "").lower() == "coreml":
+            providers = ["CoreMLExecutionProvider", *providers]
+        self.session = ort.InferenceSession(str(model_dir / "model.int8.onnx"), opts, providers=providers)
+        self._cache: OrderedDict[bytes, np.ndarray] = OrderedDict()  # (entity, text) -> logits, LRU
+        self.cache_hits = 0
         self.input_names = [i.name for i in self.session.get_inputs()]
         self.tok = Tokenizer.from_file(str(model_dir / "tokenizer.json"))
-        self.tok.enable_truncation(self.max_len, strategy="only_second")
+        # NLI models take (premise, hypothesis) with a long premise first: truncate whichever is longer.
+        nli = "entailment" in [lbl.lower() for lbl in self.labels]
+        self.tok.enable_truncation(self.max_len, strategy="longest_first" if nli else "only_second")
         pad_id = self.tok.token_to_id("[PAD]")
         if pad_id is None:
             pad_id = self.tok.token_to_id("<pad>") or 0
         self.tok.enable_padding(pad_id=pad_id)
 
+    CACHE_SIZE = 50_000
+
     def logits(self, entities: list[str], texts: list[str], batch_size: int = 32) -> np.ndarray:
         out = np.zeros((len(texts), len(self.labels)), dtype=np.float32)
-        order = np.argsort([len(t) for t in texts])  # length-bucketed batches pad less
-        for b in range(0, len(texts), batch_size):
+        keys = [
+            hashlib.blake2b(f"{e or ''}\x1f{t}".encode(), digest_size=16).digest()
+            for e, t in zip(entities, texts, strict=True)
+        ]
+        todo = []
+        for i, k in enumerate(keys):  # re-polled feeds and syndicated copies repeat the same text (D75)
+            hit = self._cache.get(k)
+            if hit is None:
+                todo.append(i)
+            else:
+                out[i] = hit
+                self._cache.move_to_end(k)
+                self.cache_hits += 1
+        todo_arr = np.array(todo, dtype=np.int64)
+        order = (
+            todo_arr[np.argsort([len(texts[i]) for i in todo])] if todo else todo_arr
+        )  # length-bucketed batches pad less
+        for b in range(0, len(order), batch_size):
             idx = order[b : b + batch_size]
             encs = self.tok.encode_batch([(entities[i] or "", texts[i]) for i in idx])
             feed = {
@@ -62,6 +88,10 @@ class OnnxClassifier:
             if "token_type_ids" in self.input_names:
                 feed["token_type_ids"] = np.array([e.type_ids for e in encs], dtype=np.int64)
             out[idx] = self.session.run(["logits"], feed)[0]
+            for i in idx:
+                self._cache[keys[i]] = out[i].copy()
+        while len(self._cache) > self.CACHE_SIZE:
+            self._cache.popitem(last=False)
         return out
 
     def predict_proba(self, entities: list[str], texts: list[str]) -> np.ndarray:
