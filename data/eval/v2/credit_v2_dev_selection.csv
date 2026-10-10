@@ -1,0 +1,151 @@
+id,bucket,query
+KD001,upgrade,upgraded by S&P
+KD002,credit_lookalike,loan growth bank
+KD003,outlook_stable_positive,Moody's affirms
+KD004,outlook_stable_positive,outlook revised to positive
+KD005,upgrade,upgraded by S&P
+KD006,likely_credit,defaults on bonds
+KD007,likely_credit,liquidation creditors
+KD008,likely_credit,S&P cuts rating
+KD009,affirmation,rating affirmed stable outlook
+KD010,likely_credit,defaults on bonds
+KD011,likely_credit,files for bankruptcy
+KD012,affirmation,rating affirmed stable outlook
+KD013,credit_lookalike,loan growth bank
+KD014,analyst_call,cuts price target
+KD015,likely_credit,Fitch downgrades
+KD016,upgrade,upgraded by S&P
+KD017,likely_credit,defaults on bonds
+KD018,analyst_call,downgraded to neutral price target
+KD019,analyst_call,cuts price target
+KD020,likely_credit,files for bankruptcy
+KD021,likely_credit,debt restructuring creditors
+KD022,likely_credit,liquidation creditors
+KD023,analyst_call,downgraded to neutral price target
+KD024,likely_credit,sovereign default
+KD025,affirmation,Fitch affirms
+KD026,layoffs_restructuring,job cuts restructuring
+KD027,likely_credit,files for bankruptcy
+KD028,outlook_stable_positive,outlook revised to positive
+KD029,likely_credit,insolvency proceedings NCLT
+KD030,upgrade,outlook revised to positive
+KD031,affirmation,Fitch affirms
+KD032,upgrade,loan growth bank
+KD033,likely_credit,debt restructuring creditors
+KD034,outlook_stable_positive,outlook revised to positive
+KD035,credit_lookalike,tax credit
+KD036,affirmation,Fitch affirms
+KD037,analyst_call,price target cut
+KD038,likely_credit,job cuts restructuring
+KD039,analyst_call,downgraded to neutral price target
+KD040,likely_credit,defaults on bonds
+KD041,likely_credit,liquidation creditors
+KD042,analyst_call,downgraded to neutral price target
+KD043,credit_lookalike,carbon credits
+KD044,likely_credit,tax credit
+KD045,affirmation,outlook revised to positive
+KD046,analyst_call,cuts price target
+KD047,likely_credit,insolvency proceedings NCLT
+KD048,affirmation,Moody's affirms
+KD049,likely_credit,chapter 11 filing
+KD050,outlook_stable_positive,outlook revised to positive
+KD051,analyst_call,analyst downgrades stock to sell
+KD052,likely_credit,debt restructuring creditors
+KD053,likely_credit,chapter 11 filing
+KD054,likely_credit,debt restructuring creditors
+KD055,upgrade,ICRA downgrades
+KD056,upgrade,upgraded by S&P
+KD057,upgrade,upgraded by S&P
+KD058,outlook_stable_positive,downgraded by Moody's
+KD059,outlook_stable_positive,outlook revised to positive
+KD060,likely_credit,defaults on bonds
+KD061,upgrade,upgraded by S&P
+KD062,likely_credit,distressed debt exchange
+KD063,likely_credit,sovereign default
+KD064,analyst_call,downgraded to neutral price target
+KD065,layoffs_restructuring,layoffs restructuring plan
+KD066,likely_credit,chapter 11 filing
+KD067,analyst_call,cuts price target
+KD068,layoffs_restructuring,layoffs restructuring plan
+KD069,affirmation,Fitch affirms
+KD070,layoffs_restructuring,layoffs restructuring plan
+KD071,analyst_call,cuts price target
+KD072,likely_credit,downgraded to neutral price target
+KD073,likely_credit,debt restructuring creditors
+KD074,outlook_stable_positive,downgraded by Moody's
+KD075,affirmation,rating affirmed stable outlook
+KD076,likely_credit,S&P cuts rating
+KD077,layoffs_restructuring,debt restructuring creditors
+KD078,analyst_call,cuts price target
+KD079,credit_lookalike,carbon credits
+KD080,affirmation,Fitch affirms
+KD081,likely_credit,debt restructuring creditors
+KD082,layoffs_restructuring,layoffs restructuring plan
+KD083,credit_lookalike,loan growth bank
+KD084,likely_credit,missed coupon payment
+KD085,likely_credit,S&P cuts rating
+KD086,analyst_call,cuts price target
+KD087,affirmation,distressed debt exchange
+KD088,affirmation,rating affirmed stable outlook
+KD089,likely_credit,CRISIL downgrade rating
+KD090,analyst_call,cuts price target
+KD091,likely_credit,files for bankruptcy
+KD092,likely_credit,insolvency proceedings NCLT
+KD093,credit_lookalike,credit card spending
+KD094,upgrade,upgraded by S&P
+KD095,outlook_stable_positive,downgraded by Moody's
+KD096,likely_credit,debt restructuring creditors
+KD097,likely_credit,defaults on bonds
+KD098,upgrade,upgraded by S&P
+KD099,upgrade,upgraded by S&P
+KD100,credit_lookalike,distressed debt exchange
+KD101,affirmation,Fitch affirms
+KD102,likely_credit,chapter 11 filing
+KD103,upgrade,upgraded by S&P
+KD104,likely_credit,liquidation creditors
+KD105,likely_credit,Fitch downgrades
+KD106,affirmation,rating affirmed stable outlook
+KD107,likely_credit,Fitch downgrades
+KD108,upgrade,upgraded by S&P
+KD109,credit_lookalike,loan growth bank
+KD110,likely_credit,liquidation creditors
+KD111,layoffs_restructuring,layoffs restructuring plan
+KD112,likely_credit,liquidation creditors
+KD113,credit_lookalike,tax credit
+KD114,likely_credit,S&P cuts rating
+KD115,outlook_stable_positive,Fitch affirms
+KD116,likely_credit,chapter 11 filing
+KD117,outlook_stable_positive,outlook revised to positive
+KD118,layoffs_restructuring,layoffs restructuring plan
+KD119,likely_credit,liquidation creditors
+KD120,affirmation,Fitch affirms
+KD121,credit_lookalike,tax credit
+KD122,credit_lookalike,loan growth bank
+KD123,likely_credit,covenant breach lenders
+KD124,outlook_stable_positive,outlook revised to positive
+KD125,outlook_stable_positive,outlook revised to positive
+KD126,likely_credit,insolvency proceedings NCLT
+KD127,credit_lookalike,credit card spending
+KD128,layoffs_restructuring,job cuts restructuring
+KD129,likely_credit,files for bankruptcy
+KD130,outlook_stable_positive,outlook revised to positive
+KD131,layoffs_restructuring,layoffs restructuring plan
+KD132,likely_credit,Fitch downgrades
+KD133,layoffs_restructuring,job cuts restructuring
+KD134,likely_credit,defaults on bonds
+KD135,likely_credit,chapter 11 filing
+KD136,affirmation,rating affirmed stable outlook
+KD137,layoffs_restructuring,layoffs restructuring plan
+KD138,layoffs_restructuring,job cuts restructuring
+KD139,upgrade,upgraded by S&P
+KD140,analyst_call,price target cut
+KD141,layoffs_restructuring,layoffs restructuring plan
+KD142,likely_credit,defaults on bonds
+KD143,credit_lookalike,covenant breach lenders
+KD144,likely_credit,liquidation creditors
+KD145,layoffs_restructuring,job cuts restructuring
+KD146,upgrade,upgraded by S&P
+KD147,credit_lookalike,loan growth bank
+KD148,outlook_stable_positive,rating affirmed stable outlook
+KD149,credit_lookalike,credit card spending
+KD150,layoffs_restructuring,job cuts restructuring
