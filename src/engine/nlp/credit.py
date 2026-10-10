@@ -136,7 +136,10 @@ _ANALYST = re.compile(
     r"(stock|shares?) (rating|price)|analyst",
     re.I,
 )
-_JOBS = re.compile(r"\blayoffs?\b|\bjob cuts?\b|\bjobs\b|\bworkforce\b|\bheadcount\b|\bemployees\b|\bstaff\b|\bpositions\b|\bworkers\b", re.I)
+_JOBS = re.compile(
+    r"\blayoffs?\b|\bjob cuts?\b|\bjobs\b|\bworkforce\b|\bheadcount\b|\bemployees\b|\bstaff\b|\bpositions\b|\bworkers\b",
+    re.I,
+)
 _PROCEDURAL = re.compile(
     r"\b(nclt|nclat|tribunal|court|bench|judge)\b.{0,80}\b(dismiss\w*|reject\w*|stays?|stayed|defers?|deferred|set(s)? aside|"
     r"quash\w*|clarif\w*|relief|questions?|seeks responses)\b|laws? and regulations|\bclarification\b",
@@ -147,7 +150,9 @@ _AGGREGATE = re.compile(
     r"record|fall|fell|drop\w*|settled)\b|\b(rise|surge|jump|wave) (in|of) (corporate )?(insolvencies|bankruptcies|defaults)\b",
     re.I,
 )
-_RECOVERY = re.compile(r"\b(removes?|lifts?|exits?|emerges? from|cured?) .{0,25}default|debt crisis recovery", re.I)
+_RECOVERY = re.compile(
+    r"\b(removes?|lifts?|exits?|emerges? from|cured?) .{0,25}default|debt crisis recovery", re.I
+)
 _TALK = re.compile(
     r"\b(could|may|might|risk of|at risk|fears? of|warns? of|drifting|signals?|threat of)\b.{0,40}\b(default|downgrad\w*|junk|bankrupt\w*)|"
     r"\?\s*$",
@@ -157,7 +162,10 @@ _OUTLOOK_UP = re.compile(
     r"\boutlook\b.{0,45}\bto\s*'?(stable|positive)\b|\b(stable|positive) outlook\b(?!.{0,15}\b(cut|downgrad\w*|lower\w*)\b)",
     re.I,
 )
-_RATING_CUT = re.compile(r"(downgrad\w*|cuts?|lower\w*|slash\w*) .{0,40}\bto\s*'?[a-c]{1,3}[+-]?\d?\b|downgraded to|cut to junk", re.I)
+_RATING_CUT = re.compile(
+    r"(downgrad\w*|cuts?|lower\w*|slash\w*) .{0,40}\bto\s*'?[a-c]{1,3}[+-]?\d?\b|downgraded to|cut to junk",
+    re.I,
+)
 _FORCE_CREDIT = re.compile(
     r"appoints? liquidators?|winding.up (order|notice|petition) against|\boutlook\b.{0,45}\bto\s*'?negative\b|"
     r"negative (outlook|watch)|creditwatch negative|(placed|put) on (review|watch) for (a )?downgrade",

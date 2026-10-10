@@ -21,6 +21,7 @@ RWA growth from rating migration capped at +15% per test (DECISIONS D72).
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass, field
 from functools import lru_cache
 from typing import Any
@@ -29,8 +30,6 @@ import numpy as np
 import pandas as pd
 import yaml
 from scipy.stats import norm
-
-import logging
 
 from engine.config import get_settings
 from modules.stress.portfolio import downgrade, notch_pd, notch_spread
@@ -65,7 +64,7 @@ class Scenario:
 
 @lru_cache(maxsize=1)
 def shock_library() -> dict[str, Any]:
-    return yaml.safe_load((get_settings().reference_dir / "shocks.yaml").read_text())  # type: ignore[no-any-return]
+    return yaml.safe_load((get_settings().reference_dir / "shocks.yaml").read_text())
 
 
 @lru_cache(maxsize=1)
@@ -77,7 +76,7 @@ def load_book() -> pd.DataFrame:
 def factor_cov() -> np.ndarray:
     """Covariance of 20-day factor moves, from 3 years of daily data (Cholesky-ready)."""
     hist = pd.read_parquet(get_settings().reference_dir / "factor_history.parquet")[FACTORS]
-    return hist.cov().to_numpy() * HORIZON_DAYS  # type: ignore[no-any-return]
+    return hist.cov().to_numpy() * HORIZON_DAYS
 
 
 def severity(impact: float) -> float:
@@ -116,13 +115,13 @@ def _irb_k(pd_: np.ndarray, lgd: np.ndarray, m: np.ndarray) -> np.ndarray:
     b = (0.11852 - 0.05478 * np.log(p)) ** 2
     cond = norm.cdf((norm.ppf(p) + np.sqrt(r) * norm.ppf(0.999)) / np.sqrt(1 - r))
     mat = (1 + (np.clip(m, 1, 5) - 2.5) * b) / (1 - 1.5 * b)
-    return lgd * (cond - p) * mat  # type: ignore[no-any-return]
+    return lgd * (cond - p) * mat
 
 
 def _vasicek_conditional(p: np.ndarray, z: np.ndarray) -> np.ndarray:
     e50 = (1 - np.exp(-50 * p)) / (1 - np.exp(-50))
     rho = 0.12 * e50 + 0.24 * (1 - e50)
-    return norm.cdf((norm.ppf(p) + np.sqrt(rho) * z) / np.sqrt(1 - rho))  # type: ignore[no-any-return]
+    return norm.cdf((norm.ppf(p) + np.sqrt(rho) * z) / np.sqrt(1 - rho))
 
 
 def vasicek(pd_: np.ndarray, z: np.ndarray) -> np.ndarray:
@@ -135,7 +134,7 @@ def vasicek(pd_: np.ndarray, z: np.ndarray) -> np.ndarray:
     PD x V(z)/V(0) was tried first and rejected: ~6x PDs for BBB at z = 1, doubling RWA on one event."""
     p = np.clip(pd_, 1e-6, 0.9999)
     inc = _vasicek_conditional(p, z) - _vasicek_conditional(p, np.zeros_like(p))
-    return np.clip(p + inc, p, 0.9999)  # type: ignore[no-any-return]
+    return np.clip(p + inc, p, 0.9999)
 
 
 class Revaluer:
@@ -265,7 +264,13 @@ def stress(sc: Scenario, n_draws: int = 10_000, seed: int = 7) -> dict[str, Any]
     loss = float(-dv.sum() + d_el.sum())
     cap = capital(rwa0, rwa1, loss)
     if cap["rwa_cap_binds"]:
-        log.warning("RWA growth cap binds for %s: %.2f -> %.2f bn capped at +%d%%", sc.name, rwa0 / 1e9, rwa1 / 1e9, RWA_GROWTH_CAP * 100)
+        log.warning(
+            "RWA growth cap binds for %s: %.2f -> %.2f bn capped at +%d%%",
+            sc.name,
+            rwa0 / 1e9,
+            rwa1 / 1e9,
+            RWA_GROWTH_CAP * 100,
+        )
     # Monte Carlo around the scenario mean
     chol = np.linalg.cholesky(factor_cov() + 1e-9 * np.eye(len(FACTORS)))
     X = mu + np.random.default_rng(seed).standard_normal((n_draws, len(FACTORS))) @ chol.T

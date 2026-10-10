@@ -177,11 +177,12 @@ def build() -> tuple[pd.DataFrame, pd.DataFrame]:
                 )
                 cp = pool.iloc[int(rng.integers(len(pool)))].to_dict()
             mat = float(np.round(rng.uniform(1, 10 if cls != "revolver" else 5), 1))
-            y = 0.04 + notch_spread(cp["rating"]) / 1e4
+            rating = str(cp["rating"])
+            y = 0.04 + notch_spread(rating) / 1e4
             dur = (1 - (1 + y) ** -mat) / y  # modified-duration approximation for a par bond
             row = {"position_id": f"P{pid:04d}", "asset_class": cls, **cp, "exposure": float(sizes[k]),
-                   "maturity_y": mat, "pd": notch_pd(cp["rating"]), "lgd": 0.45 if cls in ("term_loan", "revolver") else 0.6,
-                   "spread_bp": notch_spread(cp["rating"]), "mod_duration": round(dur, 3),
+                   "maturity_y": mat, "pd": notch_pd(rating), "lgd": 0.45 if cls in ("term_loan", "revolver") else 0.6,
+                   "spread_bp": notch_spread(rating), "mod_duration": round(dur, 3),
                    "convexity": round(dur**2 * 1.1, 3)}  # fmt: skip
             if cls == "revolver":
                 row["drawn_share"], row["ccf"] = 0.5, 0.5

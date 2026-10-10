@@ -141,9 +141,10 @@ class StressEngine:
             self.alerts[a["id"]] = a
             self._open[key] = a["id"]
         else:
-            a = self.alerts.get(self._open.get(key, ""))
-            if a is None:
+            open_alert = self.alerts.get(self._open.get(key, ""))
+            if open_alert is None:
                 return
+            a = open_alert
         a["merged_signals"] += 1
         a["last_utc"] = sig.published_at.isoformat()
         a["corroboration"] = corr

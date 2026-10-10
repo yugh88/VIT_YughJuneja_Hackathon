@@ -53,7 +53,12 @@ def _boot(y: np.ndarray, p: np.ndarray, labels: list[str] | None, n: int = 1000)
 
 
 def native_metrics(d: pd.DataFrame, sent: list[str], ev: list[str]) -> dict[str, Any]:
-    y_s, y_e, p_s, p_e = d["sentiment_label"].to_numpy(), d["event_label"].to_numpy(), np.array(sent), np.array(ev)
+    y_s, y_e, p_s, p_e = (
+        d["sentiment_label"].to_numpy(),
+        d["event_label"].to_numpy(),
+        np.array(sent),
+        np.array(ev),
+    )
     present = sorted(set(y_e))
     langs = {}
     for lang, idx in d.groupby("lang").groups.items():
@@ -64,10 +69,14 @@ def native_metrics(d: pd.DataFrame, sent: list[str], ev: list[str]) -> dict[str,
                             "event_macro_f1": round(float(f1_score(y_e[i], p_e[i], average="macro", labels=pl, zero_division=0)), 4)}  # fmt: skip
     return {
         "n": len(d),
-        "sentiment_macro_f1": round(float(f1_score(y_s, p_s, average="macro", labels=SENT, zero_division=0)), 4),
+        "sentiment_macro_f1": round(
+            float(f1_score(y_s, p_s, average="macro", labels=SENT, zero_division=0)), 4
+        ),
         "sentiment_macro_f1_ci95": _boot(y_s, p_s, SENT),
         "sentiment_accuracy": round(float((y_s == p_s).mean()), 4),
-        "event_macro_f1": round(float(f1_score(y_e, p_e, average="macro", labels=present, zero_division=0)), 4),
+        "event_macro_f1": round(
+            float(f1_score(y_e, p_e, average="macro", labels=present, zero_division=0)), 4
+        ),
         "event_macro_f1_ci95": _boot(y_e, p_e, present),
         "event_accuracy": round(float((y_e == p_e).mean()), 4),
         "per_language": langs,
@@ -75,9 +84,20 @@ def native_metrics(d: pd.DataFrame, sent: list[str], ev: list[str]) -> dict[str,
 
 
 def _prf(y: np.ndarray, p: np.ndarray) -> dict[str, float]:
-    tp, fp, fn = int(((y == 1) & (p == 1)).sum()), int(((y == 0) & (p == 1)).sum()), int(((y == 1) & (p == 0)).sum())
+    tp, fp, fn = (
+        int(((y == 1) & (p == 1)).sum()),
+        int(((y == 0) & (p == 1)).sum()),
+        int(((y == 1) & (p == 0)).sum()),
+    )
     pr, rc = tp / max(tp + fp, 1), tp / max(tp + fn, 1)
-    return {"precision": pr, "recall": rc, "f1": 2 * pr * rc / max(pr + rc, 1e-9), "tp": tp, "fp": fp, "fn": fn}
+    return {
+        "precision": pr,
+        "recall": rc,
+        "f1": 2 * pr * rc / max(pr + rc, 1e-9),
+        "tp": tp,
+        "fp": fp,
+        "fn": fn,
+    }
 
 
 def credit_metrics(d: pd.DataFrame, ev: list[str], conf: list[float]) -> dict[str, Any]:
@@ -93,7 +113,12 @@ def credit_metrics(d: pd.DataFrame, ev: list[str], conf: list[float]) -> dict[st
         b = _prf(y[i], p[i])
         for k in boots:
             boots[k].append(b[k])
-    gate = np.array([e == CREDIT and c >= 0.7 and bool(distress_term(t)) for e, c, t in zip(ev, conf, d["headline"], strict=True)])
+    gate = np.array(
+        [
+            e == CREDIT and c >= 0.7 and bool(distress_term(t))
+            for e, c, t in zip(ev, conf, d["headline"], strict=True)
+        ]
+    )
     g = _prf(y, gate.astype(int))
     present = sorted(set(d["event_label"]))
     errors = [{"id": i, "text": t[:110], "gold": a, "pred": b} for i, t, a, b in zip(d["id"], d["headline"], d["event_label"], ev, strict=True)
@@ -117,7 +142,9 @@ class Native:
 
         self.pipe = Pipeline(zero_shot=False, dedupe=False)
 
-    def probs(self, texts: list[str], lang: str | None = None) -> tuple[np.ndarray, np.ndarray, list[str], list[float]]:
+    def probs(
+        self, texts: list[str], lang: str | None = None
+    ) -> tuple[np.ndarray, np.ndarray, list[str], list[float]]:
         ps, pe, ev, conf = [], [], [], []
         for t in texts:
             tr = self.pipe.analyze(t, language=lang)
@@ -152,7 +179,13 @@ def to_english(texts: list[str], langs: list[str]) -> list[str]:
             tr.tok.src_lang = NLLB_SRC[lg]
             for b in range(0, len(idx), 16):
                 chunk = idx[b : b + 16]
-                enc = tr.tok([texts[i] for i in chunk], return_tensors="pt", padding=True, truncation=True, max_length=128)
+                enc = tr.tok(
+                    [texts[i] for i in chunk],
+                    return_tensors="pt",
+                    padding=True,
+                    truncation=True,
+                    max_length=128,
+                )
                 enc = {k: v.to(tr.dev) for k, v in enc.items()}
                 gen = tr.model.generate(**enc, forced_bos_token_id=eng, max_new_tokens=128, num_beams=2)
                 for i, t in zip(chunk, tr.tok.batch_decode(gen, skip_special_tokens=True), strict=True):
@@ -183,7 +216,9 @@ def run_native(split: str, w_sent: float | None, w_event: float | None) -> dict[
         for we in grid:
             ps, pe = ws * ps_t + (1 - ws) * ps_n, we * pe_t + (1 - we) * pe_n
             m = native_metrics(d, [SENT[i] for i in ps.argmax(1)], [CLASSES[i] for i in pe.argmax(1)])
-            res["grid"][f"{ws}|{we}"] = {k: m[k] for k in ("sentiment_macro_f1", "event_macro_f1", "event_accuracy")}
+            res["grid"][f"{ws}|{we}"] = {
+                k: m[k] for k in ("sentiment_macro_f1", "event_macro_f1", "event_accuracy")
+            }
     if w_sent is not None and w_event is not None:
         ps, pe = w_sent * ps_t + (1 - w_sent) * ps_n, w_event * pe_t + (1 - w_event) * pe_n
         res["chosen"] = {"w_sent": w_sent, "w_event": w_event,
@@ -209,10 +244,15 @@ def run_credit(split: str, cfg: dict[str, Any] | None = None, grid: bool = False
                 em.credit_cfg = {**base, "threshold": th, "rules_v2": rules}
                 rs = em.classify_batch(texts, allow_zero_shot=False)
                 m = credit_metrics(d, [r.primary for r in rs], [r.confidence for r in rs])
-                out["grid"][f"rules_v2={rules}|th={th}"] = {k: m[k] for k in ("precision", "recall", "f1", "macro_f1_all_classes")} | {"gate_p": m["module_b_gate"]["precision"], "gate_r": m["module_b_gate"]["recall"]}
+                out["grid"][f"rules_v2={rules}|th={th}"] = {
+                    k: m[k] for k in ("precision", "recall", "f1", "macro_f1_all_classes")
+                } | {"gate_p": m["module_b_gate"]["precision"], "gate_r": m["module_b_gate"]["recall"]}
         em.credit_cfg = base
     rs = em.classify_batch(texts, allow_zero_shot=False)
-    out |= {"rule": em.credit_cfg, "system": credit_metrics(d, [r.primary for r in rs], [r.confidence for r in rs])}
+    out |= {
+        "rule": em.credit_cfg,
+        "system": credit_metrics(d, [r.primary for r in rs], [r.confidence for r in rs]),
+    }
     return out
 
 
@@ -231,8 +271,18 @@ def main() -> None:
     if a.what == "translate":
         translations(a.split)
         return
-    res = run_native(a.split, a.w_sent, a.w_event) if a.what == "native" else run_credit(
-        a.split, {k: v for k, v in {"rules_v2": a.rules_v2 or None, "threshold": a.threshold}.items() if v is not None}, a.grid
+    res = (
+        run_native(a.split, a.w_sent, a.w_event)
+        if a.what == "native"
+        else run_credit(
+            a.split,
+            {
+                k: v
+                for k, v in {"rules_v2": a.rules_v2 or None, "threshold": a.threshold}.items()
+                if v is not None
+            },
+            a.grid,
+        )
     )
     OUT.mkdir(parents=True, exist_ok=True)
     f = OUT / f"{a.what}_{a.split}{'_' + a.tag if a.tag else ''}.json"
@@ -243,10 +293,11 @@ def main() -> None:
         for k, v in res["grid"].items():
             print(k, v)
     elif "grid" in res:
-        best = sorted(res["grid"].items(), key=lambda kv: -(kv[1]["sentiment_macro_f1"] + kv[1]["event_macro_f1"]))[:6]
+        best = sorted(
+            res["grid"].items(), key=lambda kv: -(kv[1]["sentiment_macro_f1"] + kv[1]["event_macro_f1"])
+        )[:6]
         print("grid top:", best)
 
 
 if __name__ == "__main__":
     main()
-

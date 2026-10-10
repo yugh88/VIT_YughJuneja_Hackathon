@@ -217,7 +217,9 @@ def test_rwa_growth_from_migration_is_capped_at_15_percent() -> None:
     from modules.stress.pricing import capital
 
     r = capital(1e9, 1.41e9, 0.0)
-    assert r["rwa_cap_binds"] and r["rwa_after"] == pytest.approx(1.15e9) and r["rwa_after_uncapped"] == 1.41e9
+    assert (
+        r["rwa_cap_binds"] and r["rwa_after"] == pytest.approx(1.15e9) and r["rwa_after_uncapped"] == 1.41e9
+    )
     # no loss: 12% x 1.00 / 1.15 = 10.4348% -> -156.5 bp
     assert r["delta_cet1_bps"] == pytest.approx(-156.5, abs=0.05)
     assert not capital(1e9, 1.10e9, 0.0)["rwa_cap_binds"]

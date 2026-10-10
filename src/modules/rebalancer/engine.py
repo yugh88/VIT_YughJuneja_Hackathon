@@ -30,7 +30,7 @@ from modules.rebalancer.weights import HYSTERESIS, KAPPA, cap_turnover, hysteres
 
 IMPACT_TRIGGER = 5
 TIMER_S = 15 * 60
-VERSIONS = {
+VERSIONS: dict[str, dict[str, Any]] = {
     "v1_sentiment": {"min_impact": None, "surprise": False, "hysteresis": HYSTERESIS},
     "v2_surprise": {"min_impact": 6, "surprise": True, "hysteresis": 0.15},
 }

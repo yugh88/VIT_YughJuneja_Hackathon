@@ -172,13 +172,21 @@ def test_promotional_posts_are_filtered_and_short_texts_use_source_language() ->
 @pytest.mark.parametrize(
     ("text", "primary", "expected"),
     [  # invented headlines (none from any evaluation set)
-        ("Acme Corp announces 500 job cuts as part of restructuring plan", "Credit Event", "Operational/Supply Chain"),
+        (
+            "Acme Corp announces 500 job cuts as part of restructuring plan",
+            "Credit Event",
+            "Operational/Supply Chain",
+        ),
         ("Broker X cuts Acme price target to $40, reiterates hold", "Credit Event", "Other/Non-event"),
         ("Fitch revises Ruritania's outlook to positive", "Credit Event", "Other/Non-event"),
         ("Moody's downgrades Ruritania to B2 with stable outlook", "Credit Event", None),
         ("Tribunal dismisses insolvency plea against Acme Infra", "Credit Event", "Regulatory/Legal"),
         ("Corporate insolvencies rise to a record high in March", "Credit Event", "Macroeconomic"),
-        ("Inspectors downgrade the town's hospital to 'requires improvement'", "Credit Event", "Other/Non-event"),
+        (
+            "Inspectors downgrade the town's hospital to 'requires improvement'",
+            "Credit Event",
+            "Other/Non-event",
+        ),
         ("Acme Retail appoints liquidators after winding-up notice", "Other/Non-event", "Credit Event"),
         ("S&P revises Ruritania outlook from stable to negative", "Macroeconomic", "Credit Event"),
         ("Acme files for Chapter 11 bankruptcy protection", "Credit Event", None),
