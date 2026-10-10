@@ -27,9 +27,21 @@ jobs:
       - name: Tests (offline)
         run: pytest
 
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: src/web/package-lock.json
+      - name: Type-check and build the dashboard
+        run: cd src/web && npm ci && npm run build
+
   docker:
     runs-on: ubuntu-latest
-    needs: test
+    needs: [test, web]
     steps:
       - uses: actions/checkout@v4
       - name: Build image
