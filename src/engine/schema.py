@@ -118,12 +118,22 @@ class Event(BaseModel):
     secondary: list[EventClass] = Field(default_factory=list)
 
 
+class ImpactEffect(BaseModel):
+    """How one feature moved the impact prediction vs a typical story (occlusion; + raised it)."""
+
+    feature: str
+    value: str
+    effect: float
+
+
 class Impact(BaseModel):
     score: int = Field(ge=1, le=10)
     low: int = Field(ge=1, le=10)
     high: int = Field(ge=1, le=10)
     drivers: list[str] = Field(default_factory=list)
     mode: Literal["model", "heuristic"] = "model"
+    effects: list[ImpactEffect] = Field(default_factory=list)
+    cap_reason: str | None = None  # why the score was capped (DECISIONS D71)
 
 
 class Attention(BaseModel):
@@ -160,6 +170,7 @@ class Signal(BaseModel):
     evidence: Evidence
     attention: Attention | None = None
     geo: dict[str, Any] | None = None  # {"country": "UA", "lat": .., "lon": ..} when known
+    original_published_at: datetime | None = None  # replayed items: the recording's own publish time
     model_versions: dict[str, str]
     latency_ms: int = Field(ge=0)
 

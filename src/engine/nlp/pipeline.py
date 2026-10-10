@@ -9,6 +9,7 @@ is a separate module with typed inputs/outputs and can be swapped or tested alon
 
 from __future__ import annotations
 
+import dataclasses
 import logging
 import threading
 import time
@@ -37,6 +38,14 @@ from engine.nlp.entities import EntityInfo, EntityLinker, LinkResult, Mention, g
 from engine.nlp.events import EventModel, EventResult
 from engine.nlp.langid import LangResult, LanguageIdentifier
 from engine.nlp.normalise import CleanText, normalise
+from engine.nlp.quality import (
+    MIN_REAL_WORDS,
+    SOCIAL_IMPACT_CAP,
+    SOURCE_DEFAULT_LANG,
+    is_promotional,
+    price_move,
+    real_word_count,
+)
 from engine.nlp.sentiment import SentimentModel, SentimentResult
 from engine.schema import (
     DEFAULT_CREDIBILITY,
@@ -46,6 +55,7 @@ from engine.schema import (
     EventClass,
     Evidence,
     Impact,
+    ImpactEffect,
     RawDoc,
     Sentiment,
     Signal,
@@ -56,6 +66,8 @@ from engine.schema import (
 
 log = logging.getLogger(__name__)
 ONNX_DIR = REPO_ROOT / "models" / "onnx"
+OTHER_EVENT = EventClass.OTHER.value
+EARNINGS_EVENT = EventClass.EARNINGS_GUIDANCE.value
 MIN_BASELINE_WINDOWS = 8  # burst z needs this much history before it counts as corroboration
 SOVEREIGN_EVENTS = {
     EventClass.GEOPOLITICAL.value,
@@ -81,6 +93,8 @@ class DocTrace:
     sentences: dict[str, str] = field(default_factory=dict)
     signals: list[Signal] = field(default_factory=list)
     dropped: str | None = None  # reason no signal was produced
+    cap_reason: str | None = None  # Impact Score cap from the news-quality rules
+    cluster_id: str | None = None  # near-duplicate cluster (same story across outlets)
 
 
 @dataclass
@@ -90,6 +104,16 @@ class PipelineStats:
     unlinked: int = 0
     signals: int = 0
     by_language: dict[str, int] = field(default_factory=dict)
+    promotional: int = 0  # social posts dropped as promotional spam (D71)
+    promotional_day: str = ""
+    promotional_today: dict[str, int] = field(default_factory=dict)  # by source, current UTC day
+
+    def count_promotional(self, source: str) -> None:
+        day = time.strftime("%Y-%m-%d", time.gmtime())
+        if day != self.promotional_day:
+            self.promotional_day, self.promotional_today = day, {}
+        self.promotional += 1
+        self.promotional_today[source] = self.promotional_today.get(source, 0) + 1
 
 
 # CAMEO roots that signal state-level conflict: 15 force posture, 16 reduce relations,
@@ -162,6 +186,7 @@ class Pipeline:
         self.events = EventModel(onnx_dir, zero_shot=zero_shot)
         self.activity = EntityActivity(time_scale=time_scale)
         self.impact = ImpactScorer(impact_model) if impact_model else ImpactScorer()
+        self._news_clusters: set[str] = set()  # story clusters carried by news, filings or central banks
         self.market = load_market_map(REPO_ROOT / "data" / "reference" / "market_map.yaml")
         snap = REPO_ROOT / "data" / "reference" / "price_snapshot.parquet"
         self.prices = PriceBook.load(snap) if snap.exists() else None
@@ -194,16 +219,29 @@ class Pipeline:
     # ------------------------------------------------------------------ stages 1-4
     def _prepare(self, doc: RawDoc, dedupe: bool = True) -> DocTrace:
         clean = normalise(doc.title, doc.text)
-        lang = self.langid.detect(clean.text, hint=doc.language)
+        lang = self._language(doc, clean.text)
         tr = DocTrace(doc=doc, clean=clean, lang=lang)
         self.stats.docs += 1
         self.stats.by_language[lang.lang] = self.stats.by_language.get(lang.lang, 0) + 1
         if not clean.text:
             tr.dropped = "empty"
             return tr
+        if doc.source_type is SourceType.SOCIAL:
+            why = is_promotional(
+                f"{doc.title} {doc.text}"
+            )  # raw text: normalising strips the '#' of hashtags
+            if why:
+                tr.dropped = f"promotional ({why})"
+                self.stats.count_promotional(doc.source)
+                return tr
         if dedupe and self.dedup is not None:
             dd = self.dedup.check(doc.doc_id, clean.text, lang.lang)
             tr.syndication_count = dd.syndication_count
+            tr.cluster_id = dd.cluster_id
+            if (
+                doc.source_type is not SourceType.SOCIAL
+            ):  # the story is carried by news, a filing or a central bank
+                self._news_clusters.add(dd.cluster_id)
             if dd.is_duplicate:
                 tr.duplicate_of = dd.cluster_id
                 tr.dropped = "duplicate"
@@ -214,6 +252,64 @@ class Pipeline:
             tr.dropped = "no entity"
             self.stats.unlinked += 1
         return tr
+
+    def _language(self, doc: RawDoc, text: str) -> LangResult:
+        """Do not guess the language of very short texts: use the source's default instead (D71)."""
+        if real_word_count(text) < MIN_REAL_WORDS:
+            default = doc.language or SOURCE_DEFAULT_LANG.get(doc.source)
+            return (
+                LangResult(default, 1.0, "source-default") if default else LangResult("und", 0.0, "too-short")
+            )
+        return self.langid.detect(text, hint=doc.language)
+
+    def _price_moves(self, live: list[DocTrace]) -> None:
+        """'X soars/plunges ...' left as Other: take the stated cause's class, else Earnings when
+        earnings words appear, else stay Other with the Impact Score capped (validated: D71)."""
+        hits: list[tuple[DocTrace, str | None, bool]] = []
+        for tr in live:
+            if tr.event is None or tr.event.primary != OTHER_EVENT:
+                continue
+            spans = [(m.start, m.end) for m in tr.links.mentions if m.entity.kind != "sovereign"]
+            is_move, cause, earn = price_move(tr.clean.text, spans)
+            if is_move and spans:
+                hits.append((tr, cause, earn))
+        with_cause = [(tr, c) for tr, c, _ in hits if c]
+        cls = (
+            self.events.classify_batch([c for _, c in with_cause], allow_zero_shot=False)
+            if with_cause
+            else []
+        )
+        by_doc = {id(tr): r for (tr, _), r in zip(with_cause, cls, strict=True)}
+        for tr, _, earn in hits:
+            r = by_doc.get(id(tr))
+            ev = tr.event
+            assert ev is not None
+            if r is not None and r.primary != OTHER_EVENT and r.confidence >= 0.5:
+                tr.event = EventResult(r.primary, r.confidence, [], ev.probs, ev.method + "+move-cause")
+            elif earn:
+                tr.event = EventResult(
+                    EARNINGS_EVENT, max(ev.confidence, 0.6), [], ev.probs, ev.method + "+move-earnings"
+                )
+            else:
+                tr.cap_reason = "price talk with no stated cause"
+
+    def _cap(self, tr: DocTrace, e: EntityInfo, imp: ImpactOutput) -> ImpactOutput:
+        """Impact Score caps: unconfirmed social posts with no named event, and causeless price talk."""
+        reason = tr.cap_reason
+        if (
+            reason is None
+            and tr.doc.source_type is SourceType.SOCIAL
+            and tr.event is not None
+            and tr.event.primary == OTHER_EVENT
+            and tr.cluster_id not in self._news_clusters
+        ):
+            reason = "social post with no named event, not confirmed by a news outlet or filing"
+        if reason is None or imp.score <= SOCIAL_IMPACT_CAP:
+            return imp
+        return dataclasses.replace(
+            imp, score=SOCIAL_IMPACT_CAP, low=min(imp.low, SOCIAL_IMPACT_CAP), high=min(imp.high, SOCIAL_IMPACT_CAP),
+            cap_reason=reason,
+        )  # fmt: skip
 
     # ------------------------------------------------------------------ stages 5-7
     def process_batch(
@@ -232,9 +328,12 @@ class Pipeline:
         events = self.events.classify_batch(
             [t.clean.text for t in live], [t.doc.meta for t in live], allow_zero_shot=zero_shot
         )
+        for tr, first in zip(live, events, strict=True):
+            tr.event = first
+        self._price_moves(live)
         sent_items: list[tuple[DocTrace, EntityInfo, str]] = []
-        for tr, ev in zip(live, events, strict=True):
-            tr.event = ev
+        for tr in live:
+            ev: EventResult = tr.event  # type: ignore[assignment]  # set just above for every live doc
             if all(m.method == "geo" for m in tr.links.mentions) and not geo_fallback_ok(tr.doc, ev):
                 tr.dropped = "no entity"  # a dateline alone does not make local news a sovereign signal
                 self.stats.unlinked += 1
@@ -260,7 +359,7 @@ class Pipeline:
             acts.append(act)
         impacts = self.impact.score(feats, fallbacks)
         for (tr, e, sentence), sres, imp, act in zip(sent_items, results, impacts, acts, strict=True):
-            tr.signals.append(self._signal(tr, e, sentence, sres, imp, act, now))
+            tr.signals.append(self._signal(tr, e, sentence, sres, self._cap(tr, e, imp), act, now))
         self.stats.signals += sum(len(t.signals) for t in traces)
         del t0
         return traces
@@ -363,7 +462,15 @@ class Pipeline:
                 confidence=ev.confidence,
                 secondary=[EventClass(c) for c in ev.secondary],
             ),
-            impact=Impact(score=imp.score, low=imp.low, high=imp.high, drivers=imp.drivers, mode=imp.mode),  # type: ignore[arg-type]
+            impact=Impact(
+                score=imp.score,
+                low=imp.low,
+                high=imp.high,
+                drivers=imp.drivers,
+                mode=imp.mode,  # type: ignore[arg-type]
+                effects=[ImpactEffect.model_validate(e) for e in imp.effects],
+                cap_reason=imp.cap_reason,
+            ),
             novelty=act.novelty,
             # A cold start (replay, fresh deploy) makes every first mention look like a burst.
             attention=Attention(
@@ -377,6 +484,7 @@ class Pipeline:
             syndication_count=tr.syndication_count,
             evidence=Evidence(title=doc.title[:300], sentence=sentence[:500], url=doc.url),
             geo=geo,
+            original_published_at=doc.meta.get("original_published_at"),
             model_versions={
                 "sentiment": s.model,
                 "event": f"{self.model_versions['event']} ({ev.method})",

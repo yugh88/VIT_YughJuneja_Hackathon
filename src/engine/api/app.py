@@ -9,6 +9,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import logging
+import re
 import time
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -35,6 +36,69 @@ WEB_DIST = REPO_ROOT / "src" / "web" / "dist"
 class AnalyzeRequest(BaseModel):
     text: str = Field(min_length=1, description="Any language, up to 20 KB")
     language: str | None = Field(None, description="Optional ISO 639-1 hint, e.g. 'ja'")
+    explain: bool = Field(
+        False, description="Also return word importance for each entity's sentiment (occlusion)"
+    )
+
+
+_SPACED = re.compile(r"\S+")
+_PUNCT = set(",.;:!?\"'()[]«»“”‘’、。，：；！？|-–—")
+_NO_SPACE_SCRIPT = re.compile(r"[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af\u0e00-\u0e7f]")
+
+
+def _tokens(sentence: str) -> list[tuple[int, int]]:
+    """Word spans without surrounding punctuation; scripts written without spaces (CJK, Thai)
+    are cut into 2-character chunks between punctuation marks."""
+    spans: list[tuple[int, int]] = []
+    for m in _SPACED.finditer(sentence):
+        a, b = m.span()
+        while a < b and sentence[a] in _PUNCT:
+            a += 1
+        while b > a and sentence[b - 1] in _PUNCT:
+            b -= 1
+        if a == b:
+            continue
+        if _NO_SPACE_SCRIPT.search(sentence[a:b]) and b - a > 2:
+            start = a
+            for k in range(a, b + 1):
+                if k == b or sentence[k] in _PUNCT:
+                    spans += [(i, min(i + 2, k)) for i in range(start, k, 2)]
+                    start = k + 1
+        else:
+            spans.append((a, b))
+    return spans[:60]
+
+
+def _polarity(r: Any) -> float:
+    """P(positive) - P(negative); unlike the calibrated score it does not saturate at +/-1."""
+    return float(r.probs[2] - r.probs[0])
+
+
+def _explain(st: AppState, tr: Any) -> dict[str, Any]:
+    """Occlusion: drop one word at a time from the scoring sentence and re-score it. A word's
+    importance is how much the sentiment score moves without it (full minus occluded)."""
+    assert st.pipeline is not None
+    out: dict[str, Any] = {
+        "method": "occlusion on the model output P(positive) - P(negative): full sentence minus sentence without the word"
+    }
+    for eid, res in tr.sentiments.items():
+        sentence = tr.sentences.get(eid) or ""
+        spans = _tokens(sentence)
+        if not sentence or len(spans) < 2:
+            continue
+        ent = st.pipeline.linker.entities.get(eid)
+        name = ent.name if ent else ""
+        variants = [
+            (name, (sentence[:a] + sentence[b:]).strip(), tr.lang.lang, tr.lang.confidence) for a, b in spans
+        ]
+        scores = st.pipeline.sentiment.score_batch(variants)
+        out[eid] = {
+            "sentence": sentence,
+            "score": res.score,
+            "words": [{"start": a, "end": b, "text": sentence[a:b], "delta": round(_polarity(res) - _polarity(v), 4)}
+                      for (a, b), v in zip(spans, scores, strict=True)],
+        }  # fmt: skip
+    return out
 
 
 def _state(request: Request) -> AppState:
@@ -122,6 +186,12 @@ def create_app(settings: Settings | None = None, start_background: bool = True) 
                 "written": st.store.written,
             },
             "bot_suppressed": st.aggregator.bot_suppressed,
+            "promotional_filtered": ps.promotional,
+            "promotional_today": {
+                "day": ps.promotional_day,
+                "by_source": dict(ps.promotional_today),
+                "total": sum(ps.promotional_today.values()),
+            },
             "dead_letters": st.dead_letters,
             "languages": dict(sorted(ps.by_language.items(), key=lambda kv: -kv[1])),
         }
@@ -178,7 +248,25 @@ def create_app(settings: Settings | None = None, start_background: bool = True) 
             "signals": [s.model_dump(mode="json") for s in tr.signals],
             "dropped": tr.dropped,
             "modes": st.pipeline.modes,
+            "explanation": await asyncio.to_thread(_explain, st, tr) if body.explain else None,
         }
+
+    @app.get("/v1/lookup", tags=["signals"])
+    async def lookup_text(
+        request: Request, q: Annotated[str, Query(min_length=1, max_length=500)]
+    ) -> dict[str, Any]:
+        """Is this text a headline to score, or a question about a company/country? (rules, no model)."""
+        from engine.nlp.lookup import lookup
+
+        counts = {k: e.n_signals for k, e in _state(request).aggregator.entities.items()}
+        return await asyncio.to_thread(lookup, q, counts)
+
+    @app.get("/v1/tickers", tags=["signals"])
+    async def tickers() -> dict[str, str]:
+        """Ticker -> company name for every gazetteer entity with a ticker (for "Apple ($AAPL)" labels)."""
+        from engine.nlp.lookup import ticker_names
+
+        return ticker_names()
 
     @app.get("/v1/signals", tags=["signals"])
     async def signals(
@@ -308,9 +396,11 @@ def create_app(settings: Settings | None = None, start_background: bool = True) 
             with contextlib.suppress(Exception):
                 await ws.close()
 
+    from engine.api.modules_api import eval_router
     from engine.api.modules_api import router as modules_router
 
     app.include_router(modules_router)
+    app.include_router(eval_router)
 
     # ---------------------------------------------------------------- web UI
     if (WEB_DIST / "index.html").exists():

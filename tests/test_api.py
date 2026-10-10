@@ -110,3 +110,15 @@ def test_stream_signals_aggregates_and_websocket(client: TestClient) -> None:
     assert run["loss"] > 0 and run["monte_carlo"]["var_99"] >= run["monte_carlo"]["mean_loss"]
     with client.websocket_connect("/v1/stream") as ws:  # replay keeps producing; one push arrives
         Signal.model_validate_json(ws.receive_text())
+
+
+def test_explanation_tokens_split_words_cjk_and_strip_punctuation() -> None:
+    from engine.api.app import _tokens
+
+    s = "Moody's cuts Ukraine, outlook negative."
+    assert [s[a:b] for a, b in _tokens(s)] == ["Moody's", "cuts", "Ukraine", "outlook", "negative"]
+    j = "トヨタ自動車、稼働停止"
+    assert (
+        all(b - a <= 2 for a, b in _tokens(j))
+        and "".join(j[a:b] for a, b in _tokens(j)) == "トヨタ自動車稼働停止"
+    )

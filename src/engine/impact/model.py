@@ -37,6 +37,8 @@ class ImpactOutput:
     high: int
     drivers: list[str]
     mode: str  # "model" | "heuristic"
+    effects: tuple[dict[str, object], ...] = ()  # signed occlusion effects, strongest first
+    cap_reason: str | None = None  # set by the pipeline's news-quality caps
 
 
 def _fmt(name: str, value: float) -> str:
@@ -105,7 +107,21 @@ class ImpactScorer:
             drivers = [_fmt(feats[j], X[i, j]) for j in top]
             score = int(s[i])
             lo, hi = ranges.get(score, (score, score))
-            out.append(ImpactOutput(score, int(min(lo, score)), int(max(hi, score)), drivers, "model"))
+            # Signed effects for plain-language reasons: up to 3 that raised the score, 2 that held it down.
+            ok = [j for j in range(k) if not np.isnan(X[i, j])]
+            ups = sorted((j for j in ok if deltas[i, j] > 0.002), key=lambda j: -deltas[i, j])[:3]
+            downs = sorted((j for j in ok if deltas[i, j] < -0.002), key=lambda j: deltas[i, j])[:2]
+            effects = tuple(
+                {
+                    "feature": feats[j],
+                    "value": _fmt(feats[j], X[i, j]).split("=", 1)[1],
+                    "effect": round(float(deltas[i, j]), 4),
+                }
+                for j in ups + downs
+            )
+            out.append(
+                ImpactOutput(score, int(min(lo, score)), int(max(hi, score)), drivers, "model", effects)
+            )
         return out
 
 

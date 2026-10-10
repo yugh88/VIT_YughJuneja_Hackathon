@@ -131,3 +131,39 @@ def test_sentiment_range_check(pipeline) -> None:  # type: ignore[no-untyped-def
         if not ok:
             bad.append((row["expect"], round(s, 2), row["text"][:60]))
     assert not bad, bad
+
+
+def test_try_it_lookup_detects_company_questions_and_ambiguity() -> None:
+    from engine.nlp.lookup import lookup
+
+    r = lookup("tata ki recent news btao")
+    assert r["mode"] == "company" and r["intent"] and r["ambiguous"]
+    assert {"Tata Motors", "Tata Steel", "Tata Consultancy Services"} <= {m["name"] for m in r["matches"]}
+    assert lookup("TCS")["resolved"] == "TCS.NS"
+    assert lookup("infosys ka kya hua")["resolved"] == "INFY.NS"
+    assert lookup("relaince")["resolved"] == "RELIANCE.NS"  # misspelt romanised name
+    assert lookup("टाटा मोटर्स की ताजा खबर बताओ")["resolved"] == "TATAMOTORS.NS"
+    for headline in ("tata motors ka munafa badha", "Moody's stuft die Kreditwürdigkeit der Commerzbank herab",
+                     "トヨタ自動車、半導体不足で国内工場の稼働を一時停止", "asdfgh qwerty"):  # fmt: skip
+        assert lookup(headline)["mode"] == "headline", headline
+
+
+def test_promotional_posts_are_filtered_and_short_texts_use_source_language() -> None:
+    from engine.nlp.quality import is_promotional, price_move, real_word_count
+
+    spam = "$SNAP $CSCO $UBER $TXN $NIO $IFF Get instant updates and free trading analysis click here"
+    assert is_promotional(spam) == "6 cashtags"
+    assert is_promotional("$TSLA #EV #stocks #tesla #moon") is not None  # tags are most of the words
+    assert is_promotional("Join our Discord group for daily picks") is not None  # promo phrase
+    assert is_promotional("$AAPL beats estimates as iPhone sales jump in China") is None
+    assert is_promotional("Twilio $TWLO is set to join the S&P 500 on October 6") is None  # not "join our"
+    assert is_promotional("You can click links to other Markdown files") is None
+    assert (
+        real_word_count("$VXRT 🚀🚀 #moon 1.25") == 0
+        and real_word_count("トヨタ自動車、半導体不足で国内工場") >= 5
+    )
+    assert price_move("Tesla shares plunge after recall of 2 million cars", [(0, 5)])[:2] == (
+        True,
+        "recall of 2 million cars",
+    )
+    assert not price_move("Profit slumps as fees fall", [])[0]  # the move is about profit, not the stock
