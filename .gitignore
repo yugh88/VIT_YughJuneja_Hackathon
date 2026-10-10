@@ -14,7 +14,7 @@ models/*
 !models/.gitkeep
 !models/impact/
 *.onnx
-src/web/node_modules/
+node_modules/
 src/web/dist/
 .DS_Store
 *.part

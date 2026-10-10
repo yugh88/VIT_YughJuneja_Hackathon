@@ -30,4 +30,4 @@ One section per slide. `make deck` copies each section into the PPTX speaker not
 - **Why not an LLM?** Cost, latency and determinism. Fine-tuned encoders give calibrated probabilities and need no API key. Every score is reproducible and explainable by occlusion.
 - **How do you avoid look-ahead?** News after the close maps to the next open. Every feature uses data dated before the reaction day. The split is by time (train 2019–2023, test 2024+), and the test set was touched once.
 - **What if a source goes down?** Its circuit breaker opens and the replay twin keeps the stream going. Live demo: `POST /v1/sources/rss/kill`.
-- **How would it scale to 10 M docs/day?** About 116 docs/s on average and 1,157 at peak. That is roughly 90–116 CPU workers today, fewer with INT8 or GPU behind an accuracy gate. Ingestion and models scale horizontally.
+- **How would it scale to 10 M docs/day?** About 116 docs/s on average and 1,157 at peak. That is about 7 eight-thread CPU workers on average and about 66 at peak today (17.6 docs/s each), fewer with INT8 or GPU behind an accuracy gate. Ingestion and models scale horizontally.

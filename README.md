@@ -257,7 +257,7 @@ tables with confidence intervals: [model card](docs/model_card.md).
 | Module | Result |
 | --- | --- |
 | **B · Stress test**, 24 Feb 2022 replay | 11,520 articles → 3,107 signals → **23 stress tests**, the first at 00:00 UTC. 8 of the top 9 alerts are war clusters (Ukraine, Russia, oil > $100, ruble). Gates blocked 26 uncorroborated signals and merged 146 into open alerts |
-| **B · Scenarios** (seeded $10 bn book) | Macro, US, impact 8: **−$321 m** ($10.0 bn → $9.68 bn), ΔCET1 −743 bp, 99% VaR $428 m · Geopolitical, Russia, impact 9: −$72 m, ΔCET1 −437 bp · Credit, SVB, impact 10: −$22 m, ΔEL $30 m · Monte Carlo 10,000 draws in **0.21 s** |
+| **B · Scenarios** (seeded $10 bn book; losses after 25% tax, rating-migration RWA capped at +15%) | Macro, US, impact 8: **−$321 m** ($10.0 bn → $9.68 bn), CET1 12.0% → 6.9% (ΔCET1 −510 bp), 99% VaR $428 m · Geopolitical, Russia, impact 9: −$72 m, ΔCET1 −236 bp · Credit, US banks, impact 10: −$22 m, ΔEL $30 m, ΔCET1 −181 bp · Monte Carlo 10,000 draws in **0.2–0.3 s**. The RWA cap binds in every scenario (−157 bp of each ΔCET1), so rating migration is too aggressive; see [what failed](#what-we-tried-and-what-failed) |
 | **A · Index rebalancer** (backtest 2024 → Aug 2026, 10 bp per side, run once) | Risk limits held on **1,673 of 1,673** rebalance days. Net IR −1.43 (v2) / −1.31 (v1); beats 33% / 74% of date-shuffled placebos (bar: 95%). **No proven edge after costs**, and the dashboard says so |
 
 ### Efficiency vs a naive approach
@@ -298,7 +298,7 @@ tables with confidence intervals: [model card](docs/model_card.md).
 Native-language quality (0.53 vs 0.75 target), impact correlation, CPU throughput and credit precision are below target.
 Module A has no edge after costs. Next steps:
 1. Human-labelled native-language data.
-2. Static INT8 or GPU workers behind an accuracy gate. Today 10 M docs/day needs about 90–116 CPU workers.
+2. Static INT8 or GPU workers behind an accuracy gate. Today 10 M docs/day (116 docs/s) needs about 7 eight-thread CPU workers at average load and about 66 at a 10× peak of 1,157 docs/s (17.6 docs/s per worker on new text).
 3. Intraday impact labels.
 4. More hard negatives for credit precision.
 5. Real exposure feeds in place of the synthetic book.
