@@ -50,6 +50,6 @@ jobs:
         run: docker build -t sentinel:ci .
       - name: Smoke test - container serves health within 90 s
         run: |
-          docker run -d -p 8000:8000 --name s sentinel:ci
+          docker run -d -p 8000:8000 --name sentinel-ci sentinel:ci
           for i in $(seq 1 45); do curl -fs localhost:8000/v1/health && exit 0; sleep 2; done
-          docker logs s; exit 1
+          docker logs sentinel-ci; exit 1
