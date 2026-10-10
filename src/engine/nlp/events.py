@@ -139,6 +139,17 @@ class EventModel:
                 fetch_lazy_in_background("zeroshot-nli")
         return self._zs
 
+    def nli(self) -> OnnxClassifier | None:
+        """The NLI model for other stages (multilingual sentiment, D78), loaded even when the event
+        fallback is off; fetched in the background on first need when missing."""
+        if self._zs is None and (self._zs_dir / "model.int8.onnx").exists():
+            self._zs = OnnxClassifier(self._zs_dir)
+        elif self._zs is None and self.auto_download:
+            from engine.models_download import fetch_lazy_in_background
+
+            fetch_lazy_in_background("zeroshot-nli")
+        return self._zs
+
     def _specialist(self, texts: list[str]) -> np.ndarray | None:
         return None if self._spec is None else self._spec.predict_proba(texts)[:, 1]
 

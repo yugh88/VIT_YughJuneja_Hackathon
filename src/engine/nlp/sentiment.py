@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import logging
 import re
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -87,10 +88,15 @@ class LexiconSentiment:
         return SentimentResult(s, label, 0.5, probs, self.version, s)
 
 
+NLI_WEIGHT = 0.5  # non-English: blend with zero-shot NLI sentiment, chosen on native_v2_dev (DECISIONS D78)
+NLI_HYPS = ["This is bad news.", "This is neither good nor bad news.", "This is good news."]  # LABELS order
+
+
 class SentimentModel:
-    def __init__(self, onnx_dir: Path) -> None:
+    def __init__(self, onnx_dir: Path, nli: Callable[[], OnnxClassifier | None] | None = None) -> None:
         self.en = self._load(onnx_dir / "sentiment-en")
         self.multi = self._load(onnx_dir / "sentiment-multi")
+        self._nli = nli  # shared with the event model's zero-shot fallback; None disables the blend
         self.lexicon = LexiconSentiment()
         if not (self.en or self.multi):
             log.warning("no fine-tuned sentiment model in %s: lexicon fallback", onnx_dir)
@@ -108,6 +114,16 @@ class SentimentModel:
             "sentiment_en": self.en.version if self.en else "none",
             "sentiment_multi": self.multi.version if self.multi else "none",
         }
+
+    def _nli_probs(self, texts: list[str]) -> np.ndarray | None:
+        zs = self._nli() if self._nli else None
+        if zs is None:
+            return None
+        ent = [lbl.lower() for lbl in zs.labels].index("entailment")
+        prem = [t for t in texts for _ in NLI_HYPS]
+        hyp = [h for _ in texts for h in NLI_HYPS]
+        lg = zs.logits(prem, hyp, batch_size=48).reshape(len(texts), len(NLI_HYPS), -1)[:, :, ent]
+        return softmax(lg, axis=-1)
 
     def score_batch(self, items: list[tuple[str, str, str, float]]) -> list[SentimentResult]:
         """items: (entity name, text, language, language confidence)."""
@@ -154,9 +170,15 @@ class SentimentModel:
                 p = softmax(logits / model.temperature)  # confidence: temperature-scaled
                 # score: untempered P(pos) - P(neg) and the text's intensity cues, mapped
                 raw, inten = raw_of(logits), np.array([intensity(t) for t in texts])
+                name = model.version
+                if route == "multi" and model is self.multi:
+                    pn = self._nli_probs(texts)
+                    if pn is not None:  # D78: war, attacks and disasters read as bad news
+                        p = NLI_WEIGHT * pn + (1 - NLI_WEIGHT) * p
+                        raw = NLI_WEIGHT * (pn[:, 2] - pn[:, 0]) + (1 - NLI_WEIGHT) * raw
+                        name = f"{model.version}+nli"
                 cal = model.calibrate(raw, inten, "range")
                 hum = model.calibrate(raw, inten, "human")
-                name = model.version
             for j, i in enumerate(idx):
                 k = int(p[j].argmax())
                 out[i] = SentimentResult(

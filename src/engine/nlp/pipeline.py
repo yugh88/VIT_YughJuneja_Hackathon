@@ -182,8 +182,8 @@ class Pipeline:
         self.langid = LanguageIdentifier()
         self.dedup = Deduplicator() if dedupe else None
         self.linker = linker or get_linker()
-        self.sentiment = SentimentModel(onnx_dir)
         self.events = EventModel(onnx_dir, zero_shot=zero_shot)
+        self.sentiment = SentimentModel(onnx_dir, nli=self.events.nli)
         self.activity = EntityActivity(time_scale=time_scale)
         self.impact = ImpactScorer(impact_model) if impact_model else ImpactScorer()
         self._news_clusters: set[str] = set()  # story clusters carried by news, filings or central banks
