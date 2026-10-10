@@ -1,0 +1,78 @@
+{
+ "spec": "DECISIONS D75",
+ "corpus": "360 replayed docs, all sources, batch 32",
+ "runs": [
+  {
+   "threads": 4,
+   "provider": "cpu",
+   "nli_blend": false,
+   "cache": false,
+   "docs_per_s_unique": 16.0,
+   "docs_per_s_with_repeats": 16.0,
+   "p50_ms": 0.8,
+   "p95_ms": 183.1,
+   "config": "before (no cache, no NLI blend)"
+  },
+  {
+   "threads": 4,
+   "provider": "cpu",
+   "nli_blend": true,
+   "cache": true,
+   "docs_per_s_unique": 12.8,
+   "docs_per_s_with_repeats": 26.0,
+   "p50_ms": 0.8,
+   "p95_ms": 42.0,
+   "config": "now (cache, NLI blend)"
+  },
+  {
+   "threads": 8,
+   "provider": "cpu",
+   "nli_blend": false,
+   "cache": false,
+   "docs_per_s_unique": 20.5,
+   "docs_per_s_with_repeats": 20.0,
+   "p50_ms": 1.0,
+   "p95_ms": 177.3,
+   "config": "before (no cache, no NLI blend)"
+  },
+  {
+   "threads": 8,
+   "provider": "cpu",
+   "nli_blend": true,
+   "cache": true,
+   "docs_per_s_unique": 17.6,
+   "docs_per_s_with_repeats": 33.1,
+   "p50_ms": 0.7,
+   "p95_ms": 43.7,
+   "config": "now (cache, NLI blend)"
+  },
+  {
+   "threads": 8,
+   "provider": "coreml",
+   "nli_blend": true,
+   "cache": true,
+   "docs_per_s_unique": 0.8,
+   "docs_per_s_with_repeats": 1.7,
+   "p50_ms": 0.8,
+   "p95_ms": 40.8,
+   "config": "now + CoreML (Mac only)"
+  }
+ ],
+ "coreml_accuracy_dev": {
+  "cpu": {
+   "native_sentiment_f1": 0.6376,
+   "native_event_f1": 0.4707,
+   "credit_f1": 0.907
+  },
+  "coreml": {
+   "native_sentiment_f1": 0.6376,
+   "native_event_f1": 0.4707,
+   "credit_f1": 0.907
+  }
+ },
+ "zero_shot_fallback": {
+  "docs_with_event": 174,
+  "below_0.55": 9,
+  "share": 0.0517
+ }
+}
