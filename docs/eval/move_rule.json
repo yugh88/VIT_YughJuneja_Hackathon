@@ -1,0 +1,46 @@
+{
+ "validation_rows": 1699,
+ "all": {
+  "without": {
+   "n": 1699,
+   "accuracy": 0.9046,
+   "macro_f1": 0.8674
+  },
+  "with": {
+   "n": 1699,
+   "accuracy": 0.9046,
+   "macro_f1": 0.8674
+  }
+ },
+ "price_move_rows": {
+  "without": {
+   "n": 12,
+   "accuracy": 1.0,
+   "macro_f1": 0.2222
+  },
+  "with": {
+   "n": 12,
+   "accuracy": 1.0,
+   "macro_f1": 0.2222
+  }
+ },
+ "changed_rows": {
+  "without": {
+   "n": 0,
+   "accuracy": 0.0,
+   "macro_f1": 0.0
+  },
+  "with": {
+   "n": 0,
+   "accuracy": 0.0,
+   "macro_f1": 0.0
+  }
+ },
+ "examples": [],
+ "kept": true,
+ "impact_capped_rows": 2,
+ "impact_capped_examples": [
+  "Can $NFLX rally another 20%?",
+  "$AFRM - Affirm stock slides as Goldman points to regulatory, funding, credit risks"
+ ]
+}

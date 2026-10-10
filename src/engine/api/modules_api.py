@@ -91,7 +91,8 @@ async def stress_state(request: Request) -> dict[str, Any]:
     return {
         "book": {"positions": len(book), "exposure": float(book["exposure"].sum()),
                  "by_asset_class": book.groupby("asset_class")["exposure"].sum().round(0).to_dict(),
-                 "counterparties": int(book["cp_id"].nunique()), "countries": int(book["country"].nunique())},
+                 "counterparties": int(book["cp_id"].nunique()), "countries": int(book["country"].nunique()),
+                 "named_entities": sorted(book["entity_id"].dropna().unique().tolist())},
         "rule": {"events": ["Geopolitical", "Macroeconomic", "Credit Event"], "impact_gt": se.min_impact,
                  "corroboration": f">= {se.min_outlets} outlets or burst z >= {se.min_burst} within 6 h, "
                                   "plus >= 1 tier-1 outlet",
@@ -138,6 +139,39 @@ async def replay_2022(refresh: bool = False) -> dict[str, Any]:
         from modules.stress.replay import run
 
         out = await asyncio.to_thread(run)
+        out.pop("signals_snapshot", None)
         p.write_text(json.dumps(out, indent=1))
         return out
+    return json.loads(p.read_text())
+
+
+# ------------------------------------------------------------------ stored evaluation results
+eval_router = APIRouter(prefix="/v1/eval", tags=["evaluation"])
+EVAL_FILES = {
+    "eval",
+    "impact",
+    "credit",
+    "bench",
+    "backtest",
+    "replay_2022-02-24",
+    "replay_2022-02-24_signals",
+    "credit_experiments",
+}
+
+
+@eval_router.get("/{name}")
+async def eval_file(name: str) -> Any:
+    """Results written by `make eval`, `make bench`, the impact/credit scripts and the backtest
+    (read-only; the dashboard's Model Lab renders these files as they are)."""
+    if name not in EVAL_FILES:
+        raise HTTPException(404, f"unknown result file; one of {sorted(EVAL_FILES)}")
+    p = EVAL / f"{name}.json"
+    gz = EVAL / f"{name}.json.gz"  # large results are stored compressed
+    if gz.exists():
+        import gzip
+
+        with gzip.open(gz, "rt") as fh:
+            return json.loads(fh.read())
+    if not p.exists():
+        raise HTTPException(404, f"{p.name} not generated yet")
     return json.loads(p.read_text())

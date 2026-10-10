@@ -40,6 +40,9 @@ from modules.rebalancer.universe import BASE_CAP, UNIVERSE, capped, load_univers
 from modules.rebalancer.weights import (
     HYSTERESIS,
     KAPPA,
+    NAME_CAP,
+    NAME_FLOOR,
+    SECTOR_CAP,
     TILT_MAX,
     TILT_MIN,
     TURNOVER_CAP,
@@ -123,6 +126,7 @@ def run(
     w = base[0].copy()
     used = np.zeros(n)
     port, gross, turns = np.zeros(n_days), np.zeros(n_days), np.zeros(n_days)
+    limits_ok = np.ones(n_days, dtype=bool)  # post-trade weights within every risk limit
     weights = np.zeros((n_days, n))
     for d in range(n_days - 1):
         if tilt_on:
@@ -141,12 +145,16 @@ def run(
             w = target.copy()
         turns[d] = to
         weights[d] = w
+        if tilt_on:
+            sec = np.bincount(codes, weights=w)
+            limits_ok[d] = bool(w.max() <= NAME_CAP + 1e-9 and w.min() >= NAME_FLOOR - 1e-9
+                                and sec.max() <= SECTOR_CAP + 1e-9 and to <= TURNOVER_CAP + 1e-9)  # fmt: skip
         r = rets[d + 1]
         gross[d + 1] = float(w @ r)
         port[d + 1] = gross[d + 1] - COST * to
         w = w * (1 + r)
         w = w / w.sum()  # drift until the next decision
-    return {"ret": port, "gross": gross, "turnover": turns, "weights": weights}
+    return {"ret": port, "gross": gross, "turnover": turns, "weights": weights, "limits_ok": limits_ok}
 
 
 def stats(
@@ -266,6 +274,15 @@ def main(n_placebo: int = 100) -> dict[str, Any]:
     res["full_period_chosen"] = {"tilted": stats(tilt["ret"], cw["ret"], tilt["turnover"]),
                                  "cap_weighted": stats(cw["ret"], None, cw["turnover"]),
                                  "equal_weighted": stats(eqw["ret"], None, eqw["turnover"])}  # fmt: skip
+    ok = tilt["limits_ok"][:-1]
+    res["risk_limits"] = {"rebalance_days": len(ok), "days_all_limits_held": int(ok.sum()),
+                          "share_held": round(float(ok.mean()), 4),
+                          "limits": {"name_cap": NAME_CAP, "name_floor": NAME_FLOOR, "sector_cap": SECTOR_CAP,
+                                     "turnover_cap": TURNOVER_CAP}}  # fmt: skip
+    last = slice(len(days) - 31, len(days) - 1)
+    res["daily_last30"] = {"dates": [str(d.date()) for d in days[last]], "version": chosen,
+                           "weights": {tk: np.round(tilt["weights"][last, i], 4).tolist() for i, tk in enumerate(UNIVERSE)},
+                           "base": {tk: np.round(base[last, i], 4).tolist() for i, tk in enumerate(UNIVERSE)}}  # fmt: skip
     wk = slice(None, None, 5)
     res["chart"] = {
         "dates": [str(d.date()) for d in days[wk]],

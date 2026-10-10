@@ -10,6 +10,7 @@ the corroboration rule and the debounce exactly as in the live system.
 
 from __future__ import annotations
 
+import gzip
 import json
 import logging
 import time
@@ -35,12 +36,24 @@ def run(
     t0 = time.time()
     n_signals = 0
     timeline: list[dict[str, Any]] = []
+    results: dict[str, dict[str, Any]] = {}
+    snapshot: list[dict[str, Any]] = []  # compact signals for the dashboard's 24 Feb 2022 view
     for i in range(0, len(docs), batch):
         for tr in pipe.process_batch(docs[i : i + batch]):
             for sig in tr.signals:
                 n_signals += 1
+                snapshot.append({"id": sig.signal_id, "doc": sig.doc_id, "t": sig.published_at.isoformat(),
+                                 "outlet": sig.source.outlet, "src": sig.source.name, "type": sig.source.type.value,
+                                 "lang": sig.language, "eid": sig.entity.id, "name": sig.entity.name,
+                                 "country": sig.entity.country, "sector": sig.entity.sector,
+                                 "s": round(sig.sentiment.score, 3), "ev": sig.event.primary.value,
+                                 "evc": round(sig.event.confidence, 3), "imp": sig.impact.score, "lo": sig.impact.low,
+                                 "hi": sig.impact.high, "drv": sig.impact.drivers, "title": sig.evidence.title,
+                                 "sent": sig.evidence.sentence, "url": sig.evidence.url,
+                                 "synd": sig.syndication_count})  # fmt: skip
                 res = engine.on_signal(sig)
                 if res is not None:
+                    results[res["id"]] = {k: v for k, v in res.items() if k not in ("fired_at", "runtime_s")}
                     timeline.append({"time_utc": sig.published_at.strftime("%Y-%m-%d %H:%M"), "cluster": res["cluster"],
                                      "headline": res["trigger"]["title"], "impact": res["trigger"]["impact"],
                                      "corroboration": res["corroboration"], "loss_musd": round(res["loss"] / 1e6, 1),
@@ -54,15 +67,22 @@ def run(
            "trigger_version": "v2 (D66): country/obligor clusters merged within 6 h, tier-1 outlet, credit gate",
            "trigger_events_considered": len(engine.decisions), "stress_tests_fired": len(timeline),
            "first_trigger_utc": timeline[0]["time_utc"] if timeline else None, "timeline": timeline,
-           "alert_queue": queue,
+           "alert_queue": queue, "results": results,
+           "languages": dict(sorted(pipe.stats.by_language.items(), key=lambda kv: -kv[1])),
            "blocked_high_impact": {r.split()[0] if r != "not corroborated" else "not_corroborated":
                                    sum(r in d["reason"] for d in near) for r in reasons}}  # fmt: skip
+    out["signals_snapshot"] = snapshot
     return out
 
 
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s: %(message)s")
     out = run()
+    snapshot = out.pop("signals_snapshot")
+    with gzip.open(
+        get_settings().data_dir.parent / "docs" / "eval" / "replay_2022-02-24_signals.json.gz", "wt"
+    ) as fh:
+        fh.write(json.dumps(snapshot, ensure_ascii=False, separators=(",", ":")))
     (get_settings().data_dir.parent / "docs" / "eval" / "replay_2022-02-24.json").write_text(
         json.dumps(out, separators=(",", ":"))  # compact, like backtest.json
     )
