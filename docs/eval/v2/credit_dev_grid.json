@@ -1,0 +1,349 @@
+{
+ "split": "dev",
+ "grid": {
+  "rules_v2=False|th=0.45": {
+   "precision": 0.5522,
+   "recall": 0.9487,
+   "f1": 0.6981,
+   "macro_f1_all_classes": 0.4096,
+   "gate_p": 0.6364,
+   "gate_r": 0.8974
+  },
+  "rules_v2=False|th=0.5": {
+   "precision": 0.5606,
+   "recall": 0.9487,
+   "f1": 0.7048,
+   "macro_f1_all_classes": 0.4094,
+   "gate_p": 0.6364,
+   "gate_r": 0.8974
+  },
+  "rules_v2=False|th=0.55": {
+   "precision": 0.5692,
+   "recall": 0.9487,
+   "f1": 0.7115,
+   "macro_f1_all_classes": 0.4098,
+   "gate_p": 0.6364,
+   "gate_r": 0.8974
+  },
+  "rules_v2=False|th=0.6": {
+   "precision": 0.5692,
+   "recall": 0.9487,
+   "f1": 0.7115,
+   "macro_f1_all_classes": 0.4098,
+   "gate_p": 0.6364,
+   "gate_r": 0.8974
+  },
+  "rules_v2=False|th=0.65": {
+   "precision": 0.5692,
+   "recall": 0.9487,
+   "f1": 0.7115,
+   "macro_f1_all_classes": 0.4098,
+   "gate_p": 0.6364,
+   "gate_r": 0.8974
+  },
+  "rules_v2=False|th=0.7": {
+   "precision": 0.5781,
+   "recall": 0.9487,
+   "f1": 0.7184,
+   "macro_f1_all_classes": 0.4265,
+   "gate_p": 0.6364,
+   "gate_r": 0.8974
+  },
+  "rules_v2=False|th=0.75": {
+   "precision": 0.5781,
+   "recall": 0.9487,
+   "f1": 0.7184,
+   "macro_f1_all_classes": 0.4265,
+   "gate_p": 0.6364,
+   "gate_r": 0.8974
+  },
+  "rules_v2=False|th=0.8": {
+   "precision": 0.5781,
+   "recall": 0.9487,
+   "f1": 0.7184,
+   "macro_f1_all_classes": 0.4265,
+   "gate_p": 0.6364,
+   "gate_r": 0.8974
+  },
+  "rules_v2=True|th=0.45": {
+   "precision": 0.7959,
+   "recall": 1.0,
+   "f1": 0.8864,
+   "macro_f1_all_classes": 0.5959,
+   "gate_p": 0.8571,
+   "gate_r": 0.9231
+  },
+  "rules_v2=True|th=0.5": {
+   "precision": 0.7959,
+   "recall": 1.0,
+   "f1": 0.8864,
+   "macro_f1_all_classes": 0.5959,
+   "gate_p": 0.8571,
+   "gate_r": 0.9231
+  },
+  "rules_v2=True|th=0.55": {
+   "precision": 0.8125,
+   "recall": 1.0,
+   "f1": 0.8966,
+   "macro_f1_all_classes": 0.5968,
+   "gate_p": 0.8571,
+   "gate_r": 0.9231
+  },
+  "rules_v2=True|th=0.6": {
+   "precision": 0.8125,
+   "recall": 1.0,
+   "f1": 0.8966,
+   "macro_f1_all_classes": 0.5968,
+   "gate_p": 0.8571,
+   "gate_r": 0.9231
+  },
+  "rules_v2=True|th=0.65": {
+   "precision": 0.8125,
+   "recall": 1.0,
+   "f1": 0.8966,
+   "macro_f1_all_classes": 0.5968,
+   "gate_p": 0.8571,
+   "gate_r": 0.9231
+  },
+  "rules_v2=True|th=0.7": {
+   "precision": 0.8298,
+   "recall": 1.0,
+   "f1": 0.907,
+   "macro_f1_all_classes": 0.6068,
+   "gate_p": 0.8571,
+   "gate_r": 0.9231
+  },
+  "rules_v2=True|th=0.75": {
+   "precision": 0.8298,
+   "recall": 1.0,
+   "f1": 0.907,
+   "macro_f1_all_classes": 0.6068,
+   "gate_p": 0.8571,
+   "gate_r": 0.9231
+  },
+  "rules_v2=True|th=0.8": {
+   "precision": 0.8298,
+   "recall": 1.0,
+   "f1": 0.907,
+   "macro_f1_all_classes": 0.6068,
+   "gate_p": 0.8571,
+   "gate_r": 0.9231
+  }
+ },
+ "rule": {
+  "threshold": 0.55,
+  "specialist_weight": 0.5,
+  "backstop": true,
+  "hard_negatives": true
+ },
+ "system": {
+  "n": 150,
+  "n_credit": 39,
+  "precision": 0.5692,
+  "recall": 0.9487,
+  "f1": 0.7115,
+  "tp": 37,
+  "fp": 28,
+  "fn": 2,
+  "precision_ci95": [
+   0.4462,
+   0.6876
+  ],
+  "recall_ci95": [
+   0.8605,
+   1.0
+  ],
+  "f1_ci95": [
+   0.6042,
+   0.8039
+  ],
+  "macro_f1_all_classes": 0.4098,
+  "module_b_gate": {
+   "precision": 0.6364,
+   "recall": 0.8974,
+   "n": 55
+  },
+  "errors": [
+   {
+    "id": "KD010",
+    "text": "Zambian Dollar Bonds Rally After S&P Removes Default Status",
+    "gold": "Macroeconomic",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD021",
+    "text": "Beasley Creditors Gain More Say In Future Restructuring.",
+    "gold": "Other/Non-event",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD022",
+    "text": "NCLT Kochi: 2026 IBC Clarification On Secured Creditors Applies To Pending Liquidation Cases",
+    "gold": "Regulatory/Legal",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD024",
+    "text": "Is US drifting towards 'silent default'?",
+    "gold": "Macroeconomic",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD028",
+    "text": "RAM Ratings raises outlook on RHB Group’s AA1 rating to Positive",
+    "gold": "Other/Non-event",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD029",
+    "text": "NCLT defers SpiceJet insolvency orders after last-minute settlement",
+    "gold": "Regulatory/Legal",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD033",
+    "text": "China and Hong Kong restructuring outlook amid market distress",
+    "gold": "Other/Non-event",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD037",
+    "text": "Mizuho cuts S&P Global stock price target on model updates By Investing.com",
+    "gold": "Other/Non-event",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD038",
+    "text": "Volkswagen restructuring faces worker protests",
+    "gold": "Operational/Supply Chain",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD044",
+    "text": "GST Council approves process reforms; supplier-default ITC proposal referred to committee",
+    "gold": "Macroeconomic",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD047",
+    "text": "NCLT Stays Subhash Chandra Repayment Plan Order, Five-Member Bench to Hear Insolvency Case Afresh",
+    "gold": "Regulatory/Legal",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD058",
+    "text": "Moody's downgrades Serbia's outlook to stable over political risks",
+    "gold": "Macroeconomic",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD059",
+    "text": "Pagaya’s Outlook Revised by Fitch Ratings to Positive",
+    "gold": "Other/Non-event",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD062",
+    "text": "The Default Notice — Uptiering your client alert game in 2025",
+    "gold": "Other/Non-event",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD063",
+    "text": "Sri Lanka’s Debt Crisis Recovery",
+    "gold": "Macroeconomic",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD065",
+    "text": "Nike Restructuring 2026: Layoffs, Pace Plan, $2.5B Savings - News and Statistics",
+    "gold": "Operational/Supply Chain",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD066",
+    "text": "Puerto Rico bankruptcy filings rise as accumulated debt reaches $865.4 million",
+    "gold": "Macroeconomic",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD070",
+    "text": "PayPal pivots to AI-led overhaul amid layoffs and restructuring plans",
+    "gold": "Operational/Supply Chain",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD074",
+    "text": "Moody’s has changed its outlook for New Brunswick from stable to negative",
+    "gold": "Credit Event",
+    "pred": "Macroeconomic"
+   },
+   {
+    "id": "KD077",
+    "text": "English Restructuring Plans for US Debtors",
+    "gold": "Other/Non-event",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD089",
+    "text": "Watchdog downgrades Kings Lynn hospital care standards",
+    "gold": "Regulatory/Legal",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD096",
+    "text": "Indonesia - Restructuring & Insolvency Laws and Regulations 2026",
+    "gold": "Other/Non-event",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD104",
+    "text": "Warrington business appoints liquidators following winding-up notice",
+    "gold": "Credit Event",
+    "pred": "Management Change"
+   },
+   {
+    "id": "KD118",
+    "text": "GitLab announces restructuring plan, shares slide",
+    "gold": "Operational/Supply Chain",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD119",
+    "text": "Winding-up petitions hit three-year high as creditors lose patience",
+    "gold": "Macroeconomic",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD126",
+    "text": "NCLT Ahmedabad Dismisses Insolvency Plea Against Suzlon Energy",
+    "gold": "Regulatory/Legal",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD128",
+    "text": "DON'T NOD Confirms Restructuring, Job Cuts Loom",
+    "gold": "Operational/Supply Chain",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD131",
+    "text": "GoPro announces layoffs amid ‘restructuring plan’",
+    "gold": "Operational/Supply Chain",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD141",
+    "text": "Procter & Gamble cuts 4,300 jobs since last year amid restructuring plan",
+    "gold": "Operational/Supply Chain",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD150",
+    "text": "airBaltic plans up to 700 job cuts amid restructuring",
+    "gold": "Operational/Supply Chain",
+    "pred": "Credit Event"
+   }
+  ]
+ }
+}

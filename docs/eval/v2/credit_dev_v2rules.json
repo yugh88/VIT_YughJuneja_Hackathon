@@ -1,0 +1,88 @@
+{
+ "split": "dev",
+ "rule": {
+  "threshold": 0.7,
+  "specialist_weight": 0.5,
+  "backstop": true,
+  "hard_negatives": true,
+  "rules_v2": true
+ },
+ "system": {
+  "n": 150,
+  "n_credit": 39,
+  "precision": 0.8298,
+  "recall": 1.0,
+  "f1": 0.907,
+  "tp": 39,
+  "fp": 8,
+  "fn": 0,
+  "precision_ci95": [
+   0.7143,
+   0.925
+  ],
+  "recall_ci95": [
+   1.0,
+   1.0
+  ],
+  "f1_ci95": [
+   0.8333,
+   0.961
+  ],
+  "macro_f1_all_classes": 0.6068,
+  "module_b_gate": {
+   "precision": 0.8571,
+   "recall": 0.9231,
+   "n": 42
+  },
+  "errors": [
+   {
+    "id": "KD021",
+    "text": "Beasley Creditors Gain More Say In Future Restructuring.",
+    "gold": "Other/Non-event",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD033",
+    "text": "China and Hong Kong restructuring outlook amid market distress",
+    "gold": "Other/Non-event",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD037",
+    "text": "Mizuho cuts S&P Global stock price target on model updates By Investing.com",
+    "gold": "Other/Non-event",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD044",
+    "text": "GST Council approves process reforms; supplier-default ITC proposal referred to committee",
+    "gold": "Macroeconomic",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD062",
+    "text": "The Default Notice — Uptiering your client alert game in 2025",
+    "gold": "Other/Non-event",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD077",
+    "text": "English Restructuring Plans for US Debtors",
+    "gold": "Other/Non-event",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD080",
+    "text": "Fitch affirms Danantara Investment Management at ‘BBB’, keeps negative outlook",
+    "gold": "Other/Non-event",
+    "pred": "Credit Event"
+   },
+   {
+    "id": "KD118",
+    "text": "GitLab announces restructuring plan, shares slide",
+    "gold": "Operational/Supply Chain",
+    "pred": "Credit Event"
+   }
+  ]
+ }
+}
