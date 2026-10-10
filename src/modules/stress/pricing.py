@@ -14,8 +14,9 @@ DV01 x d_spread; options delta/gamma/vega. Loans and revolvers: Vasicek conditio
 Basel corporate correlation; the systemic factor is the position's spread shock in standard
 deviations of 1-year spread changes (PDs are 1-year; capped at the 99.9% level, 3.09), applied as
 PD + V(z) - V(0) so z = 0 leaves PD unchanged; revolver CCF rises from
-0.5 toward 0.75 with stress. dEL = PD_s*LGD*EAD_s - PD*LGD*EAD. Capital: Basel IRB risk weights,
-CET1 ratio starting at 12% of the book's own RWA, hit by MTM losses and new provisions.
+0.5 toward 0.75 with stress. dEL = PD_s*LGD*EAD_s - PD*LGD*EAD. Capital: Basel IRB risk weights;
+CET1 capital = 12% of the book's own RWA, reduced by after-tax losses (MTM + new provisions);
+RWA growth from rating migration capped at +15% per test (DECISIONS D72).
 """
 
 from __future__ import annotations
@@ -29,6 +30,8 @@ import pandas as pd
 import yaml
 from scipy.stats import norm
 
+import logging
+
 from engine.config import get_settings
 from modules.stress.portfolio import downgrade, notch_pd, notch_spread
 
@@ -37,8 +40,11 @@ HORIZON_DAYS = 20
 PD_HORIZON_DAYS = 250
 Z_CAP = 3.09  # 99.9%
 START_CET1 = 0.12
+TAX_RATE = 0.25  # losses reduce CET1 net of tax
+RWA_GROWTH_CAP = 0.15  # max RWA increase from rating migration in one test
 COUNTRY_MULT, REGION_MULT, SECTOR_MULT = 1.5, 1.2, 1.3
 BANKING_BOOK = {"term_loan", "revolver", "bond_ig", "bond_hy", "sovereign_bond"}
+log = logging.getLogger(__name__)
 
 
 @dataclass
@@ -226,6 +232,25 @@ class Revaluer:
         }
 
 
+def capital(rwa0: float, rwa1_raw: float, loss: float) -> dict[str, Any]:
+    """CET1 before/after a loss (pre-tax, positive = loss) and an RWA move, with the inputs shown."""
+    rwa1 = min(rwa1_raw, rwa0 * (1 + RWA_GROWTH_CAP))
+    cet1_0 = START_CET1 * rwa0
+    loss_at = loss * (1 - TAX_RATE)
+    ratio1 = (cet1_0 - loss_at) / rwa1
+    return {
+        "cet1_capital_before": round(cet1_0, 0), "cet1_capital_after": round(cet1_0 - loss_at, 0),
+        "loss_pre_tax": round(loss, 0), "loss_after_tax": round(loss_at, 0), "tax_rate": TAX_RATE,
+        "rwa_before": round(rwa0, 0), "rwa_after": round(rwa1, 0), "rwa_after_uncapped": round(rwa1_raw, 0),
+        "delta_rwa": round(rwa1 - rwa0, 0), "rwa_growth_cap": RWA_GROWTH_CAP, "rwa_cap_binds": bool(rwa1_raw > rwa1),
+        "cet1_ratio_before": START_CET1, "cet1_ratio_after": round(float(ratio1), 5),
+        "delta_cet1_bps": round(float((ratio1 - START_CET1) * 1e4), 1),
+        # decomposition: after-tax losses alone (RWA unchanged) vs. RWA migration alone (no losses)
+        "delta_cet1_from_losses_bps": round(float(-loss_at / rwa0 * 1e4), 1),
+        "delta_cet1_from_rwa_bps": round(float((cet1_0 / rwa1 - START_CET1) * 1e4), 1),
+    }  # fmt: skip
+
+
 def stress(sc: Scenario, n_draws: int = 10_000, seed: int = 7) -> dict[str, Any]:
     book = load_book()
     rv = Revaluer(book, sc)
@@ -238,8 +263,9 @@ def stress(sc: Scenario, n_draws: int = 10_000, seed: int = 7) -> dict[str, Any]
     rwa0 = float((12.5 * _irb_k(book["pd"].to_numpy(), lgd, mat) * det["ead0"][0])[bb].sum())
     rwa1 = float((12.5 * _irb_k(det["pd_s"][0], lgd, mat) * det["ead_s"][0])[bb].sum())
     loss = float(-dv.sum() + d_el.sum())
-    cet1_0 = START_CET1 * rwa0
-    ratio1 = (cet1_0 - loss) / (rwa0 + (rwa1 - rwa0))
+    cap = capital(rwa0, rwa1, loss)
+    if cap["rwa_cap_binds"]:
+        log.warning("RWA growth cap binds for %s: %.2f -> %.2f bn capped at +%d%%", sc.name, rwa0 / 1e9, rwa1 / 1e9, RWA_GROWTH_CAP * 100)
     # Monte Carlo around the scenario mean
     chol = np.linalg.cholesky(factor_cov() + 1e-9 * np.eye(len(FACTORS)))
     X = mu + np.random.default_rng(seed).standard_normal((n_draws, len(FACTORS))) @ chol.T
@@ -265,12 +291,7 @@ def stress(sc: Scenario, n_draws: int = 10_000, seed: int = 7) -> dict[str, Any]
         "book_value_before": round(value0, 0), "book_value_after": round(value0 - loss, 0),
         "loss": round(loss, 0), "mtm_pnl": round(float(dv.sum()), 0), "delta_expected_loss": round(float(d_el.sum()), 0),
         "waterfall": {k: round(float(v), 0) for k, v in pnl.groupby("asset_class")["pnl"].sum().items()},
-        "rwa_before": round(rwa0, 0), "rwa_after": round(rwa1, 0), "delta_rwa": round(rwa1 - rwa0, 0),
-        "cet1_ratio_before": START_CET1, "cet1_ratio_after": round(float(ratio1), 5),
-        "delta_cet1_bps": round(float((ratio1 - START_CET1) * 1e4), 1),
-        # decomposition: losses alone (RWA unchanged) vs. RWA migration alone (no losses)
-        "delta_cet1_from_losses_bps": round(float(((cet1_0 - loss) / rwa0 - START_CET1) * 1e4), 1),
-        "delta_cet1_from_rwa_bps": round(float((cet1_0 / rwa1 - START_CET1) * 1e4), 1),
+        **cap,
         "top_losers": [{"name": n, "pnl": round(float(v), 0)} for n, v in by_cp.items()],
         "heatmap": {"countries": heat.index.tolist(), "sectors": heat.columns.tolist(),
                     "pnl": np.round(heat.to_numpy() / 1e6, 3).tolist()},
