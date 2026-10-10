@@ -33,6 +33,8 @@ Replay twins store only headline-level text, links and source metadata, never fu
 | --- | --- | --- |
 | `data/raw/translated/phrasebank.parquet` | `training.translate phrasebank` | PhraseBank x NLLB-200 into hi, zh, ja, de, fr, es, ar, pt |
 | `data/raw/translated/events.parquet` | `training.translate events` | Topic tweets + weak labels x NLLB-200 |
+| `data/raw/translated/twitter_sentiment.parquet` | `training.translate twitter` | Twitter Financial News Sentiment (all train rows) x NLLB-200 into the same 8 languages (68,712 rows; D73 translate-train) |
+| `data/raw/translated/twitter_topic.parquet` | `training.translate twitter` | Twitter Financial News Topic, 4,000 rows per language x NLLB-200 (32,000 rows; D73 translate-train) |
 | `data/raw/weak_events.parquet` | `training.weak_labels` | 700 random GDELT 15-min windows (2023-2026) + SEC 8-K item codes |
 
 ## Market data and impact labels
@@ -47,7 +49,14 @@ Replay twins store only headline-level text, links and source metadata, never fu
 | File | Content |
 | --- | --- |
 | `data/eval/sentiment_range_check.csv` | 60 English headlines written for the sentiment range check (20 strong positive, 20 strong negative, 20 neutral). It is a constraint when choosing the published score map (D38), not a reported accuracy metric |
-| `data/eval/multilingual_to_label.csv` | 300 real GDELT headlines (10 languages x 30) awaiting human labels; NLLB English translations as a reading aid |
+| `data/eval/multilingual_to_label.csv` | 300 real GDELT headlines (10 languages x 30); NLLB English translations as a reading aid |
+| `data/eval/multilingual_labelled.csv` | The same 300 headlines labelled under `data/eval/LABELLING.md` (sentiment + event; AI-annotated, two blind passes, adjudicated) |
+| `data/eval/credit_labelled.csv` | 150 real 2025-26 credit-candidate headlines labelled under `LABELLING.md` |
+| `data/eval/v2/native_v2_{dev,test}_labelled.csv` | 300 + 300 new GDELT translingual headlines (10 languages x 30 each, Jul 2024 - Oct 2026, dates unseen by any earlier sample); dev for selection, test scored once; hashes in `v2/FREEZE.json` |
+| `data/eval/v2/credit_v2_{dev,test}_labelled.csv` | 150 + 150 new 2025-26 credit-candidate headlines from Google News RSS (new queries and outlets); same freeze |
+| `data/eval/v2/native_v2_dev_en_mt.csv` | NLLB English translations of the native dev set (translate-test experiment, D73) |
+| `data/eval/v2/hinglish_check.csv` | 30 romanised-Hindi (Hinglish) headlines written for this project to check the transliteration rule (not real headlines) |
+| `data/eval/v2/annotation_passes_v2.tar.gz` | Both blind annotation passes for the v2 sets, before adjudication |
 | `data/train_extra/hindi_finance_idioms.csv` | 31 Hindi finance sentences written for training only (not reviewed by a native speaker) |
 
 ## Phase 4 data (modules and credit work)
