@@ -68,6 +68,74 @@ def _load_ann() -> dict:
     return json.loads(p.read_text()) if p.exists() else {}
 
 
+def _ci(m: dict[str, Any], k: str) -> str:
+    ci = m.get(f"{k}_ci95")
+    return f"{m[k]:.3f} ({ci[0]:.2f}-{ci[1]:.2f})" if ci else f"{m[k]:.3f}"
+
+
+def _v2_section() -> list[str]:
+    """Score-improvement round: old vs new system on the frozen v2 test sets (scored once) and the seen sets."""
+    sm = _load("v2_summary.json")
+    if not sm:
+        return []
+    L = [
+        "## 0. Score-improvement round (v2): old vs new",
+        "",
+        "New evaluation sets were built blind under the frozen `data/eval/LABELLING.md` (AI-annotated, two passes), "
+        "hashed in `data/eval/v2/FREEZE.json` before any experiment, and scored **once** at the end. Every change was "
+        "selected on the dev splits only (pre-registered in `docs/DECISIONS.md` D72-D79). *Old* = the system before the "
+        "round; *new* = the shipped system. 95% bootstrap confidence intervals in brackets. "
+        f"Run {sm['run_at']}; raw results in `docs/eval/v2/final.json`.",
+        "",
+        "| Set | Metric | Old | New |",
+        "| --- | --- | --- | --- |",
+    ]
+    rows = [
+        (
+            "native_v2_test",
+            "sentiment_macro_f1",
+            "Native headlines, 10 languages (new, n = 300)",
+            "sentiment macro-F1",
+        ),
+        (
+            "native_v2_test",
+            "event_macro_f1",
+            "Native headlines, 10 languages (new, n = 300)",
+            "event macro-F1",
+        ),
+        ("credit_v2_test", "precision", "Credit headlines 2025-26 (new, n = 150)", "Credit Event precision"),
+        ("credit_v2_test", "recall", "Credit headlines 2025-26 (new, n = 150)", "Credit Event recall"),
+        ("credit_v2_test", "f1", "Credit headlines 2025-26 (new, n = 150)", "Credit Event F1"),
+        ("native_300_seen", "sentiment_macro_f1", "Native-300 (seen in round 1)", "sentiment macro-F1"),
+        ("native_300_seen", "event_macro_f1", "Native-300 (seen in round 1)", "event macro-F1"),
+        ("credit_150_seen", "precision", "Credit-150 (seen in round 1)", "Credit Event precision"),
+        ("credit_150_seen", "recall", "Credit-150 (seen in round 1)", "Credit Event recall"),
+        ("event_topic_test_seen", "macro_f1_present", "Twitter topic test (seen)", "event macro-F1"),
+        ("event_topic_test_seen", "credit_f1", "Twitter topic test (seen)", "Credit Event F1"),
+    ]
+    for key, metric, name, label in rows:
+        o, n = sm[key]["old"], sm[key]["new"]
+        if metric in o and metric in n:
+            L.append(_row(name, label, _ci(o, metric), _ci(n, metric)))
+    L.append("")
+    comps = [(w, _load(f"v2/compare_{w}.json")) for w in ("sentiment", "event")]
+    if any(c for _, c in comps):
+        L += ["**Translate-train retrains** (D73(d), D79; dev only):", "", "| Model | Target | Current | v2 | Kept |",
+              "| --- | --- | --- | --- | --- |"]  # fmt: skip
+        for w, c in comps:
+            if c:
+                t = c["target"]
+                L.append(_row(f"{w}-multi-v2", t, c["current"][t], c["v2"][t],
+                              "yes" if c["keep"] else f"no (drops: {c['drops_over_tol'] or 'none'}; gain {c['gain']})"))  # fmt: skip
+        L.append("")
+    sp = sm.get("speed")
+    if sp:
+        L += [f"**Speed (CPU, {sp['threads']} threads, batch 32):** {sp['docs_per_s_unique']} docs/s on new text, "
+              f"{sp['docs_per_s_with_repeats']} docs/s with repeated text (logits cache); single-document latency "
+              f"p50 {sp['p50_ms']} ms, p95 {sp['p95_ms']} ms. Details: `docs/eval/v2/speed.json`.", ""]  # fmt: skip
+    return L
+
+
 def render_model_card() -> Path:
     ev, imp, bench = _load("eval.json"), _load("impact.json"), _load("bench.json")
     L: list[str] = [
@@ -77,6 +145,7 @@ def render_model_card() -> Path:
         "`python -m training.train_impact`). This file is generated; do not edit it by hand.",
         "",
     ]
+    L += _v2_section()
     if ev:
         s = ev["sentiment"]
         L += [
