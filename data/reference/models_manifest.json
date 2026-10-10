@@ -1,37 +1,37 @@
 {
   "tag": "models-v1",
   "base_url": "https://github.com/yugh88/VIT_YughJuneja_Hackathon/releases/download/models-v1",
-  "created": "2026-10-05T09:46:50Z",
-  "default_download_bytes": 814056161,
-  "total_bytes": 1115250850,
+  "created": "2026-10-10T18:54:51Z",
+  "default_download_bytes": 1115251170,
+  "total_bytes": 1115251170,
   "files": [
     {
       "name": "sentiment-en",
       "file": "sentiment-en.tar.gz",
-      "bytes": 173603395,
-      "sha256": "b03ca2679fd2e4793aa489afd752f66fdb6689e671d8e84f4d5d33fab9c04b7f",
+      "bytes": 173603563,
+      "sha256": "69ac643e5b8128be00dd782ad8c7128d690502fe2df799eedfc4bb044c2f8ade",
       "lazy": false
     },
     {
       "name": "sentiment-multi",
       "file": "sentiment-multi.tar.gz",
-      "bytes": 318604171,
-      "sha256": "6ca9d87ff183a51e3ea460c29462f2724181ba1a86b31afa7f5a2f5ac0e8a423",
+      "bytes": 318604319,
+      "sha256": "abf94a860c1616faa547977e076a2f124e7eea333304dc0ada9a9dc6b65de6a0",
       "lazy": false
     },
     {
       "name": "event-multi",
       "file": "event-multi.tar.gz",
-      "bytes": 321848595,
-      "sha256": "5f4f84f4326f780152f8305ecdada9725f0873fa4b4236c90b33a93a765baf34",
+      "bytes": 321848538,
+      "sha256": "9530aed4bb5bcc9e7c43376852c818475343709b581c2e1e9ab6ef6dfb7cb5c0",
       "lazy": false
     },
     {
       "name": "zeroshot-nli",
       "file": "zeroshot-nli.tar.gz",
-      "bytes": 301194689,
-      "sha256": "8b381b138fca26f39b468fa6792ffd12bd1911e2c43ec8cc9a46f5c67793e81e",
-      "lazy": true
+      "bytes": 301194750,
+      "sha256": "371961d54a0ac3f9b3e6460bc6e9c3a4984d1f6b3d46a6d405e9dde14b8f0358",
+      "lazy": false
     }
   ]
 }

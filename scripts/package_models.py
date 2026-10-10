@@ -5,7 +5,8 @@
 
 Writes ``dist/models/<name>.tar.gz`` (upload these as GitHub Release assets) and
 ``data/reference/models_manifest.json`` with each archive's size and SHA-256.
-The zero-shot fallback is marked ``lazy``: it is fetched only when first needed.
+All four models are default downloads: the NLI model is used for non-English sentiment (D78),
+not only as the zero-shot event fallback, so it can no longer be fetched lazily.
 """
 
 from __future__ import annotations
@@ -18,7 +19,7 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-LAZY = {"zeroshot-nli"}
+LAZY: set[str] = set()  # nothing is lazy since D78 (NLI sentiment blend)
 ORDER = ["sentiment-en", "sentiment-multi", "event-multi", "zeroshot-nli"]
 EXTRAS = {"event-multi": ("credit_specialist.joblib",)}  # Credit Event specialist head (D63)
 
