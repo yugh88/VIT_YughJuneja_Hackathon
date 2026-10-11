@@ -1,0 +1,34 @@
+{
+ "spec": "DECISIONS D73(d)",
+ "split": "dev",
+ "target": "sentiment_macro_f1",
+ "current": {
+  "sentiment_macro_f1": 0.6376,
+  "sentiment_macro_f1_ci95": [
+   0.5695,
+   0.7001
+  ],
+  "event_macro_f1": 0.4707,
+  "event_macro_f1_ci95": [
+   0.3499,
+   0.5371
+  ],
+  "hinglish_f1": 0.4966
+ },
+ "v2": {
+  "sentiment_macro_f1": 0.6227,
+  "sentiment_macro_f1_ci95": [
+   0.548,
+   0.688
+  ],
+  "event_macro_f1": 0.4707,
+  "event_macro_f1_ci95": [
+   0.3499,
+   0.5371
+  ],
+  "hinglish_f1": 0.4989
+ },
+ "gain": -0.0149,
+ "drops_over_tol": {},
+ "keep": false
+}

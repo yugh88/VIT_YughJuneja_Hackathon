@@ -1,0 +1,816 @@
+{
+ "run_at": "2026-10-11T00:57:45+00:00",
+ "systems": {
+  "old": {
+   "credit_rule": {
+    "threshold": 0.55,
+    "specialist_weight": 0.5,
+    "backstop": true,
+    "hard_negatives": true
+   },
+   "native_v2_test": {
+    "n": 300,
+    "sentiment_macro_f1": 0.5433,
+    "sentiment_macro_f1_ci95": [
+     0.4613,
+     0.6125
+    ],
+    "sentiment_accuracy": 0.6867,
+    "event_macro_f1": 0.4206,
+    "event_macro_f1_ci95": [
+     0.3075,
+     0.4998
+    ],
+    "event_accuracy": 0.58,
+    "per_language": {
+     "ar": {
+      "n": 30,
+      "sentiment_macro_f1": 0.434,
+      "event_macro_f1": 0.2905
+     },
+     "de": {
+      "n": 30,
+      "sentiment_macro_f1": 0.6905,
+      "event_macro_f1": 0.3891
+     },
+     "es": {
+      "n": 30,
+      "sentiment_macro_f1": 0.6703,
+      "event_macro_f1": 0.6242
+     },
+     "fr": {
+      "n": 30,
+      "sentiment_macro_f1": 0.372,
+      "event_macro_f1": 0.4631
+     },
+     "hi": {
+      "n": 30,
+      "sentiment_macro_f1": 0.8926,
+      "event_macro_f1": 0.5219
+     },
+     "it": {
+      "n": 30,
+      "sentiment_macro_f1": 0.3349,
+      "event_macro_f1": 0.6549
+     },
+     "ja": {
+      "n": 30,
+      "sentiment_macro_f1": 0.338,
+      "event_macro_f1": 0.462
+     },
+     "pt": {
+      "n": 30,
+      "sentiment_macro_f1": 0.4177,
+      "event_macro_f1": 0.627
+     },
+     "ru": {
+      "n": 30,
+      "sentiment_macro_f1": 0.6634,
+      "event_macro_f1": 0.4521
+     },
+     "zh": {
+      "n": 30,
+      "sentiment_macro_f1": 0.4687,
+      "event_macro_f1": 0.52
+     }
+    }
+   },
+   "credit_v2_test": {
+    "n": 150,
+    "n_credit": 40,
+    "precision": 0.5781,
+    "recall": 0.925,
+    "f1": 0.7115,
+    "tp": 37,
+    "fp": 27,
+    "fn": 3,
+    "precision_ci95": [
+     0.4531,
+     0.6923
+    ],
+    "recall_ci95": [
+     0.8333,
+     1.0
+    ],
+    "f1_ci95": [
+     0.6041,
+     0.8
+    ],
+    "macro_f1_all_classes": 0.3227,
+    "module_b_gate": {
+     "precision": 0.5818,
+     "recall": 0.8,
+     "n": 55
+    },
+    "errors": [
+     {
+      "id": "KT006",
+      "text": "Icra downgrades Ola Electric Technologies as sales slump",
+      "gold": "Credit Event",
+      "pred": "Earnings/Guidance"
+     },
+     {
+      "id": "KT007",
+      "text": "Mayer Brown advises Miyoshi America on first-of-its-kind prepackaged talc Chapter 11 case",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT008",
+      "text": "Secured Creditors Cannot Avoid Liquidation Costs Over Unfinalised Expenses: NCLT Chennai",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT010",
+      "text": "NCLT questions EY's 1% success fee, rejects insolvency plea against Mobase",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT011",
+      "text": "Vikram Solar Wins NCLAT Relief as Tribunal Sets Aside NCLT Insolvency Order",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT021",
+      "text": "Why High Yield Munis Default Less Than Corporate High Yield",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT024",
+      "text": "30,745 insolvency applications involving Rs 13.94 lakh crore settled before admission, says MCA",
+      "gold": "Macroeconomic",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT026",
+      "text": "Arkansas Department of Health getting rid of 71 positions in new restructuring plan",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT040",
+      "text": "Rs 6.5 crore payout: What Subhash Chandra’s order means for India’s struggling insolvency mechanism",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT041",
+      "text": "Electoral trusts default route again for corporate political funding. How they’re different from bonds",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT047",
+      "text": "NCLAT seeks responses on Subhash Chandra's challenge to NCLT asset transfer restraint in insolvency case",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT051",
+      "text": "Fitch Downgrades 3, Upgrades 2, Affirms 6 Pepper Classes in 3 Deals; Corrects Analytical Error",
+      "gold": "Credit Event",
+      "pred": "Other/Non-event"
+     },
+     {
+      "id": "KT053",
+      "text": "PH at risk of first credit downgrade since 2005",
+      "gold": "Macroeconomic",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT059",
+      "text": "Carl Zeiss Meditec Plans Up to 1,000 Job Cuts Amid Restructuring Effort",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT070",
+      "text": "WPP plans to cut hundreds more jobs this year as its restructuring continues",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT079",
+      "text": "Citi Downgrades Abercrombie & Fitch to Neutral After 36% Surge, Raises Target to $156",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT088",
+      "text": "Starling to cut 130 jobs in AI-led restructuring",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT091",
+      "text": "Jamie Carragher: HMRC files bankruptcy petition against Sky Sports, CBS pundit",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT097",
+      "text": "Shinhan, Kiwoom face probe over JTBC bond sales amid default fallout",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT100",
+      "text": "Volkswagen's Road to Restructuring: Major Layoffs & Turnaround Plan",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT101",
+      "text": "Porsche Could Face 4,000 More Job Cuts Amid Restructuring",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT104",
+      "text": "Russian debt defaults are surging as Putin hides in bunkers fixated on war instead of the economy",
+      "gold": "Macroeconomic",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT110",
+      "text": "EM High Yield Corporates: Superior Yields, Low Defaults",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT126",
+      "text": "Inspectors downgrade Whittington A&E rating as NHS trust seeks funding to expand",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT129",
+      "text": "Leveraged to distressed - navigating events of default: acceleration and enforcement challenges for lenders",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT137",
+      "text": "Porsche plans to cut 9,000 jobs by 2030 amid major restructuring",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT138",
+      "text": "Re NFE Global Holdings Limited: English Court Sanctions US$9.6 Billion Restructuring Plan for New Fortress Ene",
+      "gold": "Credit Event",
+      "pred": "Geopolitical"
+     },
+     {
+      "id": "KT142",
+      "text": "Committee of creditors can invite land authorities in realty insolvency cases: FM",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT147",
+      "text": "Air Baltic to slash hundreds of jobs under restructuring",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT150",
+      "text": "Microsoft’s Xbox plans major layoffs amid strategic restructuring",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     }
+    ]
+   },
+   "native_300_seen": {
+    "n": 300,
+    "sentiment_macro_f1": 0.531,
+    "sentiment_macro_f1_ci95": [
+     0.4611,
+     0.5969
+    ],
+    "sentiment_accuracy": 0.65,
+    "event_macro_f1": 0.3681,
+    "event_macro_f1_ci95": [
+     0.2533,
+     0.4387
+    ],
+    "event_accuracy": 0.52,
+    "per_language": {
+     "ar": {
+      "n": 30,
+      "sentiment_macro_f1": 0.5849,
+      "event_macro_f1": 0.5952
+     },
+     "de": {
+      "n": 30,
+      "sentiment_macro_f1": 0.5017,
+      "event_macro_f1": 0.2213
+     },
+     "es": {
+      "n": 30,
+      "sentiment_macro_f1": 0.4519,
+      "event_macro_f1": 0.4428
+     },
+     "fr": {
+      "n": 30,
+      "sentiment_macro_f1": 0.685,
+      "event_macro_f1": 0.6094
+     },
+     "hi": {
+      "n": 30,
+      "sentiment_macro_f1": 0.3784,
+      "event_macro_f1": 0.2783
+     },
+     "it": {
+      "n": 30,
+      "sentiment_macro_f1": 0.4683,
+      "event_macro_f1": 0.3615
+     },
+     "ja": {
+      "n": 30,
+      "sentiment_macro_f1": 0.5764,
+      "event_macro_f1": 0.4485
+     },
+     "pt": {
+      "n": 30,
+      "sentiment_macro_f1": 0.4364,
+      "event_macro_f1": 0.3465
+     },
+     "ru": {
+      "n": 30,
+      "sentiment_macro_f1": 0.3557,
+      "event_macro_f1": 0.5779
+     },
+     "zh": {
+      "n": 30,
+      "sentiment_macro_f1": 0.6854,
+      "event_macro_f1": 0.4166
+     }
+    }
+   },
+   "credit_150_seen": {
+    "n": 150,
+    "n_credit": 24,
+    "precision": 0.6667,
+    "recall": 1.0,
+    "f1": 0.8,
+    "tp": 24,
+    "fp": 12,
+    "fn": 0,
+    "precision_ci95": [
+     0.5,
+     0.8126
+    ],
+    "recall_ci95": [
+     1.0,
+     1.0
+    ],
+    "f1_ci95": [
+     0.6667,
+     0.8966
+    ],
+    "macro_f1_all_classes": 0.4883,
+    "module_b_gate": {
+     "precision": 0.7419,
+     "recall": 0.9583,
+     "n": 31
+    },
+    "errors": [
+     {
+      "id": "C007",
+      "text": "Stock Market Today: Dow Jones Futures Rise; Tesla Stock Slides On Downgrade To Sell",
+      "gold": "Macroeconomic",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C014",
+      "text": "Walmart to Cut Around 1,500 Corporate Jobs in Restructuring Drive",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C026",
+      "text": "NCLT can adjudicate fraud, debt disputes under IBC: Delhi High Court",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C044",
+      "text": "Nigerian Aviation Debt Crisis Looms as Handlers Threaten Hal",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C046",
+      "text": "German corporate insolvencies surge to 20-year high",
+      "gold": "Macroeconomic",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C059",
+      "text": "A Comparative Critique Of 2025 IBC Amendment",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C080",
+      "text": "China Credit Growth Weakens",
+      "gold": "Macroeconomic",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C086",
+      "text": "Intel Corp. (INTC) Surges 7.23% as Investors Cheer Restructuring Plan",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C098",
+      "text": "Exxon Mobil to cut 2,000 jobs amid global restructuring",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C108",
+      "text": "Salesforce Laying Off 1,000 Employees in AI-Driven Restructuring",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C144",
+      "text": "iPhones with iOS 18 Share Photo Data with Apple by Default: Here's How to Turn It Off",
+      "gold": "Cyber/Technology Risk",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C146",
+      "text": "10 Years of IBC: India Recovers Rs 4.32 Lakh Crore in Debt",
+      "gold": "Macroeconomic",
+      "pred": "Credit Event"
+     }
+    ]
+   },
+   "event_topic_test_seen": {
+    "n": 4117,
+    "macro_f1_present": 0.8128,
+    "credit_f1": 0.3226
+   }
+  },
+  "new": {
+   "credit_rule": {
+    "threshold": 0.7,
+    "specialist_weight": 0.5,
+    "backstop": true,
+    "hard_negatives": true,
+    "rules_v2": true
+   },
+   "native_v2_test": {
+    "n": 300,
+    "sentiment_macro_f1": 0.6451,
+    "sentiment_macro_f1_ci95": [
+     0.5796,
+     0.7101
+    ],
+    "sentiment_accuracy": 0.6933,
+    "event_macro_f1": 0.4206,
+    "event_macro_f1_ci95": [
+     0.3075,
+     0.4998
+    ],
+    "event_accuracy": 0.58,
+    "per_language": {
+     "ar": {
+      "n": 30,
+      "sentiment_macro_f1": 0.6291,
+      "event_macro_f1": 0.2905
+     },
+     "de": {
+      "n": 30,
+      "sentiment_macro_f1": 0.7912,
+      "event_macro_f1": 0.3891
+     },
+     "es": {
+      "n": 30,
+      "sentiment_macro_f1": 0.8319,
+      "event_macro_f1": 0.6242
+     },
+     "fr": {
+      "n": 30,
+      "sentiment_macro_f1": 0.7438,
+      "event_macro_f1": 0.4631
+     },
+     "hi": {
+      "n": 30,
+      "sentiment_macro_f1": 0.8982,
+      "event_macro_f1": 0.5219
+     },
+     "it": {
+      "n": 30,
+      "sentiment_macro_f1": 0.4824,
+      "event_macro_f1": 0.6549
+     },
+     "ja": {
+      "n": 30,
+      "sentiment_macro_f1": 0.5,
+      "event_macro_f1": 0.462
+     },
+     "pt": {
+      "n": 30,
+      "sentiment_macro_f1": 0.4917,
+      "event_macro_f1": 0.627
+     },
+     "ru": {
+      "n": 30,
+      "sentiment_macro_f1": 0.5635,
+      "event_macro_f1": 0.4521
+     },
+     "zh": {
+      "n": 30,
+      "sentiment_macro_f1": 0.4014,
+      "event_macro_f1": 0.52
+     }
+    }
+   },
+   "credit_v2_test": {
+    "n": 150,
+    "n_credit": 40,
+    "precision": 0.7551,
+    "recall": 0.925,
+    "f1": 0.8315,
+    "tp": 37,
+    "fp": 12,
+    "fn": 3,
+    "precision_ci95": [
+     0.6278,
+     0.8824
+    ],
+    "recall_ci95": [
+     0.8333,
+     1.0
+    ],
+    "f1_ci95": [
+     0.7368,
+     0.9143
+    ],
+    "macro_f1_all_classes": 0.5163,
+    "module_b_gate": {
+     "precision": 0.7619,
+     "recall": 0.8,
+     "n": 42
+    },
+    "errors": [
+     {
+      "id": "KT006",
+      "text": "Icra downgrades Ola Electric Technologies as sales slump",
+      "gold": "Credit Event",
+      "pred": "Earnings/Guidance"
+     },
+     {
+      "id": "KT007",
+      "text": "Mayer Brown advises Miyoshi America on first-of-its-kind prepackaged talc Chapter 11 case",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT008",
+      "text": "Secured Creditors Cannot Avoid Liquidation Costs Over Unfinalised Expenses: NCLT Chennai",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT021",
+      "text": "Why High Yield Munis Default Less Than Corporate High Yield",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT040",
+      "text": "Rs 6.5 crore payout: What Subhash Chandra’s order means for India’s struggling insolvency mechanism",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT041",
+      "text": "Electoral trusts default route again for corporate political funding. How they’re different from bonds",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT051",
+      "text": "Fitch Downgrades 3, Upgrades 2, Affirms 6 Pepper Classes in 3 Deals; Corrects Analytical Error",
+      "gold": "Credit Event",
+      "pred": "Other/Non-event"
+     },
+     {
+      "id": "KT079",
+      "text": "Citi Downgrades Abercrombie & Fitch to Neutral After 36% Surge, Raises Target to $156",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT097",
+      "text": "Shinhan, Kiwoom face probe over JTBC bond sales amid default fallout",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT110",
+      "text": "EM High Yield Corporates: Superior Yields, Low Defaults",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT126",
+      "text": "Inspectors downgrade Whittington A&E rating as NHS trust seeks funding to expand",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT129",
+      "text": "Leveraged to distressed - navigating events of default: acceleration and enforcement challenges for lenders",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT138",
+      "text": "Re NFE Global Holdings Limited: English Court Sanctions US$9.6 Billion Restructuring Plan for New Fortress Ene",
+      "gold": "Credit Event",
+      "pred": "Geopolitical"
+     },
+     {
+      "id": "KT142",
+      "text": "Committee of creditors can invite land authorities in realty insolvency cases: FM",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "KT148",
+      "text": "Moody’s revises North Idaho College outlook to 'positive,' up from negative outlook just two years ago",
+      "gold": "Other/Non-event",
+      "pred": "Credit Event"
+     }
+    ]
+   },
+   "native_300_seen": {
+    "n": 300,
+    "sentiment_macro_f1": 0.6052,
+    "sentiment_macro_f1_ci95": [
+     0.5426,
+     0.6637
+    ],
+    "sentiment_accuracy": 0.64,
+    "event_macro_f1": 0.3681,
+    "event_macro_f1_ci95": [
+     0.2533,
+     0.4387
+    ],
+    "event_accuracy": 0.52,
+    "per_language": {
+     "ar": {
+      "n": 30,
+      "sentiment_macro_f1": 0.4999,
+      "event_macro_f1": 0.5952
+     },
+     "de": {
+      "n": 30,
+      "sentiment_macro_f1": 0.6938,
+      "event_macro_f1": 0.2213
+     },
+     "es": {
+      "n": 30,
+      "sentiment_macro_f1": 0.5778,
+      "event_macro_f1": 0.4428
+     },
+     "fr": {
+      "n": 30,
+      "sentiment_macro_f1": 0.6175,
+      "event_macro_f1": 0.6094
+     },
+     "hi": {
+      "n": 30,
+      "sentiment_macro_f1": 0.4571,
+      "event_macro_f1": 0.2783
+     },
+     "it": {
+      "n": 30,
+      "sentiment_macro_f1": 0.4048,
+      "event_macro_f1": 0.3615
+     },
+     "ja": {
+      "n": 30,
+      "sentiment_macro_f1": 0.7712,
+      "event_macro_f1": 0.4485
+     },
+     "pt": {
+      "n": 30,
+      "sentiment_macro_f1": 0.5851,
+      "event_macro_f1": 0.3465
+     },
+     "ru": {
+      "n": 30,
+      "sentiment_macro_f1": 0.4575,
+      "event_macro_f1": 0.5779
+     },
+     "zh": {
+      "n": 30,
+      "sentiment_macro_f1": 0.6917,
+      "event_macro_f1": 0.4166
+     }
+    }
+   },
+   "credit_150_seen": {
+    "n": 150,
+    "n_credit": 24,
+    "precision": 0.7586,
+    "recall": 0.9167,
+    "f1": 0.8302,
+    "tp": 22,
+    "fp": 7,
+    "fn": 2,
+    "precision_ci95": [
+     0.5861,
+     0.9033
+    ],
+    "recall_ci95": [
+     0.7931,
+     1.0
+    ],
+    "f1_ci95": [
+     0.6999,
+     0.9268
+    ],
+    "macro_f1_all_classes": 0.5422,
+    "module_b_gate": {
+     "precision": 0.8462,
+     "recall": 0.9167,
+     "n": 26
+    },
+    "errors": [
+     {
+      "id": "C026",
+      "text": "NCLT can adjudicate fraud, debt disputes under IBC: Delhi High Court",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C044",
+      "text": "Nigerian Aviation Debt Crisis Looms as Handlers Threaten Hal",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C059",
+      "text": "A Comparative Critique Of 2025 IBC Amendment",
+      "gold": "Regulatory/Legal",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C072",
+      "text": "S&P Says Mozambique's Local Currency Rating Lowered To 'SD' On Completed Domestic Debt Switch; Foreign Currenc",
+      "gold": "Credit Event",
+      "pred": "Macroeconomic"
+     },
+     {
+      "id": "C080",
+      "text": "China Credit Growth Weakens",
+      "gold": "Macroeconomic",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C086",
+      "text": "Intel Corp. (INTC) Surges 7.23% as Investors Cheer Restructuring Plan",
+      "gold": "Operational/Supply Chain",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C119",
+      "text": "Hooters files for bankruptcy, plans to sell locations to founder-backed group",
+      "gold": "Credit Event",
+      "pred": "Other/Non-event"
+     },
+     {
+      "id": "C144",
+      "text": "iPhones with iOS 18 Share Photo Data with Apple by Default: Here's How to Turn It Off",
+      "gold": "Cyber/Technology Risk",
+      "pred": "Credit Event"
+     },
+     {
+      "id": "C146",
+      "text": "10 Years of IBC: India Recovers Rs 4.32 Lakh Crore in Debt",
+      "gold": "Macroeconomic",
+      "pred": "Credit Event"
+     }
+    ]
+   },
+   "event_topic_test_seen": {
+    "n": 4117,
+    "macro_f1_present": 0.8087,
+    "credit_f1": 0.2857
+   }
+  }
+ }
+}
