@@ -3,8 +3,8 @@
 **Candidate Name:** Yugh Juneja
 **College Email ID:** yugh.23bce11163@vitbhopal.ac.in
 **College / Campus:** VIT Bhopal University
-**Demo Video Link:** `<YouTube, unlisted>`
-**Slide Deck Link (if hosted externally):** in the repo at [docs/presentation.pdf](docs/presentation.pdf) (7 slides; also [PPTX](docs/presentation.pptx))
+**Demo Video Link:** `[<YouTube, unlisted>](https://youtu.be/gyRLBzWEZWA)`
+**Slide Deck Link :** in the repo at [docs/presentation.pdf](docs/presentation.pdf) (7 slides; also [PPTX](docs/presentation.pptx))
 
 > **Sentinel reads financial news and social posts in many languages and turns each story into three numbers for every
 > company or country it mentions: a Sentiment Score (−1 to +1), an Event Classification (12 types) and an Impact Score
