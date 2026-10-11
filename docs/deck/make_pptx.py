@@ -1,4 +1,4 @@
-"""Pack the rendered slide images into docs/presentation.pptx, with speaker notes from speaker_notes.md."""
+"""Pack the rendered slide images into docs/presentation.pptx (speaker notes from speaker_notes.md if present)."""
 
 import re
 from pathlib import Path
@@ -7,7 +7,8 @@ from pptx import Presentation
 from pptx.util import Emu
 
 HERE = Path(__file__).parent
-notes = dict(re.findall(r"^## (\d+)\n(.*?)(?=^## |\Z)", (HERE / "speaker_notes.md").read_text(), re.S | re.M))
+NOTES = HERE / "speaker_notes.md"
+notes = dict(re.findall(r"^## (\d+)\n(.*?)(?=^## |\Z)", NOTES.read_text(), re.S | re.M)) if NOTES.exists() else {}
 
 prs = Presentation()
 prs.slide_width, prs.slide_height = Emu(12192000), Emu(6858000)  # 16:9

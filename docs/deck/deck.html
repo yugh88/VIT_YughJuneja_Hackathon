@@ -64,187 +64,180 @@ td.ev{color:var(--ink);font-weight:700}
 .fun .lab{font-size:14.5px;color:#cbd5e1}
 .shot{border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.15);box-shadow:0 18px 40px rgba(0,0,0,.35)}
 .shot img{display:block;width:100%}
+
+/* v3: simple, large type */
+.t1{font-size:46px;line-height:1.1;font-weight:800;letter-spacing:-.02em;margin-top:8px}
+.lead2{font-size:22px;line-height:1.45;color:var(--ink2);margin-top:12px;max-width:1100px}
+.dark .lead2{color:#cbd5e1}
+.flow{display:grid;grid-template-columns:1fr 36px 1fr 36px 1fr 36px 1fr;align-items:stretch;gap:0;margin-top:26px}
+.flow .arrow{display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--muted);font-weight:800}
+.fstep{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 18px}
+.fstep .n{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
+.fstep .h{font-size:24px;font-weight:800;margin:4px 0 6px}
+.fstep p{font-size:17px;line-height:1.4}
+.prob{display:flex;gap:16px;align-items:flex-start;margin:14px 0}
+.prob .i{font-size:30px;line-height:1}
+.prob p{font-size:20px;line-height:1.4;color:var(--ink)}
+.big .v{font-size:64px;font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--blue)}
+.big .t{font-size:19px;font-weight:700;color:var(--ink);margin-top:10px}
+.big .s{font-size:15px;color:var(--muted);margin-top:4px;line-height:1.35}
+.hl h3{font-size:24px;font-weight:800;margin-bottom:8px}
+.hl p{font-size:19px;line-height:1.45}
+.hl .why{font-size:16px;font-weight:700;color:var(--blue);margin-top:12px}
+.dark .stat2 .v{font-size:48px;font-weight:800;color:#fff;letter-spacing:-.02em}
+.dark .stat2 .l{font-size:15.5px;color:#a9b8cc;margin-top:4px;line-height:1.35}
+ul.clean{list-style:none;margin:0;padding:0}
+ul.clean li{font-size:21px;line-height:1.45;margin:10px 0;padding-left:30px;position:relative}
+ul.clean li:before{content:"→";position:absolute;left:0;color:var(--blue);font-weight:800}
+.dark ul.clean li:before{color:var(--cyan)}
 </style>
 </head>
 <body>
 
-<!-- 1 · PROBLEM & SOLUTION ---------------------------------------------->
+<!-- 1 · TITLE ------------------------------------------------------------>
 <section class="slide dark">
-  <div class="kicker">S&amp;P Global × CRISIL Campus Hackathon 2026 · AI/NLP Risk Engine · Problem &amp; solution</div>
-  <div class="hero" style="font-size:72px;margin-top:14px">Sentinel<span>.</span></div>
-  <div class="tag" style="font-size:21px;margin-top:10px">Market-moving risk arrives as text, in many languages, faster than people can read it.
-    Sentinel turns news and social posts into <b style="color:#fff">sentiment, event and impact signals</b> and feeds
-    <b style="color:#fff">both</b> downstream modules: an index rebalancer (A) and a bank stress test (B).</div>
-  <div class="grid" style="grid-template-columns:1fr 1.35fr;gap:22px;margin-top:24px">
-    <div class="card" style="padding:18px 22px">
-      <h2 style="color:#fff">The problem: four questions, minutes after a story breaks</h2>
-      <ol style="margin:6px 0 0 20px">
-        <li><b style="color:#fff">Who</b> is affected: which company or country?</li>
-        <li><b style="color:#fff">How</b> does it read: sentiment −1 … +1?</li>
-        <li><b style="color:#fff">What</b> kind of event: credit, geopolitical, M&amp;A …?</li>
-        <li><b style="color:#fff">How big</b>, and <b style="color:#fff">what does it do to our book?</b></li>
-      </ol>
-      <p style="margin-top:10px;font-size:15px">Keyword alerts miss context, skip non-English sources and cannot size the hit.</p>
-    </div>
-    <div class="card" style="padding:18px 22px">
-      <h2 style="color:#fff">The solution</h2>
-      <ul style="margin:6px 0 0 18px">
-        <li><b style="color:#fff">9 keyless sources</b> (GDELT in 65 languages, RSS, SEC 8-K, central banks, social); every source has a recorded replay twin, so it never goes dark.</li>
-        <li><b style="color:#fff">Fine-tuned models</b> (FinBERT, XLM-R, mDeBERTa NLI) score sentiment per entity and 12 event classes; 284 entities, 9.7k aliases in 20+ languages.</li>
-        <li><b style="color:#fff">Impact Score 1–10 learned from the market</b>: 74,964 past news items labelled with the abnormal move that followed.</li>
-        <li><b style="color:#fff">Acts on it:</b> corroborated alerts re-price a $10 bn bank book; sentiment tilts a 20-stock index within hard limits.</li>
-      </ul>
-    </div>
+  <div class="kicker">S&amp;P Global &amp; Crisil Campus Hackathon 2026 · AI/NLP Risk Engine</div>
+  <div class="hero" style="margin-top:60px">Sentinel<span>.</span></div>
+  <div class="tag" style="font-size:28px;max-width:1050px;margin-top:22px">An AI risk engine that reads the world's financial news, in any language,
+    and tells a bank what it means for its portfolio.</div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:18px;margin-top:70px">
+    <div class="card stat2"><div class="v">9 sources</div><div class="l">news, filings, central banks and social posts, in 65 languages, no API keys</div></div>
+    <div class="card stat2"><div class="v">3 scores</div><div class="l">for every company in every story: Sentiment, Event type, Impact</div></div>
+    <div class="card stat2"><div class="v">2 modules</div><div class="l">an index that follows the news, and a bank stress test</div></div>
   </div>
-  <div class="grid" style="grid-template-columns:repeat(6,1fr);gap:10px;margin-top:18px">
-    <div class="card" style="padding:9px 12px"><div class="ok" style="font-size:13px;color:#4ade80">✓ ≥ 2 sources</div><div style="font-size:12.5px;color:#cbd5e1">9, news + social</div></div>
-    <div class="card" style="padding:9px 12px"><div class="ok" style="font-size:13px;color:#4ade80">✓ Sentiment −1…1</div><div style="font-size:12.5px;color:#cbd5e1">per entity, calibrated</div></div>
-    <div class="card" style="padding:9px 12px"><div class="ok" style="font-size:13px;color:#4ade80">✓ Event class</div><div style="font-size:12.5px;color:#cbd5e1">12 classes</div></div>
-    <div class="card" style="padding:9px 12px"><div class="ok" style="font-size:13px;color:#4ade80">✓ Impact 1–10</div><div style="font-size:12.5px;color:#cbd5e1">learned, with range</div></div>
-    <div class="card" style="padding:9px 12px"><div class="ok" style="font-size:13px;color:#4ade80">✓ API + files</div><div style="font-size:12.5px;color:#cbd5e1">REST, WebSocket, JSONL</div></div>
-    <div class="card" style="padding:9px 12px"><div class="ok" style="font-size:13px;color:#4ade80">✓ Modules</div><div style="font-size:12.5px;color:#cbd5e1">both A and B built</div></div>
+  <div style="position:absolute;left:64px;bottom:46px">
+    <div class="who" style="font-size:22px">Yugh Juneja</div>
+    <div style="font-size:16px;color:#94a3b8;margin-top:4px">VIT Bhopal University · github.com/yugh88/VIT_YughJuneja_Hackathon</div>
   </div>
-  <div class="foot"><span>Yugh Juneja · VIT · github.com/yugh88/VIT_YughJuneja_Hackathon · runs offline: <code>make setup &amp;&amp; make demo</code></span><span>1 / 7</span></div>
 </section>
 
-<!-- 2 · ARCHITECTURE --------------------------------------------------->
-<section class="slide" style="padding-top:36px">
-  <div class="kicker">Architecture</div>
-  <h1 style="font-size:34px">Five stages, one structured signal, three consumers</h1>
-  <img src="../diagrams/architecture.png" alt="Sentinel architecture" style="display:block;height:545px;margin:12px auto 0;border-radius:12px;border:1px solid var(--line);background:#fff">
-  <div class="foot"><span>Output via REST · WebSocket · JSONL · Parquet. More diagrams in docs/diagrams/: data flow, Module A, Module B, impact training, wireframe</span><span>2 / 7</span></div>
-</section>
-
-<!-- 3 · NLP ENGINE RESULTS ------------------------------------------------------>
+<!-- 2 · PROBLEM & APPROACH ---------------------------------------------->
 <section class="slide">
-  <div class="kicker">NLP engine results · held-out test data only</div>
-  <h1 style="font-size:36px">Reads finance text well; impact scores track real moves</h1>
-  <div class="grid" style="grid-template-columns:1.25fr 1fr;gap:22px;margin-top:20px">
-    <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:14px">
-      <div class="card m"><div class="v num" style="color:var(--blue)">0.851</div><div class="t">Sentiment macro-F1</div><div class="s">Twitter fin-news test, n = 2,388 · ECE 0.030 · lexicon 0.452</div><div class="b ok">✓ target ≥ 0.85</div></div>
-      <div class="card m"><div class="v num" style="color:var(--blue)">0.899</div><div class="t">Entity-level sentiment</div><div class="s">SEntFiN held-out, n = 784 · lexicon 0.512</div><div class="b ok">✓ +0.39 over baseline</div></div>
-      <div class="card m"><div class="v num" style="color:var(--blue)">0.818</div><div class="t">Event macro-F1</div><div class="s">9 classes, n = 4,117 · train/test near-duplicates removed</div><div class="b ok">✓ target ≥ 0.80</div></div>
-      <div class="card m"><div class="v num" style="color:var(--blue)">0.76</div><div class="t">Credit-event precision</div><div class="s">150 new 2025–26 headlines, scored once · recall 0.93 · was 0.58</div><div class="b no">✗ target 0.80 · recall ✓ ≥ 0.90</div></div>
-      <div class="card m"><div class="v num" style="color:var(--blue)">1.61×</div><div class="t">Lift at Impact ≥ 8</div><div class="s">share of top-decile real moves vs chance (16.8% vs 10.4%)</div><div class="b" style="color:var(--muted)">30,153 out-of-sample items</div></div>
-      <div class="card m"><div class="v num" style="color:var(--blue)">0.65</div><div class="t">Native-language sentiment</div><div class="s">300 new headlines, 10 languages, scored once · was 0.54 · NLI blend + Hinglish</div><div class="b no">✗ target 0.75 · CI 0.58–0.71</div></div>
+  <div class="kicker">Problem &amp; approach</div>
+  <div class="t1">Risk arrives as text. Sentinel turns it into numbers a bank can act on.</div>
+  <h2 style="font-size:20px;margin-top:22px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">The problem</h2>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:16px">
+    <div class="card prob" style="margin:0"><div class="i">📰</div><p>Market-moving news comes as text: wires, filings, central banks, social posts.</p></div>
+    <div class="card prob" style="margin:0"><div class="i">🌍</div><p>It arrives in dozens of languages, faster than any team can read.</p></div>
+    <div class="card prob" style="margin:0"><div class="i">❓</div><p>A risk desk must know fast: <b>who</b> is hit, <b>how badly</b>, <b>what it costs</b>.</p></div>
+  </div>
+  <h2 style="font-size:20px;margin-top:24px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Our approach</h2>
+  <div class="flow" style="margin-top:4px">
+    <div class="fstep"><div class="n">Step 1</div><div class="h">Collect</div><p>9 free sources in 65 languages, each with a recorded backup</p></div>
+    <div class="arrow">→</div>
+    <div class="fstep"><div class="n">Step 2</div><div class="h">Understand</div><p>Find the companies and countries; drop spam and copies</p></div>
+    <div class="arrow">→</div>
+    <div class="fstep"><div class="n">Step 3</div><div class="h">Score</div><p><b>Sentiment</b> −1 to +1 · <b>Event</b> type · <b>Impact</b> 1–10, learned from real price moves</p></div>
+    <div class="arrow">→</div>
+    <div class="fstep"><div class="n">Step 4</div><div class="h">Act</div><p><b>A</b>: re-weight an index<br><b>B</b>: stress-test a $10 bn bank book</p></div>
+  </div>
+  <div class="foot"><span>Sentinel · Yugh Juneja</span><span>2 / 7</span></div>
+</section>
+
+<!-- 3 · SYSTEM DESIGN --------------------------------------------------->
+<section class="slide" style="padding-top:36px">
+  <div class="kicker">System design</div>
+  <div class="t1" style="font-size:36px">Five layers, from raw text to a decision</div>
+  <img src="../diagrams/architecture.png" alt="Sentinel architecture" style="display:block;height:520px;margin:14px auto 0;border-radius:12px;border:1px solid var(--line);background:#fff">
+  <div class="foot"><span>Sources → Ingestion → NLP Risk Engine → one signal per company (API, WebSocket, files) → Modules and dashboard</span><span>3 / 7</span></div>
+</section>
+
+<!-- 4 · IMPLEMENTATION HIGHLIGHTS --------------------------------------->
+<section class="slide">
+  <div class="kicker">Implementation highlights</div>
+  <div class="t1" style="font-size:40px">Six choices that make it work</div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px;grid-auto-rows:220px">
+    <div class="card hl"><h3>Finance-trained AI models</h3><p>FinBERT for English; XLM-RoBERTa plus a multilingual NLI model for other languages.</p><div class="why">Why: reads context, not keywords</div></div>
+    <div class="card hl"><h3>Impact learned from prices</h3><p>A gradient-boosting model trained on 74,964 news items and the price moves that followed.</p><div class="why">Why: grounded in real reactions</div></div>
+    <div class="card hl"><h3>Cheap filters first</h3><p>64% of documents mention no tracked company and stop before the AI; duplicates merge.</p><div class="why">Why: fast on a laptop CPU</div></div>
+    <div class="card hl"><h3>Never goes dark</h3><p>Every source has a recorded replay that takes over when it fails.</p><div class="why">Why: the demo runs fully offline</div></div>
+    <div class="card hl"><h3>Module A · Index rebalancer</h3><p>20 S&amp;P 100 stocks tilt towards good news, inside hard limits (15% per stock, 35% per sector).</p><div class="why">Why: news-aware, risk-controlled</div></div>
+    <div class="card hl"><h3>Module B · Stress test</h3><p>A confirmed serious event re-prices 300 positions and runs 10,000 scenarios in 0.2&nbsp;s.</p><div class="why">Why: a capital number in seconds</div></div>
+  </div>
+  <div class="foot"><span>Python 3.11 · FastAPI · ONNX Runtime · Hugging Face · scikit-learn · React + TypeScript · Docker · GitHub Actions</span><span>4 / 7</span></div>
+</section>
+
+<!-- 5 · KEY RESULTS ------------------------------------------------------>
+<section class="slide">
+  <div class="kicker">Key results · measured on data the models never saw</div>
+  <div class="t1" style="font-size:40px">Accurate, multilingual and fast</div>
+  <div class="grid" style="grid-template-columns:1.2fr 1fr;gap:24px;margin-top:22px">
+    <div class="grid" style="grid-template-columns:1fr 1fr;gap:16px">
+      <div class="card big"><div class="v num">0.85</div><div class="t">English sentiment score (F1)</div><div class="s">word-list methods score 0.45</div></div>
+      <div class="card big"><div class="v num">0.82</div><div class="t">Event type score (F1)</div><div class="s">12 event classes</div></div>
+      <div class="card big"><div class="v num">92%</div><div class="t">Credit events caught</div><div class="s">new 2025–26 headlines</div></div>
+      <div class="card big"><div class="v num">44 ms</div><div class="t">Per document on a laptop CPU</div><div class="s">64% of documents skip the AI entirely</div></div>
     </div>
     <div class="card" style="padding:18px 20px">
-      <h2 style="font-size:17px;margin-bottom:2px">Higher Impact Score → bigger real moves</h2>
-      <p style="font-size:13px;color:var(--muted)">Mean realised move (in σ of the stock's own residual volatility) by predicted score · 2024+ test</p>
-      <svg id="imp" viewBox="0 0 470 300" style="width:100%;margin-top:6px" role="img" aria-label="Mean realised move by impact score: flat around 1.1 to 1.2 for scores 1 to 8, 1.38 at 9 and 2.61 at 10"></svg>
-      <p style="font-size:12.5px;color:var(--muted);margin-top:2px">Score 10 moves 2.3× more than score 1. Scores 1–8 are nearly flat (an honest limitation).</p>
+      <h2 style="font-size:19px;margin-bottom:2px">Higher Impact Score → bigger real price moves</h2>
+      <p style="font-size:14px;color:var(--muted)">Average move after the news, by predicted score (2024+ news)</p>
+      <svg id="imp" viewBox="0 0 470 300" style="width:100%;margin-top:6px" role="img" aria-label="Average move by impact score: about 1.1 to 1.2 for scores 1 to 8, 1.38 at 9 and 2.61 at 10"></svg>
+      <p style="font-size:15px;margin-top:4px"><b>Impact 10 news moves prices 2.3× more than Impact 1.</b></p>
     </div>
   </div>
-  <div class="foot"><span>Every number is regenerated by a script → docs/model_card.md · v2 sets were frozen (hashed) before any experiment and scored once</span><span>3 / 7</span></div>
+  <div class="card" style="margin-top:18px;padding:14px 20px;display:flex;gap:30px;align-items:center">
+    <div style="font-size:15px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.06em">Final round</div>
+    <div style="font-size:18px">Other languages <b>0.54 → 0.65</b></div>
+    <div style="font-size:18px">Credit precision <b>0.58 → 0.76</b></div>
+    <div style="font-size:18px">Response time <b>177 → 44 ms</b></div>
+  </div>
+  <div class="foot"><span>All results from held-out test sets; details in docs/model_card.md</span><span>5 / 7</span></div>
 </section>
 
-<!-- 4 · MODULE B ---------------------------------------------------->
+<!-- 6 · DOMAIN IMPACT ---------------------------------------------------->
 <section class="slide dark">
-  <div class="kicker">Module B · stress test · replay of 24 Feb 2022 (real recorded news, real models)</div>
-  <h1 style="font-size:36px">From raw headlines to a capital number for the risk committee, automatically</h1>
-  <div class="grid" style="grid-template-columns:1.12fr 1fr;gap:28px;margin-top:22px">
-    <div class="shot"><img src="../screenshots/dashboard/3b_stress_test_replay_2022-02-24.png" alt="Stress test screen on the 24 Feb 2022 replay" style="width:100%;height:auto"></div>
+  <div class="kicker">Domain impact · the morning of 24 Feb 2022, replayed with real news</div>
+  <div class="t1" style="font-size:40px">From headlines to a capital number, automatically</div>
+  <div class="grid" style="grid-template-columns:1.1fr 1fr;gap:28px;margin-top:22px">
+    <div class="shot"><img src="../screenshots/dashboard/3b_stress_test_replay_2022-02-24.png" alt="Stress test screen on the 24 Feb 2022 replay"></div>
     <div>
-      <div class="fun"><div class="bar num" style="width:100%">11,520 articles · 00:00–12:00 UTC</div></div>
-      <div class="fun"><div class="bar num" style="width:62%">3,107 risk signals</div><div class="lab">linked to a company or country</div></div>
-      <div class="fun"><div class="bar num" style="width:26%">23 tests</div><div class="lab">corroborated, merged per 6 h cluster</div></div>
-      <div class="fun"><div class="bar num" style="width:17%;background:#f59e0b">8 / 9</div><div class="lab">top-ranked alerts are war clusters</div></div>
-      <ul style="margin:18px 0 0 18px">
-        <li><b style="color:#fff">Early, multilingual:</b> the first tests fired at 00:00 UTC from <b style="color:#fff">Russian-language</b> headlines.</li>
-        <li><b style="color:#fff">Sized, not just flagged:</b> each alert reports loss, ΔEL, ΔRWA, ΔCET1, 99% VaR and 97.5% ES. Top alert (Ukraine): $10 bn → $9.94 bn, CET1 12.0% → 9.8%, 99% VaR $160 m. Losses hit capital after 25% tax; rating migration lifts RWA, capped at +15%.</li>
-        <li><b style="color:#fff">Explainable:</b> every score carries its evidence sentence, drivers and a likely range, which suits model-risk review.</li>
-        <li><b style="color:#fff">Fast:</b> each test re-prices 300 positions and runs a 10,000-path Monte Carlo in about 0.2 s.</li>
-      </ul>
-    </div>
-  </div>
-  <div class="foot"><span>Scenarios: Macro US (8) −$321 m, CET1 12.0% → 6.9%, VaR $428 m · Geopolitical Russia (10) −$88 m, → 9.5% · Credit US banks (10) −$22 m, → 10.2%</span><span>4 / 7</span></div>
-</section>
-
-<!-- 5 · MODULE A -------------------------------------------------------->
-<section class="slide">
-  <div class="kicker">Module A · tactical index rebalancing</div>
-  <h1 style="font-size:36px">The same signal steers a 20-stock index, inside hard risk limits</h1>
-  <div class="grid" style="grid-template-columns:1.1fr 1fr;gap:26px;margin-top:20px">
-    <div class="shot" style="border-color:var(--line);box-shadow:0 12px 30px rgba(15,23,42,.15)"><img src="../screenshots/dashboard/4_index_rebalancer.png" alt="Index rebalancer screen: weights over time, limits and backtest verdict"></div>
-    <div>
-      <div class="step"><b>1</b><div><h3>Start from market caps</h3><p>20 S&amp;P 100 stocks, float-adjusted weights, each capped at 10%.</p></div></div>
-      <div class="step"><b>2</b><div><h3>Tilt on sentiment surprise</h3><p>w = base × clip(exp(κ·S), 0.5, 2); S is today's sentiment minus the stock's own 30-day mean, from signals with impact ≥ 6.</p></div></div>
-      <div class="step"><b>3</b><div><h3>Enforce limits every time</h3><p>≤ 15% per name, ≥ 1% floor, ≤ 35% per sector, ≤ 10% turnover; rebalance on impact ≥ 5 or every 15 min.</p></div></div>
-      <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px">
-        <div class="card m" style="padding:12px 14px"><div class="v num" style="font-size:26px;color:var(--good)">100%</div><div class="s">of 1,673 rebalance days within every limit</div></div>
-        <div class="card m" style="padding:12px 14px"><div class="v num" style="font-size:26px;color:var(--bad)">IR −1.43</div><div class="s">net of 10 bp costs, 2024 → Aug 2026, run once</div></div>
-        <div class="card m" style="padding:12px 14px"><div class="v num" style="font-size:26px;color:var(--bad)">33%</div><div class="s">of date-shuffled placebos beaten (bar: 95%)</div></div>
+      <div class="fun"><div class="bar num" style="width:100%">11,520 news articles</div></div>
+      <div class="fun"><div class="bar num" style="width:62%">3,107 signals</div><div class="lab">about a company or country</div></div>
+      <div class="fun"><div class="bar num" style="width:28%">23 stress tests</div><div class="lab">confirmed by several outlets</div></div>
+      <div class="card" style="margin-top:16px;padding:14px 18px">
+        <div style="font-size:15px;color:#a9b8cc">Top alert: Ukraine declares emergency</div>
+        <div style="font-size:26px;font-weight:800;color:#fff;margin-top:4px">$10.00 bn → $9.94 bn</div>
+        <div style="font-size:18px;color:#dbe4f0">capital ratio 12.0% → 9.8% · 99% VaR $160 m</div>
       </div>
-      <p style="font-size:14.5px;margin-top:12px"><b>Verdict:</b> no proven edge after costs, and the dashboard says so. Module A ships as a transparent, controlled consumer of the signal, not as an alpha claim. Both versions (sentiment, surprise) were written down before the backtest.</p>
+      <ul class="clean" style="margin-top:14px">
+        <li style="color:#dbe4f0"><b style="color:#fff">Early:</b> first alerts at 00:00 UTC, from Russian-language headlines</li>
+        <li style="color:#dbe4f0"><b style="color:#fff">Actionable:</b> loss, capital and VaR, not just a red flag</li>
+        <li style="color:#dbe4f0"><b style="color:#fff">Trustworthy:</b> one tweet cannot trigger a test; every score shows its evidence</li>
+      </ul>
     </div>
   </div>
-  <div class="foot"><span>Flow: docs/diagrams/module-a-flow.png · weights over 7 and 30 days, tilt slider, pause/resume on the dashboard</span><span>5 / 7</span></div>
+  <div class="foot"><span>Module B on a seeded synthetic $10 bn book · shocks calibrated on real episodes (Ukraine 2022, 2022 rate hikes, SVB 2023)</span><span>6 / 7</span></div>
 </section>
 
-<!-- 6 · RESULTS & WHAT WE LEARNED ---------------------------------------->
+<!-- 7 · ASSUMPTIONS & NEXT STEPS ----------------------------------------->
 <section class="slide">
-  <div class="kicker">Results &amp; what we learned · every miss published</div>
-  <h1 style="font-size:36px">Core accuracy targets met; the misses are measured, not hidden</h1>
-  <div class="grid" style="grid-template-columns:1.25fr 1fr;gap:26px;margin-top:18px">
-    <table>
-      <tr><th>Target</th><th>Goal</th><th>Measured</th><th></th></tr>
-      <tr><td>English sentiment macro-F1</td><td class="num">≥ 0.85</td><td class="num">0.851</td><td class="ok">✓ met</td></tr>
-      <tr><td>Event macro-F1</td><td class="num">≥ 0.80</td><td class="num">0.818</td><td class="ok">✓ met</td></tr>
-      <tr><td>Credit-event precision / recall</td><td class="num">0.80 / 0.90</td><td class="num">0.76 / 0.93</td><td class="no">½ recall met</td></tr>
-      <tr><td>Native-language sentiment F1</td><td class="num">≥ 0.75</td><td class="num">0.54 → 0.65</td><td class="no">✗ missed</td></tr>
-      <tr><td>Impact Spearman ρ (2024+)</td><td class="num">≥ 0.25</td><td class="num">0.115 (heuristic 0.043)</td><td class="no">✗ missed</td></tr>
-      <tr><td>Throughput per CPU worker</td><td class="num">150 docs/s</td><td class="num">17.6 docs/s</td><td class="no">✗ missed</td></tr>
-      <tr><td>Module A beats 95% of placebos</td><td class="num">net IR &gt; 0</td><td class="num">IR −1.43 · 33%</td><td class="no">✗ no edge</td></tr>
-    </table>
-    <div class="card" style="padding:16px 20px">
-      <h2 style="font-size:17px">What we learned</h2>
-      <ul style="margin-left:18px">
-        <li style="font-size:14px"><b>Machine-translated tests flatter.</b> A translated test said 0.83 for other languages; real native headlines said 0.53.</li>
-        <li style="font-size:14px"><b>Translate-test did not help sentiment</b>; blending a multilingual NLI model did (dev 0.54 → 0.64), with no translation at run time.</li>
-        <li style="font-size:14px"><b>Precision comes from hard negatives.</b> Rules for analyst notes, aggregates and recoveries lifted credit precision on new data (0.58 → 0.76); the cost: recall on the older 150-headline set fell from 1.00 to 0.92.</li>
-        <li style="font-size:14px"><b>Capital needs the full chain.</b> After-tax losses and capped RWA cut the replay median ΔCET1 from −571 to −273 bp; the cap binds every time, so rating migration is too aggressive.</li>
-        <li style="font-size:14px"><b>Not every speed-up is one:</b> CoreML was 20× slower than CPU on these models.</li>
+  <div class="kicker">Assumptions &amp; next steps</div>
+  <div class="t1" style="font-size:40px">Built to grow into a production system</div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;gap:26px;margin-top:26px">
+    <div class="card" style="padding:22px 26px">
+      <h2 style="font-size:22px">Assumptions</h2>
+      <ul class="clean">
+        <li>Synthetic, seeded bank book; public data only</li>
+        <li>Stress shocks scale with the Impact Score from real past episodes</li>
+        <li>Recorded finance tweets stand in for X, which has no free API</li>
+      </ul>
+    </div>
+    <div class="card" style="padding:22px 26px">
+      <h2 style="font-size:22px">Next steps</h2>
+      <ul class="clean">
+        <li>Human-labelled native-language data to raise multilingual accuracy</li>
+        <li>Connect real exposure feeds in place of the synthetic book</li>
+        <li>GPU or INT8 workers for higher volume</li>
+        <li>Intraday price labels for a sharper Impact Score</li>
       </ul>
     </div>
   </div>
-  <div class="card" style="margin-top:16px;background:var(--navy);border:none;display:flex;gap:18px;align-items:center;padding:14px 22px">
-    <div style="font-size:28px">🔎</div>
-    <p style="color:#dbe4f0;font-size:15px"><b style="color:#fff">How we kept score honest:</b> new evaluation sets were built blind, hashed and frozen before any experiment;
-      every change was chosen on dev data only and the frozen tests were scored once, old vs new, with 95% confidence intervals.</p>
+  <div class="card" style="margin-top:22px;background:var(--navy);border:none;padding:18px 24px;display:flex;gap:40px;align-items:center">
+    <div style="color:#fff;font-size:20px;font-weight:800">Scale</div>
+    <div style="color:#dbe4f0;font-size:18px"><b style="color:#fff">10 million documents a day</b> ≈ 7 CPU workers on average</div>
+    <div style="color:#dbe4f0;font-size:18px">Stateless workers · one signal format · runs offline</div>
   </div>
-  <div class="foot"><span>Details: docs/model_card.md · decision log docs/DECISIONS.md · old vs new: docs/eval/v2/final.json</span><span>6 / 7</span></div>
-</section>
-
-<!-- 7 · SCALE & NEXT STEPS ---------------------------------------------->
-<section class="slide dark">
-  <div class="kicker">Scale &amp; next steps</div>
-  <h1 style="font-size:36px">CPU-only today, a clear path to 10 million documents a day</h1>
-  <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px">
-    <div class="card stat"><div class="v num">17.6</div><div class="l">docs/s per 8-thread CPU worker on new text (33.1 with repeats, via the logits cache)</div></div>
-    <div class="card stat"><div class="v num">44 ms</div><div class="l">p95 single-document latency (was 177 ms before the cache)</div></div>
-    <div class="card stat"><div class="v num">≥ 64%</div><div class="l">of documents exit before any model: no tracked entity or a near-duplicate</div></div>
-    <div class="card stat"><div class="v num">≈ 7</div><div class="l">CPU workers for 10 M docs/day at average load (116 docs/s); about 66 at a 10× peak</div></div>
-  </div>
-  <div class="grid" style="grid-template-columns:1fr 1fr;gap:22px;margin-top:22px">
-    <div class="card" style="padding:18px 22px">
-      <h2 style="color:#fff;font-size:18px">Built to scale out</h2>
-      <ul style="margin-left:18px">
-        <li>Stateless scoring workers behind a queue; sources, NLP and modules talk through one signal schema (REST, WebSocket, JSONL).</li>
-        <li>Production profile in docker-compose: Redpanda, TimescaleDB, Redis (adapters on the roadmap).</li>
-        <li>Circuit breakers fail over to replay twins; the demo and the tests run with zero network access.</li>
-      </ul>
-    </div>
-    <div class="card" style="padding:18px 22px">
-      <h2 style="color:#fff;font-size:18px">Next steps</h2>
-      <ol style="margin-left:18px">
-        <li>Human-labelled native-language data to close the 0.65 → 0.75 gap.</li>
-        <li>Calibrate rating migration (the RWA cap binds in every test) and plug real exposure feeds in place of the synthetic book.</li>
-        <li>Static INT8 or GPU workers behind an accuracy gate; intraday impact labels.</li>
-        <li>Human spot-check of the AI-annotated evaluation sets.</li>
-      </ol>
-    </div>
-  </div>
-  <div class="foot"><span>Assumptions: synthetic seeded bank book; evaluation sets AI-annotated blind in two passes; recorded tweets stand in for X (no keyless API)</span><span>7 / 7</span></div>
+  <div class="foot"><span>Run it: make setup &amp;&amp; make demo · github.com/yugh88/VIT_YughJuneja_Hackathon</span><span>7 / 7</span></div>
 </section>
 
 <script>
