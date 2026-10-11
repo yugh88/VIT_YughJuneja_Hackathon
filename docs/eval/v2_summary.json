@@ -1,0 +1,159 @@
+{
+ "run_at": "2026-10-11T00:57:45+00:00",
+ "source": "docs/eval/v2/final.json",
+ "native_v2_test": {
+  "old": {
+   "n": 300,
+   "sentiment_macro_f1": 0.5433,
+   "sentiment_macro_f1_ci95": [
+    0.4613,
+    0.6125
+   ],
+   "event_macro_f1": 0.4206,
+   "event_macro_f1_ci95": [
+    0.3075,
+    0.4998
+   ]
+  },
+  "new": {
+   "n": 300,
+   "sentiment_macro_f1": 0.6451,
+   "sentiment_macro_f1_ci95": [
+    0.5796,
+    0.7101
+   ],
+   "event_macro_f1": 0.4206,
+   "event_macro_f1_ci95": [
+    0.3075,
+    0.4998
+   ]
+  }
+ },
+ "credit_v2_test": {
+  "old": {
+   "n": 150,
+   "n_credit": 40,
+   "precision": 0.5781,
+   "precision_ci95": [
+    0.4531,
+    0.6923
+   ],
+   "recall": 0.925,
+   "recall_ci95": [
+    0.8333,
+    1.0
+   ],
+   "f1": 0.7115,
+   "f1_ci95": [
+    0.6041,
+    0.8
+   ]
+  },
+  "new": {
+   "n": 150,
+   "n_credit": 40,
+   "precision": 0.7551,
+   "precision_ci95": [
+    0.6278,
+    0.8824
+   ],
+   "recall": 0.925,
+   "recall_ci95": [
+    0.8333,
+    1.0
+   ],
+   "f1": 0.8315,
+   "f1_ci95": [
+    0.7368,
+    0.9143
+   ]
+  }
+ },
+ "native_300_seen": {
+  "old": {
+   "n": 300,
+   "sentiment_macro_f1": 0.531,
+   "sentiment_macro_f1_ci95": [
+    0.4611,
+    0.5969
+   ],
+   "event_macro_f1": 0.3681,
+   "event_macro_f1_ci95": [
+    0.2533,
+    0.4387
+   ]
+  },
+  "new": {
+   "n": 300,
+   "sentiment_macro_f1": 0.6052,
+   "sentiment_macro_f1_ci95": [
+    0.5426,
+    0.6637
+   ],
+   "event_macro_f1": 0.3681,
+   "event_macro_f1_ci95": [
+    0.2533,
+    0.4387
+   ]
+  }
+ },
+ "credit_150_seen": {
+  "old": {
+   "n": 150,
+   "n_credit": 24,
+   "precision": 0.6667,
+   "precision_ci95": [
+    0.5,
+    0.8126
+   ],
+   "recall": 1.0,
+   "recall_ci95": [
+    1.0,
+    1.0
+   ],
+   "f1": 0.8,
+   "f1_ci95": [
+    0.6667,
+    0.8966
+   ]
+  },
+  "new": {
+   "n": 150,
+   "n_credit": 24,
+   "precision": 0.7586,
+   "precision_ci95": [
+    0.5861,
+    0.9033
+   ],
+   "recall": 0.9167,
+   "recall_ci95": [
+    0.7931,
+    1.0
+   ],
+   "f1": 0.8302,
+   "f1_ci95": [
+    0.6999,
+    0.9268
+   ]
+  }
+ },
+ "event_topic_test_seen": {
+  "old": {
+   "n": 4117,
+   "macro_f1_present": 0.8128,
+   "credit_f1": 0.3226
+  },
+  "new": {
+   "n": 4117,
+   "macro_f1_present": 0.8087,
+   "credit_f1": 0.2857
+  }
+ },
+ "speed": {
+  "threads": 8,
+  "docs_per_s_unique": 17.6,
+  "docs_per_s_with_repeats": 33.1,
+  "p50_ms": 0.7,
+  "p95_ms": 43.7
+ }
+}
