@@ -2,6 +2,35 @@
 
 Every number below is produced by a script in this repo (`make eval`, `make bench`, `python -m training.train_impact`). This file is generated; do not edit it by hand.
 
+## 0. Score-improvement round (v2): old vs new
+
+New evaluation sets were built blind under the frozen `data/eval/LABELLING.md` (AI-annotated, two passes), hashed in `data/eval/v2/FREEZE.json` before any experiment, and scored **once** at the end. Every change was selected on the dev splits only (pre-registered in `docs/DECISIONS.md` D72-D80). *Old* = the system before the round; *new* = the shipped system. 95% bootstrap confidence intervals in brackets. Run 2026-10-11T00:57:45+00:00; raw results in `docs/eval/v2/final.json`.
+
+| Set | Metric | Old | New |
+| --- | --- | --- | --- |
+| Native headlines, 10 languages (new, n = 300) | sentiment macro-F1 | 0.543 (0.46-0.61) | 0.645 (0.58-0.71) |
+| Native headlines, 10 languages (new, n = 300) | event macro-F1 | 0.421 (0.31-0.50) | 0.421 (0.31-0.50) |
+| Credit headlines 2025-26 (new, n = 150) | Credit Event precision | 0.578 (0.45-0.69) | 0.755 (0.63-0.88) |
+| Credit headlines 2025-26 (new, n = 150) | Credit Event recall | 0.925 (0.83-1.00) | 0.925 (0.83-1.00) |
+| Credit headlines 2025-26 (new, n = 150) | Credit Event F1 | 0.712 (0.60-0.80) | 0.832 (0.74-0.91) |
+| Native-300 (seen in round 1) | sentiment macro-F1 | 0.531 (0.46-0.60) | 0.605 (0.54-0.66) |
+| Native-300 (seen in round 1) | event macro-F1 | 0.368 (0.25-0.44) | 0.368 (0.25-0.44) |
+| Credit-150 (seen in round 1) | Credit Event precision | 0.667 (0.50-0.81) | 0.759 (0.59-0.90) |
+| Credit-150 (seen in round 1) | Credit Event recall | 1.000 (1.00-1.00) | 0.917 (0.79-1.00) |
+| Twitter topic test (seen) | event macro-F1 | 0.813 | 0.809 |
+| Twitter topic test (seen) | Credit Event F1 | 0.323 | 0.286 |
+
+The event classifier itself is unchanged, so event macro-F1 is identical; the credit changes are rules and a threshold on top of it. **Regressions (more than 0.01 worse), reported as found and not re-tuned on test data:** Credit-150 (seen in round 1), Credit Event recall: 1.000 -> 0.917; Twitter topic test (seen), Credit Event F1: 0.323 -> 0.286.
+
+**Translate-train retrains** (D73(d), D79; dev only):
+
+| Model | Target | Current | v2 | Kept |
+| --- | --- | --- | --- | --- |
+| sentiment-multi-v2 | sentiment_macro_f1 | 0.6376 | 0.6227 | no (drops: none; gain -0.0149) |
+| event-multi-v2 | - | - | - | not trained: ran out of time (D80) |
+
+**Speed (CPU, 8 threads, batch 32):** 17.6 docs/s on new text, 33.1 docs/s with repeated text (logits cache); single-document latency p50 0.7 ms, p95 43.7 ms. Details: `docs/eval/v2/speed.json`.
+
 ## 1. Sentiment (uncontaminated test sets first)
 
 _Generated 2026-10-05T13:37:24Z · commit `6cf9e26` (uncommitted changes) · source `02c34ed0c3790413`_
@@ -165,7 +194,7 @@ Hard-negative rules (affirmed / stable-positive outlook / upgrade -> not Credit;
 
 ## 6. Module A: sentiment-tilted index backtest
 
-_Generated 2026-10-05T13:27:42Z · commit `6cf9e26` (uncommitted changes) · source `1e1f0233e295e235`_
+_Generated 2026-10-06T09:43:58Z · commit `none (no commits yet)` · source `c1ca1665630b390c`_
 
 Two versions specified before running (DECISIONS D67); chosen on validation (2020-01-01..2023-12-31) by net IR: **v2_surprise**. Test (2024-01-01..2026-08-31) run once for both, costs 10 bp per side, turnover cap 10%.
 
@@ -184,9 +213,9 @@ Synthetic book (seed 42): 300 positions, $10.0 bn, 120 corporate counterparties,
 
 | Scenario | Loss | dEL | RWA before -> after | dCET1 (losses / RWA) | 99% VaR | 97.5% ES |
 | --- | --- | --- | --- | --- | --- | --- |
-| Geopolitical (impact 9) [RU, SOV:RU] | $72m | $14m | 5.92 -> 8.37 bn | -437.1 bp (-122.3 / -350.5) | $175m | $177m |
-| Macroeconomic (impact 8) [US] | $321m | $46m | 5.92 -> 8.53 bn | -743.1 bp (-542.3 / -366.5) | $428m | $430m |
-| Credit Event (impact 10) [US, BANK:SIVB] | $22m | $30m | 5.92 -> 9.10 bn | -442.8 bp (-37.0 / -418.7) | $138m | $140m |
+| Geopolitical (impact 9) [RU, SOV:RU] | $72m | $14m | 5.92 -> 6.81 bn | -236.3 bp (-91.8 / -156.5) | $175m | $177m |
+| Macroeconomic (impact 8) [US] | $321m | $46m | 5.92 -> 6.81 bn | -510.2 bp (-406.7 / -156.5) | $428m | $430m |
+| Credit Event (impact 10) [US, BANK:SIVB] | $22m | $30m | 5.92 -> 6.81 bn | -180.6 bp (-27.7 / -156.5) | $138m | $140m |
 
 **24 Feb 2022 replay** (recorded GDELT, real models, real trigger rule): 11520 docs -> 3107 signals -> 23 stress tests fired; first at 2022-02-24 00:00 UTC. High-impact signals blocked: {'not_corroborated': 26, 'credit': 1, 'merged': 146}.
 
@@ -207,14 +236,14 @@ Trigger: v2 (D66): country/obligor clusters merged within 6 h, tier-1 outlet, cr
 
 | Time (UTC) | Cluster | Impact | Corroboration | Trigger headline | Loss | dCET1 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2022-02-24 00:00 | Geopolitical|US | 9 | 8 outlets, burst 0.0 | Посол США в Афинах сообщил об отправке в скором времени 12 вертолетов  | $129.7m | -632.9 bp |
-| 2022-02-24 00:00 | Geopolitical|UA | 9 | 13 outlets, burst 0.0 | Украина готова говорить с Россией в разных форматах, заявил Зеленский | $60.3m | -412.1 bp |
-| 2022-02-24 00:00 | Geopolitical|RU | 9 | 9 outlets, burst 0.0 | Зеленский заявил, что 23 февраля инициировал разговор с Путиным и не п | $72.5m | -437.1 bp |
-| 2022-02-24 01:30 | Macroeconomic|US | 8 | 6 outlets, burst 0.0 | Les enchères pour des éoliennes en mer aux Etats-unis dépassent 1,5 mi | $321.2m | -743.1 bp |
-| 2022-02-24 01:30 | Macroeconomic|UA | 9 | 16 outlets, burst 0.0 | Consejo de Seguridad de la ONU a otra reunión urgente sobre Ucrania |  | $381.7m | -833.2 bp |
-| 2022-02-24 02:00 | Geopolitical|CN | 8 | 4 outlets, burst 4.7 | China envoy calls for diplomatic solution to Ukraine crisis | $58.6m | -380.6 bp |
-| 2022-02-24 04:15 | Macroeconomic|CN | 9 | 6 outlets, burst 3.28 | Китай призвал все стороны вокруг Украины проявить сдержанность | $399.5m | -867.0 bp |
-| 2022-02-24 06:00 | Geopolitical|RU | 9 | 185 outlets, burst 1.26 | Russia launches attacks on key Ukrainian cities | $72.5m | -437.1 bp |
+| 2022-02-24 00:00 | Geopolitical|US | 9 | 8 outlets, burst 0.0 | Посол США в Афинах сообщил об отправке в скором времени 12 вертолетов  | $129.7m | -299.3 bp |
+| 2022-02-24 00:00 | Geopolitical|UA | 9 | 13 outlets, burst 0.0 | Украина готова говорить с Россией в разных форматах, заявил Зеленский | $60.3m | -222.9 bp |
+| 2022-02-24 00:00 | Geopolitical|RU | 9 | 9 outlets, burst 0.0 | Зеленский заявил, что 23 февраля инициировал разговор с Путиным и не п | $72.5m | -236.3 bp |
+| 2022-02-24 01:30 | Macroeconomic|US | 8 | 6 outlets, burst 0.0 | Les enchères pour des éoliennes en mer aux Etats-unis dépassent 1,5 mi | $321.2m | -510.2 bp |
+| 2022-02-24 01:30 | Macroeconomic|UA | 9 | 16 outlets, burst 0.0 | Consejo de Seguridad de la ONU a otra reunión urgente sobre Ucrania |  | $381.7m | -576.7 bp |
+| 2022-02-24 02:00 | Geopolitical|CN | 8 | 4 outlets, burst 4.7 | China envoy calls for diplomatic solution to Ukraine crisis | $58.6m | -221.0 bp |
+| 2022-02-24 04:15 | Macroeconomic|CN | 9 | 6 outlets, burst 3.28 | Китай призвал все стороны вокруг Украины проявить сдержанность | $399.5m | -596.3 bp |
+| 2022-02-24 06:00 | Geopolitical|RU | 9 | 185 outlets, burst 1.26 | Russia launches attacks on key Ukrainian cities | $72.5m | -236.3 bp |
 
 ## 8. Latency and throughput
 

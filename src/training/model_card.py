@@ -83,7 +83,7 @@ def _v2_section() -> list[str]:
         "",
         "New evaluation sets were built blind under the frozen `data/eval/LABELLING.md` (AI-annotated, two passes), "
         "hashed in `data/eval/v2/FREEZE.json` before any experiment, and scored **once** at the end. Every change was "
-        "selected on the dev splits only (pre-registered in `docs/DECISIONS.md` D72-D79). *Old* = the system before the "
+        "selected on the dev splits only (pre-registered in `docs/DECISIONS.md` D72-D80). *Old* = the system before the "
         "round; *new* = the shipped system. 95% bootstrap confidence intervals in brackets. "
         f"Run {sm['run_at']}; raw results in `docs/eval/v2/final.json`.",
         "",
@@ -113,16 +113,28 @@ def _v2_section() -> list[str]:
         ("event_topic_test_seen", "macro_f1_present", "Twitter topic test (seen)", "event macro-F1"),
         ("event_topic_test_seen", "credit_f1", "Twitter topic test (seen)", "Credit Event F1"),
     ]
+    worse = []
     for key, metric, name, label in rows:
         o, n = sm[key]["old"], sm[key]["new"]
         if metric in o and metric in n:
             L.append(_row(name, label, _ci(o, metric), _ci(n, metric)))
+            if n[metric] < o[metric] - 0.01:
+                worse.append(f"{name}, {label}: {o[metric]:.3f} -> {n[metric]:.3f}")
     L.append("")
+    L += [
+        "The event classifier itself is unchanged, so event macro-F1 is identical; the credit changes are rules and "
+        "a threshold on top of it. "
+        + ("**Regressions (more than 0.01 worse), reported as found and not re-tuned on test data:** " + "; ".join(worse) + "."
+           if worse else "No metric is more than 0.01 worse."),
+        "",
+    ]  # fmt: skip
     comps = [(w, _load(f"v2/compare_{w}.json")) for w in ("sentiment", "event")]
     if any(c for _, c in comps):
         L += ["**Translate-train retrains** (D73(d), D79; dev only):", "", "| Model | Target | Current | v2 | Kept |",
               "| --- | --- | --- | --- | --- |"]  # fmt: skip
         for w, c in comps:
+            if not c:
+                L.append(_row(f"{w}-multi-v2", "-", "-", "-", "not trained: ran out of time (D80)"))
             if c:
                 t = c["target"]
                 L.append(_row(f"{w}-multi-v2", t, c["current"][t], c["v2"][t],

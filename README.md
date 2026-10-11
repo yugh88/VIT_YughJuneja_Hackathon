@@ -21,7 +21,7 @@
 | --- | --- |
 | 🚀 Run it | [Quickstart](#4-quickstart--installation): `docker compose up` then open http://localhost:8000 |
 | 📊 Results | [Key results](#5-key-results--domain-impact) · [what we tried and what failed](#what-we-tried-and-what-failed) · [model card](docs/model_card.md) |
-| 🧭 Design | [Architecture](#2-architecture--tech-stack) · [diagrams](#diagrams) · [decision log (83 entries)](docs/DECISIONS.md) |
+| 🧭 Design | [Architecture](#2-architecture--tech-stack) · [diagrams](#diagrams) · [decision log (93 entries)](docs/DECISIONS.md) |
 | 🗂 Data | [Dataset used](#3-dataset-used) · [data/SOURCES.md](data/SOURCES.md) · [sample output](data/sample_output/) |
 
 ### The brief, point by point
@@ -155,7 +155,7 @@ validation and is the live default. [Flow diagram](docs/diagrams/module-a-flow.p
 - **Book:** seeded synthetic, $10 bn, 300 positions (loans, revolvers, IG/HY/sovereign bonds, swaps, FX forwards, CDS, options), 120 counterparties, 25 countries, sector mix from the provided transactions dataset.
 - **Trigger:** Geopolitical, Macroeconomic or Credit Event, **and** impact > 7, **and** corroboration (≥ 3 outlets or a mention burst within 6 h, with ≥ 1 tier-1 outlet). Credit events also need confidence ≥ 0.7 and a distress term. One test per (country or obligor, event) per 6 h.
 - **Shocks:** measured from real anchor windows (Russia–Ukraine 2022, the 2022 tightening cycle, SVB 2023), scaled by impact and targeted by country, region and sector.
-- **Repricing:** bonds by duration and convexity; loans by Vasicek-stressed PD; derivatives by DV01, delta, gamma and vega. **Capital:** Basel IRB risk weights give ΔRWA and ΔCET1. **Monte Carlo:** 10,000 correlated draws give 99% VaR and 97.5% ES in 0.21 s.
+- **Repricing:** bonds by duration and convexity; loans by Vasicek-stressed PD; derivatives by DV01, delta, gamma and vega. **Capital:** Basel IRB risk weights give ΔRWA (rating migration capped at +15%) and ΔCET1, with losses taken after 25% tax. **Monte Carlo:** 10,000 correlated draws give 99% VaR and 97.5% ES in 0.21 s.
 
 [Flow diagram](docs/diagrams/module-b-flow.png).
 </details>
@@ -213,19 +213,20 @@ docker compose up
 ```bash
 git clone https://github.com/yugh88/VIT_YughJuneja_Hackathon.git
 cd VIT_YughJuneja_Hackathon
-make setup        # venv + pip install -r requirements.txt + models (811 MB, checksummed, resumable) + dashboard build
+make setup        # venv + pip install -r requirements.txt + models (1.1 GB, checksummed, resumable) + dashboard build
 make demo         # offline replay at 30x on http://localhost:8000
 ```
 
-The first run downloads three fine-tuned ONNX models (811 MB) from this repo's GitHub Release `models-v1`. Each file is
+The first run downloads four ONNX models (1.1 GB: two sentiment models, the event classifier and the multilingual NLI model) from this repo's GitHub Release [`models-v1`](https://github.com/yugh88/VIT_YughJuneja_Hackathon/releases/tag/models-v1). Each file is
 verified against the SHA-256 in [`data/reference/models_manifest.json`](data/reference/models_manifest.json). If the
-download is not possible, every stage falls back and says so in `/v1/health`.
+download is not possible, every stage falls back and says so in `/v1/health`. Measured from a fresh clone on an M3 Pro:
+`make setup` took 8 min 50 s (most of it the model download), and `make demo` served the dashboard about 50 s later.
 
 | Command | What it does |
 | --- | --- |
 | `make demo` | Offline: replays every recorded source at 30x into the API and dashboard on :8000 |
 | `make live` | Live keyless sources; each falls back to its replay twin if it fails |
-| `make test` | Offline test suite (45 tests); `make lint` runs ruff, mypy and the API-key scan |
+| `make test` | Offline test suite (59 tests); `make lint` runs ruff, mypy and the API-key scan |
 | `make backtest` · `make replay-2022` | Module A backtest · Module B replay of 24 Feb 2022 |
 | `make eval` · `make bench` | Re-score every model on held-out data and regenerate the [model card](docs/model_card.md) · latency and throughput |
 | `make train` · `make impact` | Re-train the NLP models · the impact model, from public data |
@@ -245,12 +246,30 @@ tables with confidence intervals: [model card](docs/model_card.md).
 | Sentiment macro-F1, Twitter financial news (n = 2,388, uncontaminated) | **0.851** · ECE 0.030 | 0.452 (LM + VADER lexicons) | ≥ 0.85 | ✅ |
 | Entity-level sentiment macro-F1, SEntFiN held-out (n = 784) | **0.899** | 0.512 | – | ✅ |
 | Event classification macro-F1, 9 classes (n = 4,117, near-duplicates removed) | **0.818** · accuracy 0.887 | – | ≥ 0.80 | ✅ |
-| Credit Event, 150 hard 2024+ headlines | **F1 0.80** · recall 1.00 · precision 0.67 | – | F1 ≥ 0.65 · P ≥ 0.80 | ✅ / ❌ |
+| Credit Event, 150 **new** 2025–26 headlines (v2 test, scored once) | **precision 0.755** (CI 0.63–0.88) · recall 0.925 · F1 0.832 | before this round: P 0.578 · R 0.925 · F1 0.712 | P ≥ 0.80 · R ≥ 0.90 | ✅ recall / ❌ precision |
 | Impact vs realised abnormal move, 2024+ out of sample (n = 30,153) | **Spearman ρ 0.115** (95% CI 0.104–0.127) | 0.043 (hand-written heuristic) | ≥ 0.25 | ❌ (2.7× baseline) |
 | Impact ≥ 8: share of top-decile real moves | **16.8%** vs 10.4% base rate (lift 1.61×) | – | ≥ 2× | ❌ |
 | Impact 10 vs 1: mean realised move | **2.61σ vs 1.13σ** (2.3×) | – | rising | partly (flat from 1 to 8) |
-| Native multilingual sentiment, 300 headlines in 10 languages | macro-F1 **0.53** (CI 0.46–0.60) | translated proxy said 0.83 | ≥ 0.75 | ❌ |
-| Latency p95 / throughput (CPU, 4 threads) | 254 ms / **10–13 docs/s** | – | 150 ms / 150 docs/s | ❌ |
+| Native multilingual sentiment, 300 **new** headlines in 10 languages (v2 test, scored once) | macro-F1 **0.645** (CI 0.58–0.71) | before this round 0.543; a translated proxy said 0.83 | ≥ 0.75 | ❌ (+0.10) |
+| Latency p95 / throughput (CPU, 8 threads, batch 32) | 44 ms / **17.6 docs/s** on new text, 33.1 with repeats (logits cache) | 177 ms / 20.5 docs/s before the cache and NLI blend | 150 ms / 150 docs/s | ✅ latency / ❌ throughput |
+
+### Score-improvement round: old vs new (frozen v2 test sets)
+
+New test sets were built blind (`data/eval/v2/`), hashed in `FREEZE.json` before any experiment, and scored **once** at the end;
+every change was chosen on the dev splits only ([DECISIONS](docs/DECISIONS.md) D72–D80). 95% bootstrap CIs in brackets.
+
+| Set | Metric | Old | New |
+| --- | --- | --- | --- |
+| 300 new native headlines, 10 languages | sentiment macro-F1 | 0.543 [0.46–0.61] | **0.645** [0.58–0.71] |
+| 150 new 2025–26 credit headlines | Credit Event precision / recall / F1 | 0.578 / 0.925 / 0.712 | **0.755** / 0.925 / **0.832** |
+| Native-300 (seen in round 1) | sentiment macro-F1 | 0.531 | 0.605 |
+| Credit-150 (seen in round 1) | precision / recall | 0.667 / 1.000 | 0.759 / **0.917** ⚠ |
+| Twitter topic test (seen) | event macro-F1 / Credit F1 | 0.813 / 0.323 | 0.809 / 0.286 ⚠ |
+
+What changed: a multilingual NLI sentiment blend for non-English text, romanised-Hindi (Hinglish) detection and
+transliteration, credit hard-negative rules with a 0.70 threshold, a logits cache, and after-tax capital with capped RWA
+migration in Module B. ⚠ = more than 0.01 worse; these were found on the final run and are reported, not re-tuned.
+Full table: [model card §0](docs/model_card.md) · raw: [`docs/eval/v2/final.json`](docs/eval/v2/final.json).
 
 ### Downstream modules
 
@@ -284,6 +303,12 @@ tables with confidence intervals: [model card](docs/model_card.md).
 | "Price-move" rule v1 (any move word → event) | Broke 6 validation rows ("surging inflation") | v2 needs a stock subject: 0 validation changes |
 | Social-post impact cap v1 (any news within 6 h confirms) | A car-chase story "confirmed" JPMorgan *Chase* tweets | Only the same near-duplicate story from news confirms |
 | Module A v1 (sentiment) and v2 (surprise), both pre-registered | Neither beats 95% of placebos | Shipped as a transparent, controlled consumer, not as alpha |
+| Translate-test: NLLB → English, then FinBERT, for non-English text (v2 dev) | Sentiment did not improve; event 0.471 → 0.498 at best, but needs a 600M translator at run time | Not shipped |
+| NLI sentiment blend (mDeBERTa XNLI, weight 0.5) for non-English text | Dev 0.542 → 0.638; test 0.543 → **0.645** | Shipped |
+| Translate-train: XLM-R retrained on 119k rows incl. 69k translated tweets | Laptop hibernated mid-run; the 1-epoch model scored 0.623 vs 0.638 on dev | Not kept; event retrain not run (no time) |
+| Credit hard negatives (analyst calls, aggregates, recoveries) + threshold 0.70 | Precision 0.58 → 0.76 on new data, recall unchanged; recall on the older set 1.00 → 0.92 | Shipped; precision still below 0.80 |
+| CoreML execution provider on Apple Silicon | 20× slower than CPU, identical accuracy | CPU stays the default |
+| After-tax losses + RWA growth cap in Module B | Replay median ΔCET1 −571 → −273 bp; the 15% cap binds in every test | Shipped; rating migration needs calibration |
 
 ### Domain impact
 
@@ -295,7 +320,7 @@ tables with confidence intervals: [model card](docs/model_card.md).
 
 ### Limitations & next steps
 
-Native-language quality (0.53 vs 0.75 target), impact correlation, CPU throughput and credit precision are below target.
+Native-language quality (0.645 vs 0.75 target), impact correlation, CPU throughput and credit precision (0.755 vs 0.80) are below target.
 Module A has no edge after costs. Next steps:
 1. Human-labelled native-language data.
 2. Static INT8 or GPU workers behind an accuracy gate. Today 10 M docs/day (116 docs/s) needs about 7 eight-thread CPU workers at average load and about 66 at a 10× peak of 1,157 docs/s (17.6 docs/s per worker on new text).
@@ -317,7 +342,7 @@ Module A has no edge after costs. Next steps:
 ├── data/            replay/ reference/ portfolio/ eval/ sample_output/ train_extra/  ·  SOURCES.md
 ├── docs/            presentation.pdf/.pptx · architecture.png · diagrams/ · screenshots/ · model_card.md
 │                    DECISIONS.md · DEMO_SCRIPT.md · ATTRIBUTION.md · eval/ (raw result JSON) · deck/ (deck source)
-└── tests/           pytest suite (45 offline tests)
+└── tests/           pytest suite (59 offline tests)
 ```
 
 ## Documentation index
@@ -326,7 +351,7 @@ Module A has no edge after costs. Next steps:
 | --- | --- |
 | [docs/presentation.pdf](docs/presentation.pdf) | 7-slide deck: problem, system design, implementation, results, domain impact, limitations |
 | [docs/model_card.md](docs/model_card.md) | Every metric with confidence intervals, per-class and per-language tables (generated) |
-| [docs/DECISIONS.md](docs/DECISIONS.md) | 83 logged design decisions and experiments, with evidence |
+| [docs/DECISIONS.md](docs/DECISIONS.md) | 93 logged design decisions and experiments, with evidence |
 | [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) | Shot-by-shot script for the demo video and the 5-minute live demo |
 | [docs/deck/speaker_notes.md](docs/deck/speaker_notes.md) | Pitch script and likely jury questions with answers |
 | [data/SOURCES.md](data/SOURCES.md) · [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md) | Data sources, licences and citations · models and libraries |
