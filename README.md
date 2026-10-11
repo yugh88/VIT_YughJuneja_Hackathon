@@ -199,6 +199,8 @@ SENTINEL_MODE=replay uvicorn engine.api.app:app --port 8000
 
 **Option C: Docker**
 ```bash
+git clone https://github.com/yugh88/VIT_YughJuneja_Hackathon.git
+cd VIT_YughJuneja_Hackathon
 docker compose up    # builds the image (downloads the models) and serves http://localhost:8000
 ```
 
