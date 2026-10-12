@@ -49,6 +49,7 @@ def run(
                                  "s": round(sig.sentiment.score, 3), "ev": sig.event.primary.value,
                                  "evc": round(sig.event.confidence, 3), "imp": sig.impact.score, "lo": sig.impact.low,
                                  "hi": sig.impact.high, "drv": sig.impact.drivers, "title": sig.evidence.title,
+                                 "title_en": sig.evidence.title_en,
                                  "sent": sig.evidence.sentence, "url": sig.evidence.url,
                                  "synd": sig.syndication_count})  # fmt: skip
                 res = engine.on_signal(sig)

@@ -145,6 +145,7 @@ class Attention(BaseModel):
 
 class Evidence(BaseModel):
     title: str = ""
+    title_en: str = ""  # English display title for a recorded non-English headline; "" otherwise
     sentence: str = ""
     url: str = ""
 

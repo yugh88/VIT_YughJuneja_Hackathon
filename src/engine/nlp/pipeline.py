@@ -48,6 +48,7 @@ from engine.nlp.quality import (
     real_word_count,
 )
 from engine.nlp.sentiment import SentimentModel, SentimentResult
+from engine.nlp.translations import english_title
 from engine.schema import (
     DEFAULT_CREDIBILITY,
     Attention,
@@ -493,7 +494,12 @@ class Pipeline:
                 outlets_window=act.outlets_window,
             ),
             syndication_count=tr.syndication_count,
-            evidence=Evidence(title=doc.title[:300], sentence=sentence[:500], url=doc.url),
+            evidence=Evidence(
+                title=doc.title[:300],
+                title_en=english_title(doc.title)[:300],
+                sentence=sentence[:500],
+                url=doc.url,
+            ),
             geo=geo,
             original_published_at=doc.meta.get("original_published_at"),
             model_versions={

@@ -224,3 +224,21 @@ def test_hinglish_detection_and_transliteration() -> None:
     assert not is_hinglish("एक्मे का मुनाफा बढ़ा")  # already Devanagari
     out = to_devanagari("Acme ka munafa badha")
     assert out.startswith("Acme ") and any("ऀ" <= ch <= "ॿ" for ch in out)
+
+
+def test_english_title_lookup(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    import gzip
+    import json
+
+    from engine.nlp import translations
+
+    p = tmp_path / "t.json.gz"
+    with gzip.open(p, "wt") as fh:
+        json.dump({"Acme annonce des pertes": "Acme announces losses"}, fh)  # invented example
+    monkeypatch.setattr(translations, "PATH", p)
+    translations._table.cache_clear()
+    try:
+        assert translations.english_title(" Acme annonce des pertes ") == "Acme announces losses"
+        assert translations.english_title("Acme shares rise") == ""  # English or unseen: no display title
+    finally:
+        translations._table.cache_clear()

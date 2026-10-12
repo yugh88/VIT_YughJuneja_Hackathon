@@ -11,7 +11,7 @@ SPEED   ?= 30
 export PYTHONPATH := $(CURDIR)/src
 
 .DEFAULT_GOAL := help
-.PHONY: help setup setup-py models models-all web demo live record download train export calibrate impact gazetteer package-models test test-all lint typecheck keyscan eval bench docker clean deck diagrams
+.PHONY: help setup setup-py models models-all web demo live record download train export calibrate impact gazetteer package-models test test-all lint typecheck keyscan eval bench docker clean deck diagrams translations
 
 help:  ## List targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
@@ -91,6 +91,9 @@ backtest:  ## Module A: backtest 2020-2026 with costs, benchmarks and 100 placeb
 stress-book:  ## Module B: sector mix, shock library (yfinance/FRED) and the seeded synthetic book
 	$(BIN)/python -m modules.stress.calibrate
 	$(BIN)/python -m modules.stress.portfolio
+
+translations:  ## English display titles for the recorded non-English headlines (NLLB, once, offline)
+	$(BIN)/python -m training.translate_titles
 
 replay-2022:  ## Module B: 24 Feb 2022 through the full system -> docs/eval/replay_2022-02-24.json
 	$(BIN)/python -m modules.stress.replay
