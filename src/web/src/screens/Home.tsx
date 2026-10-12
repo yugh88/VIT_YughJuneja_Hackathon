@@ -256,12 +256,15 @@ export default function Home({ go }: { go: (hash: string) => void }) {
 
 const esc = (t: string) => t.replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]!);
 
-/** Hover card for a country on the map (plain HTML: ECharts renders tooltips outside React). */
+const short = (t: string) => (t.length > 90 ? t.slice(0, 88) + "…" : t);
+
+/** Hover card for a country on the map (plain HTML: ECharts renders tooltips outside React).
+ * Headlines show in English when a translation was recorded (evidence.title_en). */
 function tipHtml(c: any): string {
   const tone = LEVEL_TONE[c.level as Level];
   const sent = `${c.mean >= 0 ? "+" : "−"}${Math.abs(c.mean).toFixed(2)}`;
   const rows = c.top
-    .map((s: S) => `<div style="margin-top:6px;display:flex;gap:8px;align-items:flex-start"><span style="flex:none;background:${s.imp >= 8 ? "#c2410c" : "#475569"};color:#fff;border-radius:5px;padding:0 6px;font-weight:800;font-size:12px">${s.imp}</span><span style="white-space:normal">${esc(s.title.length > 90 ? s.title.slice(0, 88) + "…" : s.title)}</span></div>`)
+    .map((s: S) => `<div style="margin-top:6px;display:flex;gap:8px;align-items:flex-start"><span style="flex:none;background:${s.imp >= 8 ? "#c2410c" : "#475569"};color:#fff;border-radius:5px;padding:0 6px;font-weight:800;font-size:12px">${s.imp}</span><span style="white-space:normal">${esc(short(s.title_en || s.title))}</span></div>`)
     .join("");
   const alert = c.alert
     ? `<div style="margin-top:8px;padding:6px 8px;border-radius:8px;background:#fdf1ea;color:#c2410c;font-weight:700">Stress test: loss ${c.alert.loss != null ? `$${Math.round(c.alert.loss / 1e6)} M` : "computed"} · severity ${Math.round(c.alert.severity)}</div>`

@@ -65,6 +65,7 @@ export default function News({ go }: { go: (h: string) => void }) {
           {shown.length === 0 && <div className="card empty">No stories match. In demo mode recorded news replays offline; the first stories appear once the models have loaded.</div>}
           {shown.slice(0, limit).map(({ main, all: ents }) => {
             const names = [...new Set(ents.map((e) => e.name))];
+            // Recorded non-English headlines show in English; the language pill keeps the original language.
             return (
               <article key={main.doc} className="story">
                 <div className="row between">
@@ -78,8 +79,8 @@ export default function News({ go }: { go: (h: string) => void }) {
                 </div>
                 <div className="title">
                   {main.url ? (
-                    <a href={main.url} target="_blank" rel="noreferrer" style={{ color: "inherit", fontWeight: 700, textDecoration: "none" }}><Title text={main.title} names={tickerNames(ents)} /></a>
-                  ) : <Title text={main.title} names={tickerNames(ents)} />}
+                    <a href={main.url} target="_blank" rel="noreferrer" style={{ color: "inherit", fontWeight: 700, textDecoration: "none" }}><Title text={main.title_en || main.title} names={tickerNames(ents)} /></a>
+                  ) : <Title text={main.title_en || main.title} names={tickerNames(ents)} />}
                 </div>
                 <div className="row small" style={{ gap: 26 }}>
                   <span>Sentiment Score <SentimentText score={main.s} /></span>
@@ -122,7 +123,7 @@ export default function News({ go }: { go: (h: string) => void }) {
             <h2 style={{ fontSize: 17 }}>How to read a story</h2>
             <p style={{ margin: 0 }}>
               <b>Sentiment Score</b> runs from −1.0 (negative) to +1.0 (positive). <b>Impact Score</b> from 1 to 10 is how much the market could move,
-              learned from how prices reacted to past news. Stories in other languages are read in their own language.
+              learned from how prices reacted to past news. Stories in other languages are scored in their own language; headlines are shown in English.
             </p>
           </section>
         </div>

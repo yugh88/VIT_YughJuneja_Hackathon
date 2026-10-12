@@ -46,7 +46,7 @@ export interface Signal {
   sentiment: { score: number; score_human?: number | null; label: string; confidence: number };
   event: { primary: string; confidence: number; secondary: string[] };
   impact: { score: number; low: number; high: number; drivers: string[]; mode: string };
-  evidence: { title: string; sentence: string; url: string };
+  evidence: { title: string; title_en?: string; sentence: string; url: string };
   syndication_count: number;
   novelty: number;
   attention?: { burst_z: number; outlets_window: number } | null;

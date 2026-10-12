@@ -7,6 +7,7 @@ export interface S {
   eid: string; name: string; country?: string | null; sector?: string | null;
   s: number; ev: string; evc: number; imp: number; lo: number; hi: number; drv: string[];
   title: string; sent: string; url: string; synd: number;
+  title_en?: string; // English version of a recorded non-English headline, when there is one
   orig?: string | null; // replayed items: the recording's own publish time
   cap?: string | null; // why the Impact Score was capped
 }
@@ -35,7 +36,7 @@ export const toS = (x: Signal): S => ({
   id: x.signal_id, doc: (x as any).doc_id ?? x.signal_id, t: x.published_at, outlet: x.source.outlet, src: x.source.name,
   type: x.source.type, lang: x.language, eid: x.entity.id, name: x.entity.name, country: x.entity.country,
   sector: x.entity.sector, s: x.sentiment.score, ev: x.event.primary, evc: x.event.confidence, imp: x.impact.score,
-  lo: x.impact.low, hi: x.impact.high, drv: x.impact.drivers, title: x.evidence.title || x.evidence.sentence,
+  lo: x.impact.low, hi: x.impact.high, drv: x.impact.drivers, title: x.evidence.title || x.evidence.sentence, title_en: x.evidence.title_en,
   sent: x.evidence.sentence, url: x.evidence.url, synd: x.syndication_count,
   orig: (x as any).original_published_at ?? null, cap: (x.impact as any).cap_reason ?? null,
 });
