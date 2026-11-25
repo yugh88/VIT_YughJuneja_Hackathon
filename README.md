@@ -5,6 +5,8 @@
 **College / Campus:** VIT Bhopal University
 **Demo Video Link:** [Sentinel Demo Video (YouTube, Unlisted)](https://youtu.be/gyRLBzWEZWA)
 
+**Live Demo:** [sentinel-ntsl.onrender.com](https://sentinel-ntsl.onrender.com) (Render free tier: the first open after a quiet spell takes about a minute. It runs the offline replay in light mode, with lexicon sentiment and keyword event rules instead of the fine-tuned ONNX models, which need more than 512 MB; run `make demo` locally for the full models.)
+
 **Slide Deck Link:** [PDF Presentation](docs/presentation.pdf) (7 slides) | [PowerPoint Presentation](docs/presentation.pptx)
 
 > **Sentinel reads financial news and social posts in many languages and turns each story into three numbers for every
