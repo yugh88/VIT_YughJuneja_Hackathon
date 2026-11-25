@@ -39,5 +39,8 @@ COPY --from=web /web/dist ./src/web/dist
 RUN mkdir -p /app/data/output && chown -R sentinel /app/data/output /app/models
 USER sentinel
 EXPOSE 10000
-# Render sets $PORT (10000 by default).
-CMD ["sh", "-c", "exec uvicorn engine.api.app:app --host 0.0.0.0 --port ${PORT:-10000}"]
+# Render sets $PORT (10000 by default). The start script frees memory by restarting the server
+# when it goes above SENTINEL_MEM_LIMIT_MB, and on a timer every SENTINEL_RESTART_EVERY_S.
+COPY scripts/render_start.sh ./scripts/render_start.sh
+ENV SENTINEL_MEM_LIMIT_MB=440 SENTINEL_MEM_CHECK_S=15 SENTINEL_RESTART_EVERY_S=90000
+CMD ["sh", "/app/scripts/render_start.sh"]
