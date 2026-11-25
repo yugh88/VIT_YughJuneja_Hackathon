@@ -1,0 +1,43 @@
+# Sentinel on Render's free tier (512 MB RAM): the same app as ./Dockerfile, in light mode.
+# The fine-tuned ONNX models (~1.1 GB) do not fit in 512 MB, so they are not downloaded; the
+# engine runs in its documented fallback modes (lexicon sentiment, keyword event rules, heuristic
+# impact) with fastText language ID. For the full models use ./Dockerfile on a larger instance.
+
+# ---- web build ----
+FROM node:20-slim AS web
+WORKDIR /web
+COPY src/web/ ./
+RUN if [ -f package.json ]; then npm ci && npm run build; else mkdir -p dist; fi
+
+# ---- runtime ----
+FROM python:3.11-slim AS runtime
+# Smaller in-memory buffers keep the looping replay well under 512 MB. SENTINEL_MODELS_BASE_URL
+# points nowhere on purpose: it blocks the background download of the 366 MB zero-shot model,
+# which would not fit in memory.
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 \
+    PYTHONPATH=/app/src \
+    SENTINEL_MODE=replay \
+    SENTINEL_REPLAY_SPEED=30 \
+    SENTINEL_ZERO_SHOT=false \
+    SENTINEL_ONNX_THREADS=1 \
+    SENTINEL_SIGNAL_BUFFER=4000 \
+    SENTINEL_RECENT_BUFFER=500 \
+    SENTINEL_BUS_QUEUE_SIZE=2000 \
+    SENTINEL_MODELS_BASE_URL=http://127.0.0.1:9/disabled-on-free-tier
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/* \
+    && useradd --create-home sentinel
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+COPY pyproject.toml README.md ./
+COPY src/ ./src/
+RUN pip install -e . --no-deps
+COPY data/ ./data/
+COPY --chown=sentinel models/ ./models/
+RUN [ -f models/lid.176.ftz ] || curl -fL -o models/lid.176.ftz https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.ftz
+COPY --from=web /web/dist ./src/web/dist
+RUN mkdir -p /app/data/output && chown -R sentinel /app/data/output /app/models
+USER sentinel
+EXPOSE 10000
+# Render sets $PORT (10000 by default).
+CMD ["sh", "-c", "exec uvicorn engine.api.app:app --host 0.0.0.0 --port ${PORT:-10000}"]

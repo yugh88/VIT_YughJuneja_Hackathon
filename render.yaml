@@ -1,0 +1,12 @@
+# Render Blueprint: one free web service running the offline replay demo in light mode.
+# Deploy: https://render.com/deploy?repo=https://github.com/yugh88/VIT_YughJuneja_Hackathon
+services:
+  - type: web
+    name: sentinel
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile.render
+    dockerContext: .
+    healthCheckPath: /v1/health
+    autoDeploy: true
